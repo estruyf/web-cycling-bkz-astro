@@ -1,0 +1,192 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import RideSchedule from "../../components/RideSchedule.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const clubs = await getCollection("clubs");
+  return clubs.map((club) => ({
+    params: { slug: club.id.replace(/\.md$/, "") },
+    props: { club },
+  }));
+}
+
+const { club } = Astro.props;
+const { Content } = await club.render();
+const {
+  name,
+  town,
+  shortDescription,
+  meetingPoint,
+  meetingPointDetail,
+  website,
+  contactEmail,
+  rides,
+  logo,
+} = club.data;
+---
+
+<Layout title={`${name} — Cycling BKZ`} description={shortDescription}>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <a
+      href="/clubs"
+      class="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 mb-8 transition-colors"
+    >
+      <svg
+        class="w-4 h-4"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"
+        ></path>
+      </svg>
+      Terug naar clubs
+    </a>
+
+    <div
+      class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-8"
+    >
+      <div class="bg-gradient-to-r from-primary-600 to-primary-500 h-3"></div>
+      <div class="p-8">
+        <div class="flex items-start gap-5">
+          {
+            logo ? (
+              <img
+                src={logo}
+                alt={name}
+                class="w-20 h-20 rounded-2xl object-cover border border-gray-100 shadow-sm shrink-0"
+              />
+            ) : (
+              <div class="w-20 h-20 rounded-2xl bg-primary-100 flex items-center justify-center text-primary-700 font-extrabold text-3xl shrink-0">
+                {name.charAt(0)}
+              </div>
+            )
+          }
+          <div class="flex-1 min-w-0">
+            <div class="flex flex-wrap items-center gap-3 mb-1">
+              <h1 class="text-2xl font-extrabold text-gray-900">{name}</h1>
+              <span
+                class="bg-primary-100 text-primary-800 text-xs font-semibold px-3 py-1 rounded-full"
+                >{town}</span
+              >
+            </div>
+            <p class="text-gray-500 leading-relaxed">{shortDescription}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+      <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
+        <div
+          class="flex items-center gap-2 text-gray-400 text-xs font-semibold uppercase tracking-wide mb-2"
+        >
+          <svg
+            class="w-4 h-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+            ></path>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          </svg>
+          Vertrekpunt
+        </div>
+        <p class="text-gray-800 font-medium text-sm">{meetingPoint}</p>
+        {
+          meetingPointDetail && (
+            <p class="text-gray-500 text-xs mt-1">{meetingPointDetail}</p>
+          )
+        }
+      </div>
+
+      {
+        website && (
+          <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
+            <div class="flex items-center gap-2 text-gray-400 text-xs font-semibold uppercase tracking-wide mb-2">
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
+                />
+              </svg>
+              Website
+            </div>
+            <a
+              href={website}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-primary-500 hover:text-primary-700 font-medium text-sm break-all"
+            >
+              {website.replace(/^https?:\/\//, "")}
+            </a>
+          </div>
+        )
+      }
+
+      {
+        contactEmail && (
+          <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
+            <div class="flex items-center gap-2 text-gray-400 text-xs font-semibold uppercase tracking-wide mb-2">
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                />
+              </svg>
+              Contact
+            </div>
+            <a
+              href={`mailto:${contactEmail}`}
+              class="text-primary-500 hover:text-primary-700 font-medium text-sm break-all"
+            >
+              {contactEmail}
+            </a>
+          </div>
+        )
+      }
+    </div>
+
+    <div
+      class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-8"
+    >
+      <div class="px-6 py-4 border-b border-gray-100">
+        <h2 class="font-bold text-gray-900">Weekschema ritten</h2>
+      </div>
+      <RideSchedule rides={rides} />
+    </div>
+
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
+      <h2 class="font-bold text-gray-900 mb-5">Over {name}</h2>
+      <div
+        class="prose prose-sm prose-gray max-w-none prose-headings:font-bold prose-a:text-primary-500"
+      >
+        <Content />
+      </div>
+    </div>
+  </div>
+</Layout>

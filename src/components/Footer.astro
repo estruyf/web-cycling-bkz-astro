@@ -1,0 +1,86 @@
+---
+import { getCollection } from "astro:content";
+import Logo from "./Logo.astro";
+const sponsors = (await getCollection("sponsors")).filter((s) => s.data.active);
+---
+
+<footer class="bg-primary-900 text-primary-200">
+  {
+    sponsors.length > 0 && (
+      <div class="border-b border-primary-800">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <p class="text-xs uppercase tracking-widest text-primary-400 text-center mb-6">
+            Onze Sponsors
+          </p>
+          <div class="flex flex-wrap items-center justify-center gap-6">
+            {sponsors
+              .sort((a, b) => a.data.order - b.data.order)
+              .map((sponsor) => (
+                <a
+                  href={sponsor.data.website || "#"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-primary-200 hover:text-white font-medium text-sm transition-colors"
+                >
+                  {sponsor.data.name}
+                </a>
+              ))}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div>
+        <div class="flex items-center gap-3 mb-3">
+          <Logo />
+          <span class="font-bold text-white">Cycling BKZ</span>
+        </div>
+        <p class="text-sm text-primary-300 leading-relaxed">
+          Jouw gids voor wielrenclubs in Beveren, Kruibeke en Zwijndrecht.
+        </p>
+      </div>
+
+      <div>
+        <h4 class="text-white font-semibold text-sm mb-4">Snelle links</h4>
+        <ul class="space-y-2 text-sm">
+          <li>
+            <a href="/" class="hover:text-white transition-colors">Home</a>
+          </li>
+          <li>
+            <a href="/clubs" class="hover:text-white transition-colors">Clubs</a
+            >
+          </li>
+          <li>
+            <a href="/sponsors" class="hover:text-white transition-colors"
+              >Sponsors</a
+            >
+          </li>
+          <li>
+            <a href="/add-club" class="hover:text-white transition-colors"
+              >Voeg je club toe</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="text-white font-semibold text-sm mb-4">Regio</h4>
+        <ul class="space-y-2 text-sm">
+          <li class="text-primary-300">Beveren</li>
+          <li class="text-primary-300">Kruibeke</li>
+          <li class="text-primary-300">Zwijndrecht</li>
+        </ul>
+      </div>
+    </div>
+
+    <div
+      class="border-t border-primary-800 mt-8 pt-6 text-xs text-primary-400 text-center"
+    >
+      &copy; {new Date().getFullYear()} Cycling BKZ &mdash; Beveren, Kruibeke &amp;
+      Zwijndrecht
+    </div>
+  </div>
+</footer>
