@@ -5,32 +5,6 @@ const sponsors = (await getCollection("sponsors")).filter((s) => s.data.active);
 ---
 
 <footer class="bg-primary-900 text-primary-200">
-  {
-    sponsors.length > 0 && (
-      <div class="border-b border-primary-800">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <p class="text-xs uppercase tracking-widest text-primary-400 text-center mb-6">
-            Onze Sponsors
-          </p>
-          <div class="flex flex-wrap items-center justify-center gap-6">
-            {sponsors
-              .sort((a, b) => a.data.order - b.data.order)
-              .map((sponsor) => (
-                <a
-                  href={sponsor.data.website || "#"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="text-primary-200 hover:text-white font-medium text-sm transition-colors"
-                >
-                  {sponsor.data.name}
-                </a>
-              ))}
-          </div>
-        </div>
-      </div>
-    )
-  }
-
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <div>
@@ -82,9 +56,15 @@ const sponsors = (await getCollection("sponsors")).filter((s) => s.data.active);
     </div>
 
     <div
-      class="border-t border-primary-800 mt-8 pt-6 text-xs text-primary-400 text-center"
+      class="border-t border-primary-800 mt-8 pt-6 text-xs text-primary-400 text-center flex flex-col items-center gap-2"
     >
       &copy; {new Date().getFullYear()} WielerWaas
+
+      <a href="https://visitorbadge.io/status?path=https%3A%2F%2Fwielerwaas.be">
+        <img
+          src="https://api.visitorbadge.io/api/combined?path=https%3A%2F%2Fwielerwaas.be&label=Bezoekers&labelColor=%23023047&countColor=%23023047&style=flat-square&labelStyle=upper"
+        />
+      </a>
     </div>
   </div>
 </footer>

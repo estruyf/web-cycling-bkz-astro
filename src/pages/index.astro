@@ -6,7 +6,6 @@ import AddClubCta from "../components/AddClubCta.astro";
 import { getCollection } from "astro:content";
 
 const clubs = (await getCollection("clubs")).filter((c) => c.data.active);
-const sponsors = (await getCollection("sponsors")).filter((s) => s.data.active);
 
 const now = new Date();
 const upcomingEvents = (await getCollection("events"))
@@ -68,16 +67,6 @@ const gesorteerdeRitten = alleRitten.sort((a, b) => {
   if (dagVerschil !== 0) return dagVerschil;
   return a.uur.localeCompare(b.uur);
 });
-
-const goldSponsors = sponsors
-  .filter((s) => s.data.tier === "gold")
-  .sort((a, b) => a.data.order - b.data.order);
-const silverSponsors = sponsors
-  .filter((s) => s.data.tier === "silver")
-  .sort((a, b) => a.data.order - b.data.order);
-const bronzeSponsors = sponsors
-  .filter((s) => s.data.tier === "bronze")
-  .sort((a, b) => a.data.order - b.data.order);
 ---
 
 <Layout
@@ -348,103 +337,6 @@ const bronzeSponsors = sponsors
       </div>
     </div>
   </section>
-
-  {
-    sponsors.length > 0 && (
-      <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h2 class="text-2xl font-bold text-gray-900 text-center mb-2">
-          Onze sponsors
-        </h2>
-        <p class="text-gray-500 text-sm text-center mb-10">
-          Steun voor het lokale wielrennen in het Waasland
-        </p>
-
-        {goldSponsors.length > 0 && (
-          <div class="mb-8">
-            <p class="text-xs uppercase tracking-widest text-accent-600 font-semibold text-center mb-5">
-              Goud
-            </p>
-            <div class="flex flex-wrap justify-center gap-6">
-              {goldSponsors.map((s) => (
-                <a
-                  href={s.data.website || "#"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="flex items-center justify-center bg-white border-2 border-accent-300 rounded-xl px-8 py-5 hover:border-accent-500 transition-colors min-w-40 font-semibold text-gray-800"
-                >
-                  {s.data.logo ? (
-                    <img
-                      src={s.data.logo}
-                      alt={s.data.name}
-                      class="h-10 object-contain"
-                    />
-                  ) : (
-                    s.data.name
-                  )}
-                </a>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {silverSponsors.length > 0 && (
-          <div class="mb-8">
-            <p class="text-xs uppercase tracking-widest text-gray-500 font-semibold text-center mb-5">
-              Zilver
-            </p>
-            <div class="flex flex-wrap justify-center gap-5">
-              {silverSponsors.map((s) => (
-                <a
-                  href={s.data.website || "#"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="flex items-center justify-center bg-white border border-gray-200 rounded-xl px-7 py-4 hover:border-gray-400 transition-colors min-w-36 font-medium text-gray-700"
-                >
-                  {s.data.logo ? (
-                    <img
-                      src={s.data.logo}
-                      alt={s.data.name}
-                      class="h-8 object-contain"
-                    />
-                  ) : (
-                    s.data.name
-                  )}
-                </a>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {bronzeSponsors.length > 0 && (
-          <div>
-            <p class="text-xs uppercase tracking-widest text-accent-800 font-semibold text-center mb-5">
-              Brons
-            </p>
-            <div class="flex flex-wrap justify-center gap-4">
-              {bronzeSponsors.map((s) => (
-                <a
-                  href={s.data.website || "#"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="flex items-center justify-center bg-white border border-gray-100 rounded-xl px-6 py-3 hover:border-gray-300 transition-colors font-medium text-gray-600"
-                >
-                  {s.data.logo ? (
-                    <img
-                      src={s.data.logo}
-                      alt={s.data.name}
-                      class="h-6 object-contain"
-                    />
-                  ) : (
-                    s.data.name
-                  )}
-                </a>
-              ))}
-            </div>
-          </div>
-        )}
-      </section>
-    )
-  }
 
   <AddClubCta />
 </Layout>

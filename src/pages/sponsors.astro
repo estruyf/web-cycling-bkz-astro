@@ -2,48 +2,15 @@
 import Layout from "../layouts/Layout.astro";
 import { getCollection } from "astro:content";
 
-const sponsors = (await getCollection("sponsors")).filter((s) => s.data.active);
-const goldSponsors = sponsors
-  .filter((s) => s.data.tier === "gold")
+const sponsors = (await getCollection("sponsors"))
+  .filter((s) => s.data.active)
   .sort((a, b) => a.data.order - b.data.order);
-const silverSponsors = sponsors
-  .filter((s) => s.data.tier === "silver")
-  .sort((a, b) => a.data.order - b.data.order);
-const bronzeSponsors = sponsors
-  .filter((s) => s.data.tier === "bronze")
-  .sort((a, b) => a.data.order - b.data.order);
-
-const tiers = [
-  {
-    name: "Goud",
-    description:
-      "Maximale zichtbaarheid. Jouw logo prominent op de homepage, elke clubpagina en de footer op alle apparaten.",
-    color: "border-accent-400 bg-accent-50",
-    badge: "bg-accent-100 text-accent-800",
-    items: goldSponsors,
-  },
-  {
-    name: "Zilver",
-    description:
-      "Goede zichtbaarheid. Jouw logo op de sponsorssectie van de homepage en in de sitefooter.",
-    color: "border-gray-300 bg-gray-50",
-    badge: "bg-gray-200 text-gray-700",
-    items: silverSponsors,
-  },
-  {
-    name: "Brons",
-    description:
-      "Steun aan de gemeenschap. Je naam en link in de sponsorssectie en footer.",
-    color: "border-accent-600 bg-accent-50",
-    badge: "bg-accent-100 text-accent-700",
-    items: bronzeSponsors,
-  },
-];
 ---
 
 <Layout
   title="Sponsors — WielerWaas"
   description="Steun het lokale wielrennen in het Waasland als sponsor."
+  hideSponsors={true}
 >
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <div class="text-center mb-12">
@@ -56,41 +23,27 @@ const tiers = [
 
     {
       sponsors.length > 0 ? (
-        <div class="space-y-10 mb-16">
-          {tiers.map(
-            (tier) =>
-              tier.items.length > 0 && (
-                <div>
-                  <div class="flex items-center gap-3 mb-6">
-                    <span
-                      class={`text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full ${tier.badge}`}
-                    >
-                      {tier.name}
-                    </span>
-                  </div>
-                  <div class="flex flex-wrap gap-5">
-                    {tier.items.map((sponsor) => (
-                      <a
-                        href={sponsor.data.website || "#"}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class={`flex items-center justify-center rounded-2xl border-2 px-10 py-7 transition-all hover:shadow-md min-w-48 font-semibold text-gray-800 ${tier.color}`}
-                      >
-                        {sponsor.data.logo ? (
-                          <img
-                            src={sponsor.data.logo}
-                            alt={sponsor.data.name}
-                            class="h-12 object-contain"
-                          />
-                        ) : (
-                          sponsor.data.name
-                        )}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              ),
-          )}
+        <div class="mb-16">
+          <div class="flex flex-wrap gap-5">
+            {sponsors.map((sponsor) => (
+              <a
+                href={sponsor.data.website || "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex items-center justify-center rounded-2xl border border-gray-200 bg-white px-10 py-7 transition-all hover:border-gray-400 hover:shadow-md min-w-48 font-semibold text-gray-800"
+              >
+                {sponsor.data.logo ? (
+                  <img
+                    src={sponsor.data.logo}
+                    alt={sponsor.data.name}
+                    class="h-12 object-contain"
+                  />
+                ) : (
+                  sponsor.data.name
+                )}
+              </a>
+            ))}
+          </div>
         </div>
       ) : (
         <div class="text-center text-gray-400 py-12 mb-12">
@@ -103,61 +56,21 @@ const tiers = [
     }
 
     <div
-      class="bg-gradient-to-br from-primary-800 to-primary-900 rounded-3xl text-white p-10 md:p-12"
+      class="bg-linear-to-br from-primary-800 to-primary-900 rounded-3xl text-white p-10 md:p-12"
     >
       <div class="max-w-xl">
         <h2 class="text-2xl font-extrabold mb-3">Word sponsor</h2>
         <p class="text-primary-200 leading-relaxed mb-6">
           Steun het lokale wielrennen en zet je bedrijf in de kijker bij een
-          betrokken, actieve gemeenschap. We bieden goud-, zilver- en
-          bronssponsoring aan.
+          betrokken, actieve gemeenschap.
         </p>
         <p class="text-primary-200 text-sm mb-8">
-          Stuur ons een e-mail met je bedrijfsnaam, website, gewenst
-          sponsorniveau en je logo (indien beschikbaar). We nemen snel contact
-          met je op.
+          Stuur ons een e-mail met je bedrijfsnaam, website en je logo (indien
+          beschikbaar). We nemen snel contact met je op.
         </p>
 
-        <div class="space-y-3 mb-8">
-          {
-            [
-              {
-                tier: "Goud",
-                benefit: "Logo op homepage, alle clubpagina's en sitefooter",
-              },
-              { tier: "Zilver", benefit: "Logo op homepage en sitefooter" },
-              {
-                tier: "Brons",
-                benefit: "Naam en link in de sponsorssectie en footer",
-              },
-            ].map((item) => (
-              <div class="flex items-start gap-3">
-                <div class="w-5 h-5 rounded-full bg-primary-400/40 flex items-center justify-center shrink-0 mt-0.5">
-                  <svg
-                    class="w-3 h-3 text-primary-200"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="3"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                </div>
-                <p class="text-primary-100 text-sm">
-                  <span class="font-semibold text-white">{item.tier}:</span>{" "}
-                  {item.benefit}
-                </p>
-              </div>
-            ))
-          }
-        </div>
-
         <a
-          href="mailto:info@wielerwaas.be?subject=Sponsoring%20aanvraag"
+          href="mailto:info@struyfconsulting.be?subject=Sponsoring%20aanvraag"
           class="inline-flex items-center gap-2 bg-accent-500 text-primary-900 hover:bg-accent-400 font-bold px-7 py-3 rounded-xl transition-colors"
         >
           <svg
