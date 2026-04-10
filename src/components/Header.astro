@@ -36,7 +36,7 @@ const currentPath = Astro.url.pathname;
                 currentPath === link.href
                   ? "bg-primary-50 text-primary-700"
                   : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-              } ${link.label === "Voeg je club toe" ? "!bg-accent-600 !text-white hover:!bg-accent-700 ml-2" : ""}`}
+              } ${link.href === "/add-club" ? "bg-accent-600! text-white! hover:bg-accent-700!" : ""}`}
             >
               {link.label}
             </a>
@@ -78,7 +78,7 @@ const currentPath = Astro.url.pathname;
               currentPath === link.href
                 ? "bg-primary-50 text-primary-700"
                 : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-            } ${link.label === "Voeg je club toe" ? "!bg-accent-600 !text-white mt-1" : ""}`}
+            } ${link.href === "/add-club" ? "bg-accent-600! text-white! mt-1" : ""}`}
           >
             {link.label}
           </a>

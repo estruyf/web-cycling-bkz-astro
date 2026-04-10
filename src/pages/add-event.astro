@@ -1,0 +1,95 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Voeg je evenement toe — WielerWaas"
+  description="Zet jouw wielerevenement op WielerWaas. Bereik fietsers in het Waasland."
+>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="mb-10">
+      <h1 class="text-3xl font-extrabold text-gray-900 mb-3">
+        Voeg je evenement toe
+      </h1>
+      <p class="text-gray-500 leading-relaxed">
+        Organiseer jij een rit of wielerevenement in de regio? Stuur ons een
+        e-mail met onderstaande gegevens en we zetten je evenement zo snel
+        mogelijk op de kalender.
+      </p>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 mb-8">
+      <h2 class="text-lg font-bold text-gray-900 mb-6">
+        Wat stuur je mee in je e-mail
+      </h2>
+      <div class="space-y-4">
+        {
+          [
+            {
+              label: "Naam van het evenement",
+              detail: "De officiële naam van je rit of evenement.",
+            },
+            {
+              label: "Datum",
+              detail: "Op welke datum gaat het evenement door?",
+            },
+            {
+              label: "Startuur",
+              detail: "Het uur waarop deelnemers kunnen starten of verzamelen.",
+            },
+            {
+              label: "Locatie",
+              detail: "Vertrekplaats of adres van het evenement.",
+            },
+            {
+              label: "Organisator",
+              detail: "Naam van de club of organisatie achter het evenement.",
+            },
+            {
+              label: "Website (optioneel)",
+              detail:
+                "Link naar een website of socialpagina met extra informatie.",
+            },
+          ].map((item, i) => (
+            <div class="flex gap-4">
+              <div class="w-7 h-7 rounded-full bg-primary-100 text-primary-700 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
+                {i + 1}
+              </div>
+              <div>
+                <p class="font-semibold text-gray-900 text-sm">{item.label}</p>
+                <p class="text-gray-500 text-sm">{item.detail}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="bg-primary-900 rounded-2xl text-white p-8 text-center">
+      <h3 class="text-xl font-bold mb-2">Klaar om je evenement te delen?</h3>
+      <p class="text-primary-200 mb-6 text-sm">
+        Stuur je evenementgegevens naar ons e-mailadres en we voegen het toe aan
+        de website.
+      </p>
+      <a
+        href="mailto:info@wielerwaas.be?subject=Mijn%20evenement%20toevoegen"
+        class="inline-flex items-center gap-2 bg-accent-500 text-primary-900 hover:bg-accent-400 font-bold px-7 py-3 rounded-xl transition-colors"
+      >
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+          ></path>
+        </svg>
+        Stuur ons je gegevens
+      </a>
+    </div>
+  </div>
+</Layout>
