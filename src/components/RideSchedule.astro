@@ -47,6 +47,10 @@ const typeColors: Record<string, string> = {
 function getTypeColor(type: string) {
   return typeColors[type] ?? "bg-gray-100 text-gray-700";
 }
+
+function formatSpeed(speed?: number): string | undefined {
+  return speed != null ? `${speed} km/u` : undefined;
+}
 ---
 
 <div class="overflow-x-auto">
@@ -97,7 +101,7 @@ function getTypeColor(type: string) {
               {ride.group ?? "—"}
             </td>
             <td class="py-3 px-4 text-gray-600 hidden sm:table-cell">
-              {ride.averageSpeed != null ? `${ride.averageSpeed} km/u` : "—"}
+              {formatSpeed(ride.averageSpeed) ?? "—"}
             </td>
             <td class="py-3 px-4 text-gray-500 hidden sm:table-cell">
               {ride.notes ?? "—"}

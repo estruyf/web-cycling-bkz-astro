@@ -46,6 +46,10 @@ const gesorteerdeRitten = alleRitten.sort((a, b) => {
   if (dagVerschil !== 0) return dagVerschil;
   return a.uur.localeCompare(b.uur);
 });
+
+function formatSpeed(speed?: number): string | undefined {
+  return speed != null ? `${speed} km/u` : undefined;
+}
 ---
 
 <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -167,7 +171,7 @@ const gesorteerdeRitten = alleRitten.sort((a, b) => {
                   {rit.groep ?? "—"}
                 </td>
                 <td class="py-3.5 px-5 hidden md:table-cell text-gray-600">
-                  {rit.gemiddeldeSnelheid != null ? `${rit.gemiddeldeSnelheid} km/u` : "—"}
+                  {formatSpeed(rit.gemiddeldeSnelheid) ?? "—"}
                 </td>
                 <td class="py-3.5 px-5 hidden md:table-cell text-gray-500">
                   {rit.vertrekpunt}
