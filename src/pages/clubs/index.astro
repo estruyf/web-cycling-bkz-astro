@@ -6,6 +6,28 @@ import { getCollection } from "astro:content";
 
 const allClubs = (await getCollection("clubs")).filter((c) => c.data.active);
 const towns = ["Beveren", "Kruibeke", "Melsele", "Zwijndrecht"] as const;
+const dayOrder = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+];
+const dayLabels: Record<string, string> = {
+  Monday: "Maandag",
+  Tuesday: "Dinsdag",
+  Wednesday: "Woensdag",
+  Thursday: "Donderdag",
+  Friday: "Vrijdag",
+  Saturday: "Zaterdag",
+  Sunday: "Zondag",
+};
+
+const uniqueDays = Array.from(
+  new Set(allClubs.flatMap((club) => club.data.rides.map((ride) => ride.day))),
+).sort((a, b) => dayOrder.indexOf(a) - dayOrder.indexOf(b));
 ---
 
 <Layout
@@ -18,36 +40,98 @@ const towns = ["Beveren", "Kruibeke", "Melsele", "Zwijndrecht"] as const;
       <p class="text-gray-500">Alle actieve clubs uit onze community.</p>
     </div>
 
+    <div
+      class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-10"
+    >
+      <div class="flex flex-wrap items-end gap-4">
+        <label class="block">
+          <span
+            class="text-xs font-semibold uppercase tracking-wide text-gray-500"
+            >Gemeente</span
+          >
+          <select
+            id="club-filter-town"
+            class="mt-1 block w-44 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 focus:border-primary-500 focus:outline-none"
+          >
+            <option value="">Alle gemeenten</option>
+            {towns.map((town) => <option value={town}>{town}</option>)}
+          </select>
+        </label>
+
+        <label class="block">
+          <span
+            class="text-xs font-semibold uppercase tracking-wide text-gray-500"
+            >Dag</span
+          >
+          <select
+            id="club-filter-day"
+            class="mt-1 block w-44 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 focus:border-primary-500 focus:outline-none"
+          >
+            <option value="">Alle dagen</option>
+            {
+              uniqueDays.map((day) => (
+                <option value={day}>{dayLabels[day] ?? day}</option>
+              ))
+            }
+          </select>
+        </label>
+
+        <button
+          id="club-filter-reset"
+          type="button"
+          class="inline-flex items-center rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+        >
+          Reset filters
+        </button>
+      </div>
+    </div>
+
     {
       towns.map((town) => {
         const townClubs = allClubs.filter((c) => c.data.town === town);
         if (townClubs.length === 0) return null;
         return (
-          <div class="mb-12">
+          <div class="mb-12" data-town-section>
             <div class="flex items-center gap-3 mb-6">
               <div class="w-1 h-7 bg-primary-500 rounded-full" />
               <h2 class="text-xl font-bold text-gray-900">{town}</h2>
-              <span class="text-sm text-gray-400">
+              <span class="text-sm text-gray-400" data-town-count>
                 {townClubs.length} club{townClubs.length !== 1 ? "s" : ""}
               </span>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {townClubs.map((club) => (
-                <ClubCard
-                  name={club.data.name}
-                  slug={club.id.replace(/\.md$/, "")}
-                  town={club.data.town}
-                  shortDescription={club.data.shortDescription}
-                  meetingPoint={club.data.meetingPoint}
-                  rides={club.data.rides}
-                  logo={club.data.logo}
-                />
+                <div
+                  class="club-filter-item"
+                  data-town={club.data.town}
+                  data-days={club.data.rides.map((ride) => ride.day).join("|")}
+                  data-types={club.data.rides
+                    .map((ride) => ride.type)
+                    .join("|")}
+                >
+                  <ClubCard
+                    name={club.data.name}
+                    slug={club.id.replace(/\.md$/, "")}
+                    town={club.data.town}
+                    shortDescription={club.data.shortDescription}
+                    meetingPoint={club.data.meetingPoint}
+                    rides={club.data.rides}
+                    logo={club.data.logo}
+                  />
+                </div>
               ))}
             </div>
           </div>
         );
       })
     }
+
+    <div
+      id="club-filter-empty"
+      class="hidden text-center text-gray-500 bg-white border border-gray-100 rounded-2xl p-10 mb-12"
+    >
+      Geen clubs gevonden voor deze filters.
+    </div>
 
     <AddClubCta
       variant="light"
@@ -57,3 +141,64 @@ const towns = ["Beveren", "Kruibeke", "Melsele", "Zwijndrecht"] as const;
     />
   </div>
 </Layout>
+
+<script>
+  const townFilter = document.getElementById("club-filter-town");
+  const dayFilter = document.getElementById("club-filter-day");
+  const typeFilter = document.getElementById("club-filter-type");
+  const resetBtn = document.getElementById("club-filter-reset");
+  const noResults = document.getElementById("club-filter-empty");
+
+  const filterItems = Array.from(
+    document.querySelectorAll<HTMLElement>(".club-filter-item"),
+  );
+  const townSections = Array.from(
+    document.querySelectorAll<HTMLElement>("[data-town-section]"),
+  );
+
+  const applyFilters = () => {
+    const town = (townFilter as HTMLSelectElement | null)?.value ?? "";
+    const day = (dayFilter as HTMLSelectElement | null)?.value ?? "";
+    const type = (typeFilter as HTMLSelectElement | null)?.value ?? "";
+
+    let visibleCount = 0;
+
+    filterItems.forEach((item) => {
+      const itemTown = item.dataset.town ?? "";
+      const itemDays = (item.dataset.days ?? "").split("|");
+      const itemTypes = (item.dataset.types ?? "").split("|");
+
+      const matchesTown = !town || itemTown === town;
+      const matchesDay = !day || itemDays.includes(day);
+      const matchesType = !type || itemTypes.includes(type);
+      const matches = matchesTown && matchesDay && matchesType;
+
+      item.classList.toggle("hidden", !matches);
+      if (matches) visibleCount += 1;
+    });
+
+    townSections.forEach((section) => {
+      const sectionVisible = section.querySelectorAll(
+        ".club-filter-item:not(.hidden)",
+      ).length;
+      section.classList.toggle("hidden", sectionVisible === 0);
+
+      const countEl = section.querySelector<HTMLElement>("[data-town-count]");
+      if (countEl) {
+        countEl.textContent = `${sectionVisible} club${sectionVisible !== 1 ? "s" : ""}`;
+      }
+    });
+
+    noResults?.classList.toggle("hidden", visibleCount > 0);
+  };
+
+  townFilter?.addEventListener("change", applyFilters);
+  dayFilter?.addEventListener("change", applyFilters);
+  typeFilter?.addEventListener("change", applyFilters);
+  resetBtn?.addEventListener("click", () => {
+    if (townFilter) (townFilter as HTMLSelectElement).value = "";
+    if (dayFilter) (dayFilter as HTMLSelectElement).value = "";
+    if (typeFilter) (typeFilter as HTMLSelectElement).value = "";
+    applyFilters();
+  });
+</script>
