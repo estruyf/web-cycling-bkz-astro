@@ -193,14 +193,25 @@ const gesorteerdeRitten = alleRitten.sort((a, b) => {
     });
   }
 
-  const resetButton = document.getElementById("filter-reset") as HTMLButtonElement;
+  const resetButton = document.getElementById(
+    "filter-reset",
+  ) as HTMLButtonElement;
 
   function updateResetVisibility() {
-    resetButton.classList.toggle("hidden", dagSelect.value === "" && !openCheckbox.checked);
+    resetButton.classList.toggle(
+      "hidden",
+      dagSelect.value === "" && !openCheckbox.checked,
+    );
   }
 
-  dagSelect.addEventListener("change", () => { applyFilters(); updateResetVisibility(); });
-  openCheckbox.addEventListener("change", () => { applyFilters(); updateResetVisibility(); });
+  dagSelect.addEventListener("change", () => {
+    applyFilters();
+    updateResetVisibility();
+  });
+  openCheckbox.addEventListener("change", () => {
+    applyFilters();
+    updateResetVisibility();
+  });
 
   resetButton.addEventListener("click", () => {
     dagSelect.value = "";
