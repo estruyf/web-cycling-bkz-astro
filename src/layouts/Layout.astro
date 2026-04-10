@@ -48,6 +48,7 @@ const {
     </main>
 
     {!hideSponsors && <SponsorsSection />}
-    <Footer />
+
+    <Footer slug={Astro.url.pathname.replace(/\//g, "-").slice(1) || "home"} />
   </body>
 </html>

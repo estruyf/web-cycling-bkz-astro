@@ -1,7 +1,11 @@
 ---
-import { getCollection } from "astro:content";
 import Logo from "./Logo.astro";
-const sponsors = (await getCollection("sponsors")).filter((s) => s.data.active);
+
+interface Props {
+  slug: string;
+}
+
+const { slug = "home" } = Astro.props;
 ---
 
 <footer class="bg-primary-900 text-primary-200">
@@ -62,7 +66,7 @@ const sponsors = (await getCollection("sponsors")).filter((s) => s.data.active);
 
       <a href="https://visitorbadge.io/status?path=https%3A%2F%2Fwielerwaas.be">
         <img
-          src="https://api.visitorbadge.io/api/combined?path=https%3A%2F%2Fwielerwaas.be&label=Bezoekers&labelColor=%23023047&countColor=%23023047&style=flat-square&labelStyle=upper"
+          src={`https://api.visitorbadge.io/api/combined?path=https%3A%2F%2Fwielerwaas.be&label=Bezoekers&labelColor=%23023047&countColor=%23023047&style=flat-square&labelStyle=upper&slug=${slug}`}
         />
       </a>
     </div>
