@@ -34,6 +34,8 @@ const alleRitten: WeekritOverzicht[] = clubs.flatMap((club) =>
     dag: ride.day,
     uur: ride.time,
     type: ride.type,
+    groep: ride.group,
+    gemiddeldeSnelheid: ride.averageSpeed,
     vertrekpunt: club.data.meetingPoint,
     openVoorIedereen: ride.openForAll,
   })),
@@ -122,6 +124,14 @@ const gesorteerdeRitten = alleRitten.sort((a, b) => {
             >
             <th
               class="text-left py-3.5 px-5 font-semibold text-gray-600 hidden md:table-cell"
+              >Groep</th
+            >
+            <th
+              class="text-left py-3.5 px-5 font-semibold text-gray-600 hidden md:table-cell"
+              >Gem. snelheid</th
+            >
+            <th
+              class="text-left py-3.5 px-5 font-semibold text-gray-600 hidden md:table-cell"
               >Vertrekpunt</th
             >
             <th
@@ -152,6 +162,12 @@ const gesorteerdeRitten = alleRitten.sort((a, b) => {
                 </td>
                 <td class="py-3.5 px-5 hidden sm:table-cell text-gray-600">
                   {rit.type}
+                </td>
+                <td class="py-3.5 px-5 hidden md:table-cell text-gray-600">
+                  {rit.groep ?? "—"}
+                </td>
+                <td class="py-3.5 px-5 hidden md:table-cell text-gray-600">
+                  {rit.gemiddeldeSnelheid != null ? `${rit.gemiddeldeSnelheid} km/u` : "—"}
                 </td>
                 <td class="py-3.5 px-5 hidden md:table-cell text-gray-500">
                   {rit.vertrekpunt}

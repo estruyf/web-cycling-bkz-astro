@@ -12,6 +12,8 @@ const rideSchema = z.object({
   ]),
   time: z.string(),
   type: z.string(),
+  group: z.string().optional(),
+  averageSpeed: z.number().optional(),
   notes: z.string().optional(),
   openForAll: z.boolean().default(true),
 });

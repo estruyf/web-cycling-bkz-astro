@@ -8,22 +8,34 @@ rides:
   - day: Tuesday
     time: "09:00"
     type: TTC Rit
+    averageSpeed: 30
     notes: Gemiddelde afstand 70 km.
     openForAll: true
   - day: Wednesday
     time: "13:30"
     type: TTC Koffierit
+    averageSpeed: 28
     notes: Gemiddelde afstand 80 km.
     openForAll: true
   - day: Thursday
     time: "09:00"
     type: TTC Rit
+    averageSpeed: 30
     notes: Gemiddelde afstand 70 km.
     openForAll: true
   - day: Saturday
     time: "09:00"
     type: TTC Rit
-    notes: "Twee groepen: A-groep (wedstrijdgericht, 100 km) en B-groep (sportief, 90 km)."
+    group: A-groep
+    averageSpeed: 35
+    notes: "Wedstrijdgericht, 100 km."
+    openForAll: true
+  - day: Saturday
+    time: "09:00"
+    type: TTC Rit
+    group: B-groep
+    averageSpeed: 30
+    notes: "Sportief, 90 km."
     openForAll: true
   - day: Sunday
     time: "09:00"

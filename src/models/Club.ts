@@ -9,6 +9,8 @@ export interface Ride {
     | "Sunday";
   time: string;
   type: string;
+  group?: string;
+  averageSpeed?: number;
   notes?: string;
   openForAll: boolean;
 }
