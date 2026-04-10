@@ -24,6 +24,6 @@ rides:
     openForAll: true
 ---
 
-TTC Zwijndrecht is een actieve wielrenclub gevestigd in Zwijndrecht met meerdere ritten per week. De renners vertrekken aan Verbroedering Zwijndrecht en rijden door de polders en de omliggende streek.
+TTC Zwijndrecht is een actieve wielerclub gevestigd in Zwijndrecht met meerdere ritten per week. De renners vertrekken aan Verbroedering Zwijndrecht en rijden door de polders en de omliggende streek.
 
 De club organiseert reguliere TTC-ritten op dinsdag, donderdag en zaterdag, en een populaire woensdagse koffierit.
