@@ -36,10 +36,10 @@ const sponsors = (await getCollection("sponsors")).filter((s) => s.data.active);
       <div>
         <div class="flex items-center gap-3 mb-3">
           <Logo />
-          <span class="font-bold text-white">Cycling BKZ</span>
+          <span class="font-bold text-white">WielerWaas</span>
         </div>
         <p class="text-sm text-primary-300 leading-relaxed">
-          Jouw gids voor wielrenclubs in Beveren, Kruibeke en Zwijndrecht.
+          Jouw gids voor wielrenclubs en evenementen in het Waasland.
         </p>
       </div>
 
@@ -67,11 +67,11 @@ const sponsors = (await getCollection("sponsors")).filter((s) => s.data.active);
       </div>
 
       <div>
-        <h4 class="text-white font-semibold text-sm mb-4">Regio</h4>
+        <h4 class="text-white font-semibold text-sm mb-4">Community</h4>
         <ul class="space-y-2 text-sm">
-          <li class="text-primary-300">Beveren</li>
-          <li class="text-primary-300">Kruibeke</li>
-          <li class="text-primary-300">Zwijndrecht</li>
+          <li class="text-primary-300">Wielrennen in het Waasland</li>
+          <li class="text-primary-300">Voor en door fietsers</li>
+          <li class="text-primary-300">Samen op de weg</li>
         </ul>
       </div>
     </div>
@@ -79,8 +79,7 @@ const sponsors = (await getCollection("sponsors")).filter((s) => s.data.active);
     <div
       class="border-t border-primary-800 mt-8 pt-6 text-xs text-primary-400 text-center"
     >
-      &copy; {new Date().getFullYear()} Cycling BKZ &mdash; Beveren, Kruibeke &amp;
-      Zwijndrecht
+      &copy; {new Date().getFullYear()} WielerWaas
     </div>
   </div>
 </footer>

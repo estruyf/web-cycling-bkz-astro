@@ -10,8 +10,15 @@ const sponsors = (await getCollection("sponsors")).filter((s) => s.data.active);
 
 const now = new Date();
 const upcomingEvents = (await getCollection("events"))
-  .filter((e) => e.data.active && new Date(e.data.date) >= new Date(now.getFullYear(), now.getMonth(), now.getDate()))
-  .sort((a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime())
+  .filter(
+    (e) =>
+      e.data.active &&
+      new Date(e.data.date) >=
+        new Date(now.getFullYear(), now.getMonth(), now.getDate()),
+  )
+  .sort(
+    (a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime(),
+  )
   .slice(0, 3);
 
 const dayOrder = [
@@ -74,8 +81,8 @@ const bronzeSponsors = sponsors
 ---
 
 <Layout
-  title="Cycling BKZ — Beveren, Kruibeke & Zwijndrecht"
-  description="Ontdek wielrenclubs in Beveren, Kruibeke en Zwijndrecht. Bekijk wanneer en waar ze vertrekken."
+  title="WielerWaas"
+  description="Ontdek wielrenclubs en evenementen in het Waasland. Bekijk wanneer en waar ze vertrekken."
 >
   <section
     class="relative bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white overflow-hidden"
@@ -98,7 +105,7 @@ const bronzeSponsors = sponsors
               d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
               clip-rule="evenodd"></path>
           </svg>
-          Beveren · Kruibeke · Zwijndrecht
+          Wielrennen in het Waasland
         </div>
         <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-6">
           Vind jouw groep,<br />
@@ -132,7 +139,7 @@ const bronzeSponsors = sponsors
             class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold px-6 py-3 rounded-xl transition-colors"
           >
             Voeg je club toe
-           </a>
+          </a>
         </div>
       </div>
     </div>
@@ -208,9 +215,7 @@ const bronzeSponsors = sponsors
                   <td class="py-3.5 px-5 font-semibold text-gray-900">
                     {dagNamen[rit.dag] ?? rit.dag}
                   </td>
-                  <td class="py-3.5 px-5 font-mono text-gray-700">
-                    {rit.uur}
-                  </td>
+                  <td class="py-3.5 px-5 font-mono text-gray-700">{rit.uur}</td>
                   <td class="py-3.5 px-5">
                     <a
                       href={`/clubs/${rit.clubSlug}`}
@@ -226,8 +231,12 @@ const bronzeSponsors = sponsors
                     {rit.vertrekpunt}
                   </td>
                   <td class="py-3.5 px-5 hidden md:table-cell">
-                    <span class={`inline-block px-2.5 py-0.5 rounded-full text-xs font-medium ${rit.openVoorIedereen ? "bg-primary-100 text-primary-800" : "bg-accent-100 text-accent-800"}`}>
-                      {rit.openVoorIedereen ? "Open voor iedereen" : "Enkel leden"}
+                    <span
+                      class={`inline-block px-2.5 py-0.5 rounded-full text-xs font-medium ${rit.openVoorIedereen ? "bg-primary-100 text-primary-800" : "bg-accent-100 text-accent-800"}`}
+                    >
+                      {rit.openVoorIedereen
+                        ? "Open voor iedereen"
+                        : "Enkel leden"}
                     </span>
                   </td>
                 </tr>
@@ -239,46 +248,54 @@ const bronzeSponsors = sponsors
     </div>
   </section>
 
-  {upcomingEvents.length > 0 && (
-    <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <div class="flex items-center justify-between mb-8">
-        <div>
-          <h2 class="text-2xl font-bold text-gray-900">Aankomende evenementen</h2>
-          <p class="text-gray-500 text-sm mt-1">
-            Ritten en evenementen van clubs in de regio
-          </p>
-        </div>
-        <a
-          href="/evenementen"
-          class="text-primary-500 hover:text-primary-600 text-sm font-medium flex items-center gap-1"
-        >
-          Alle evenementen
-          <svg
-            class="w-4 h-4"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
+  {
+    upcomingEvents.length > 0 && (
+      <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="flex items-center justify-between mb-8">
+          <div>
+            <h2 class="text-2xl font-bold text-gray-900">
+              Aankomende evenementen
+            </h2>
+            <p class="text-gray-500 text-sm mt-1">
+              Ritten en evenementen van clubs in de regio
+            </p>
+          </div>
+          <a
+            href="/evenementen"
+            class="text-primary-500 hover:text-primary-600 text-sm font-medium flex items-center gap-1"
           >
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
-          </svg>
-        </a>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {upcomingEvents.map((event) => (
-          <EventCard
-            name={event.data.name}
-            date={event.data.date}
-            time={event.data.time}
-            organizer={event.data.organizer}
-            location={event.data.location}
-            website={event.data.website}
-            slug={event.id}
-          />
-        ))}
-      </div>
-    </section>
-  )}
+            Alle evenementen
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </a>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {upcomingEvents.map((event) => (
+            <EventCard
+              name={event.data.name}
+              date={event.data.date}
+              time={event.data.time}
+              organizer={event.data.organizer}
+              location={event.data.location}
+              website={event.data.website}
+              slug={event.id}
+            />
+          ))}
+        </div>
+      </section>
+    )
+  }
 
   <section class="bg-white border-y border-gray-100 py-16">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -333,7 +350,7 @@ const bronzeSponsors = sponsors
           Onze sponsors
         </h2>
         <p class="text-gray-500 text-sm text-center mb-10">
-          Steun voor het lokale wielrennen in Beveren, Kruibeke &amp; Zwijndrecht
+          Steun voor het lokale wielrennen in het Waasland
         </p>
 
         {goldSponsors.length > 0 && (

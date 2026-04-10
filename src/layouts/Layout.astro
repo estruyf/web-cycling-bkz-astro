@@ -1,7 +1,7 @@
 ---
-import '../styles/global.css';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
 
 interface Props {
   title?: string;
@@ -9,8 +9,8 @@ interface Props {
 }
 
 const {
-  title = 'Cycling BKZ — Beveren, Kruibeke & Zwijndrecht',
-  description = 'Ontdek wielrenclubs in Beveren, Kruibeke en Zwijndrecht. Bekijk wanneer en waar ze vertrekken.',
+  title = "WielerWaas",
+  description = "Ontdek wielrenclubs en evenementen in het Waasland. Bekijk wanneer en waar ze vertrekken.",
 } = Astro.props;
 ---
 
@@ -25,9 +25,14 @@ const {
     <meta name="description" content={description} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <body class="bg-gray-50 text-gray-900 font-[Inter,sans-serif] antialiased min-h-screen flex flex-col">
+  <body
+    class="bg-gray-50 text-gray-900 font-[Inter,sans-serif] antialiased min-h-screen flex flex-col"
+  >
     <Header />
     <main class="flex-1">
       <slot />
