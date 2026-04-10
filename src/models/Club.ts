@@ -23,6 +23,7 @@ export interface ClubData {
   meetingPointDetail?: string;
   contactEmail?: string;
   active: boolean;
+  womenOnly?: boolean;
   rides: Ride[];
 }
 

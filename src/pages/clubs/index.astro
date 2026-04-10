@@ -83,6 +83,15 @@ const uniqueDays = Array.from(
         >
           Reset filters
         </button>
+
+        <label class="inline-flex items-center gap-2 cursor-pointer select-none">
+          <input
+            id="club-filter-women"
+            type="checkbox"
+            class="w-4 h-4 rounded border-gray-300 text-pink-600 focus:ring-pink-500"
+          />
+          <span class="text-sm font-medium text-gray-700">Enkel vrouwenclubs</span>
+        </label>
       </div>
     </div>
 
@@ -108,6 +117,7 @@ const uniqueDays = Array.from(
                   data-types={club.data.rides
                     .map((ride) => ride.type)
                     .join("|")}
+                  data-women={club.data.womenOnly ? "true" : "false"}
                 >
                   <ClubCard
                     name={club.data.name}
@@ -117,6 +127,7 @@ const uniqueDays = Array.from(
                     meetingPoint={club.data.meetingPoint}
                     rides={club.data.rides}
                     logo={club.data.logo}
+                    womenOnly={club.data.womenOnly}
                   />
                 </div>
               ))}
@@ -146,6 +157,7 @@ const uniqueDays = Array.from(
   const townFilter = document.getElementById("club-filter-town");
   const dayFilter = document.getElementById("club-filter-day");
   const typeFilter = document.getElementById("club-filter-type");
+  const womenFilter = document.getElementById("club-filter-women");
   const resetBtn = document.getElementById("club-filter-reset");
   const noResults = document.getElementById("club-filter-empty");
 
@@ -160,6 +172,7 @@ const uniqueDays = Array.from(
     const town = (townFilter as HTMLSelectElement | null)?.value ?? "";
     const day = (dayFilter as HTMLSelectElement | null)?.value ?? "";
     const type = (typeFilter as HTMLSelectElement | null)?.value ?? "";
+    const womenOnly = (womenFilter as HTMLInputElement | null)?.checked ?? false;
 
     let visibleCount = 0;
 
@@ -167,11 +180,13 @@ const uniqueDays = Array.from(
       const itemTown = item.dataset.town ?? "";
       const itemDays = (item.dataset.days ?? "").split("|");
       const itemTypes = (item.dataset.types ?? "").split("|");
+      const itemWomen = item.dataset.women === "true";
 
       const matchesTown = !town || itemTown === town;
       const matchesDay = !day || itemDays.includes(day);
       const matchesType = !type || itemTypes.includes(type);
-      const matches = matchesTown && matchesDay && matchesType;
+      const matchesWomen = !womenOnly || itemWomen;
+      const matches = matchesTown && matchesDay && matchesType && matchesWomen;
 
       item.classList.toggle("hidden", !matches);
       if (matches) visibleCount += 1;
@@ -195,10 +210,12 @@ const uniqueDays = Array.from(
   townFilter?.addEventListener("change", applyFilters);
   dayFilter?.addEventListener("change", applyFilters);
   typeFilter?.addEventListener("change", applyFilters);
+  womenFilter?.addEventListener("change", applyFilters);
   resetBtn?.addEventListener("click", () => {
     if (townFilter) (townFilter as HTMLSelectElement).value = "";
     if (dayFilter) (dayFilter as HTMLSelectElement).value = "";
     if (typeFilter) (typeFilter as HTMLSelectElement).value = "";
+    if (womenFilter) (womenFilter as HTMLInputElement).checked = false;
     applyFilters();
   });
 </script>

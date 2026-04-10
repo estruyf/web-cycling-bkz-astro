@@ -28,6 +28,7 @@ const clubs = defineCollection({
     meetingPointDetail: z.string().optional(),
     contactEmail: z.string().optional(),
     active: z.boolean().default(true),
+    womenOnly: z.boolean().optional(),
     rides: z.array(rideSchema),
   }),
 });
