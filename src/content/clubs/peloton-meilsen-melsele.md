@@ -18,4 +18,14 @@ rides:
     openForAll: false
 ---
 
-Peloton Meilsen is meer dan alleen een wielerclub. We zijn een gemeenschap van gepassioneerde fietsers die een liefde voor de sport en de open weg delen.
+Peloton Meilsen is een warme en hechte club waar samen rijden centraal staat. We vertrekken vanuit het dorp van Melsele en bieden ritten aan voor verschillende profielen, zodat zowel recreatieve als sportieve fietsers hun plaats vinden.
+
+## Over ons
+
+- **Niveau ritten:** recreatief en sportief
+- **Groepen:** Groep A en Groep B
+- **Gemiddelde afstand:** Groep A ongeveer 90 km, Groep B ongeveer 80 km
+- **Ledenaantal:** 74 leden
+- **Website & sociale kanalen:** [pelotonmeilsen.be](https://pelotonmeilsen.be)
+
+Tijdens de wekelijkse ritten rijden beide groepen in een tempo dat bij hun niveau past, met aandacht voor veilig en respectvol fietsen in groep.

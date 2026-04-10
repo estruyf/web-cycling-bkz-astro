@@ -1,7 +1,7 @@
 ---
 name: Polderrenners
 town: Beveren
-shortDescription: Wekelijkse groepstraining vanuit het hart van Beveren. Alle niveaus welkom.
+shortDescription: Losse renners die samen trainen vanuit het hart van Beveren, met een gemiddeld tempo rond 35 km/u.
 meetingPoint: Rondpunt Kasteeldreef, Beveren
 active: true
 rides:
@@ -12,6 +12,6 @@ rides:
     openForAll: true
 ---
 
-Polderrenners organiseert wekelijkse groepstrainingen voor alle wielerliefhebbers in en rond Beveren. Elke woensdagmiddag verzamelen de renners aan het Rondpunt Kasteeldreef voor een gezamenlijke rit door het Wase polderland.
+Polderrenners is geen team, maar een groep individuele wielerliefhebbers die samen trainen in en rond Beveren. Elke woensdagmiddag verzamelen de renners aan het Rondpunt Kasteeldreef voor een gezamenlijke rit door het Wase polderland.
 
-Of je nu een ervaren wielrenner bent of gewoon terug op de fiets stapt, je bent van harte welkom. De ritten zijn een uitstekende manier om de regio te verkennen, fit te blijven en te genieten van de sfeer met gelijkgestemde fietsers.
+De groep rijdt doorgaans aan een gemiddeld tempo van rond de 35 km/u. De trainingen zijn ideaal om conditie op te bouwen, samen kilometers te maken en te genieten van de sfeer met gelijkgestemde fietsers.
