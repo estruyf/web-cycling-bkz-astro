@@ -12,95 +12,221 @@ import Layout from "../layouts/Layout.astro";
         Voeg je club toe
       </h1>
       <p class="text-gray-500 leading-relaxed">
-        Wil jij jouw wielerclub op deze website zetten? Stuur ons een e-mail met
-        onderstaande gegevens en we zorgen dat je zo snel mogelijk vermeld
-        wordt.
+        Wil jij jouw wielerclub op deze website zetten? Vul het onderstaande
+        formulier in en we nemen contact met je op om je zo snel mogelijk
+        vermeld te krijgen op WielerWaas.
       </p>
     </div>
 
-    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 mb-8">
-      <h2 class="text-lg font-bold text-gray-900 mb-6">
-        Wat stuur je mee in je e-mail
+    <div class="bg-blue-50 rounded-2xl border border-blue-200 p-6 mb-8">
+      <h2 class="text-sm font-semibold text-blue-900 mb-2">
+        Wat hebben we nodig?
       </h2>
-      <div class="space-y-4">
-        {
-          [
-            {
-              label: "Clubnaam",
-              detail: "De officiële naam van je wielerclub.",
-            },
-            {
-              label: "Gemeente",
-              detail: "In welke gemeente ben je gevestigd?",
-            },
-            {
-              label: "Korte omschrijving",
-              detail:
-                "Een of twee zinnen over je club en voor wie die bedoeld is.",
-            },
-            {
-              label: "Vertrekpunt",
-              detail:
-                "Waar vertrekken jullie? Geef het adres of een duidelijke plaatsnaam.",
-            },
-            {
-              label: "Ritschema",
-              detail:
-                "Per rit: de dag van de week, het vertrektijdstip en het type rit (bv. trainingsrit, koffierit, enz.).",
-            },
-            {
-              label: "Contactmailadres",
-              detail: "Een e-mailadres waarop mensen je club kunnen bereiken.",
-            },
-            {
-              label: "Website (optioneel)",
-              detail: "Je clubwebsite of Facebookpagina, als je die hebt.",
-            },
-            {
-              label: "Logo (optioneel)",
-              detail:
-                "Voeg je clublogo toe als PNG of JPG, of stuur een link ernaar mee.",
-            },
-          ].map((item, i) => (
-            <div class="flex gap-4">
-              <div class="w-7 h-7 rounded-full bg-primary-100 text-primary-700 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
-                {i + 1}
-              </div>
-              <div>
-                <p class="font-semibold text-gray-900 text-sm">{item.label}</p>
-                <p class="text-gray-500 text-sm">{item.detail}</p>
-              </div>
-            </div>
-          ))
-        }
-      </div>
+      <p class="text-sm text-blue-800">
+        We vragen wat basisgegevens over je club: naam, locatie,
+        contactgegevens, een korte beschrijving en je ritschema. Dit helpt
+        wielrenners jouw club makkelijk te vinden en aan te sluiten.
+      </p>
     </div>
 
-    <div class="bg-primary-900 rounded-2xl text-white p-8 text-center">
-      <h3 class="text-xl font-bold mb-2">Klaar om vermeld te worden?</h3>
-      <p class="text-primary-200 mb-6 text-sm">
-        Stuur je clubgegevens naar ons e-mailadres en we voegen je toe aan de
-        website.
-      </p>
-      <a
-        href="mailto:elio@struyfconsulting.be?subject=Mijn%20club%20toevoegen"
-        class="inline-flex items-center gap-2 bg-accent-500 text-primary-900 hover:bg-accent-400 font-bold px-7 py-3 rounded-xl transition-colors"
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
+      <h2 class="text-lg font-bold text-gray-900 mb-6">Vul het formulier in</h2>
+      <form
+        action="https://formspree.io/f/mreowrbd"
+        method="POST"
+        class="space-y-6"
       >
-        <svg
-          class="w-4 h-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-          ></path>
-        </svg>
-        Stuur ons je gegevens
-      </a>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Club Name */}
+          <div class="md:col-span-2">
+            <label
+              for="name"
+              class="block text-sm font-semibold text-gray-900 mb-2"
+            >
+              Clubnaam <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              required
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
+              placeholder="De officiële naam van je wielerclub"
+            />
+            <p class="text-xs text-gray-600 mt-1">
+              De officiële naam van je wielerclub.
+            </p>
+          </div>
+
+          {/* Town */}
+          <div>
+            <label
+              for="town"
+              class="block text-sm font-semibold text-gray-900 mb-2"
+            >
+              Gemeente <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              id="town"
+              name="town"
+              required
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
+              placeholder="Bijv. Beveren, Kruibeke, Zwijndrecht..."
+            />
+            <p class="text-xs text-gray-600 mt-1">
+              In welke gemeente ben je gevestigd?
+            </p>
+          </div>
+
+          {/* Contact Email */}
+          <div>
+            <label
+              for="contactEmail"
+              class="block text-sm font-semibold text-gray-900 mb-2"
+            >
+              Contactmailadres <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="email"
+              id="contactEmail"
+              name="contactEmail"
+              required
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
+              placeholder="contact@jouwclub.be"
+            />
+            <p class="text-xs text-gray-600 mt-1">
+              Een e-mailadres waarop mensen jouw club kunnen bereiken.
+            </p>
+          </div>
+
+          {/* Short Description */}
+          <div class="md:col-span-2">
+            <label
+              for="shortDescription"
+              class="block text-sm font-semibold text-gray-900 mb-2"
+            >
+              Omschrijving <span class="text-red-500">*</span>
+            </label>
+            <textarea
+              id="shortDescription"
+              name="shortDescription"
+              required
+              rows={3}
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
+              placeholder="Beschrijf je club in een paar paragrafen..."
+            ></textarea>
+            <p class="text-xs text-gray-600 mt-1">
+              Dit zal op je clubpagina verschijnen. Beschrijf je club, wat
+              jullie doen en voor wie deze bedoeld is. Kijk naar de andere
+              clubpagina's voor inspiratie!
+            </p>
+          </div>
+
+          {/* Meeting Point */}
+          <div class="md:col-span-2">
+            <label
+              for="meetingPoint"
+              class="block text-sm font-semibold text-gray-900 mb-2"
+            >
+              Vertrekpunt <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              id="meetingPoint"
+              name="meetingPoint"
+              required
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
+              placeholder="Adres of plaatsnaam"
+            />
+            <p class="text-xs text-gray-600 mt-1">
+              Waar vertrekken jullie? Geef het adres of een duidelijke
+              plaatsnaam.
+            </p>
+          </div>
+
+          {/* Website */}
+          <div>
+            <label
+              for="website"
+              class="block text-sm font-semibold text-gray-900 mb-2"
+            >
+              Website of Facebook (optioneel)
+            </label>
+            <input
+              type="url"
+              id="website"
+              name="website"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
+              placeholder="https://..."
+            />
+            <p class="text-xs text-gray-600 mt-1">
+              Je clubwebsite of Facebookpagina, als je die hebt.
+            </p>
+          </div>
+
+          {/* Logo */}
+          <div>
+            <label
+              for="logo"
+              class="block text-sm font-semibold text-gray-900 mb-2"
+            >
+              Logo URL (optioneel)
+            </label>
+            <input
+              type="url"
+              id="logo"
+              name="logo"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
+              placeholder="Link naar je clublogo"
+            />
+            <p class="text-xs text-gray-600 mt-1">
+              Voeg je clublogo toe als PNG of JPG, of stuur een link ernaar mee.
+            </p>
+          </div>
+
+          {/* Rides Schedule */}
+          <div class="md:col-span-2">
+            <label
+              for="rides"
+              class="block text-sm font-semibold text-gray-900 mb-2"
+            >
+              Ritschema <span class="text-red-500">*</span>
+            </label>
+            <textarea
+              id="rides"
+              name="rides"
+              required
+              rows={4}
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
+              placeholder="Woensdag, 19:00 - Clubrit (open voor iedereen)\nZondag, 09:00 - Trainingsrit (enkel voor leden)"
+            ></textarea>
+            <p class="text-xs text-gray-600 mt-1">
+              Per rit: dag van de week, vertrektijdstip, type rit en of deze
+              open is voor iedereen of enkel voor leden.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex gap-4 pt-6">
+          <button
+            type="submit"
+            class="flex-1 bg-primary-600 text-white hover:bg-primary-700 font-bold px-7 py-3 rounded-xl transition-colors"
+          >
+            Verstuur
+          </button>
+          <button
+            type="reset"
+            class="flex-1 bg-gray-200 text-gray-900 hover:bg-gray-300 font-bold px-7 py-3 rounded-xl transition-colors"
+          >
+            Wissen
+          </button>
+        </div>
+
+        <p class="text-xs text-gray-500 text-center pt-4">
+          <span class="text-red-500">*</span> Verplichte velden
+        </p>
+      </form>
     </div>
   </div>
 </Layout>
