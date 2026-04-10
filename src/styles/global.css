@@ -63,3 +63,7 @@
     animation-duration: 1ms;
   }
 }
+
+button:hover {
+  cursor: pointer;
+}
