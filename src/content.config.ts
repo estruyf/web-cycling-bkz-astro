@@ -44,4 +44,17 @@ const sponsors = defineCollection({
   }),
 });
 
-export const collections = { clubs, sponsors };
+const events = defineCollection({
+  type: "content",
+  schema: z.object({
+    name: z.string(),
+    date: z.coerce.date(),
+    time: z.string().optional(),
+    organizer: z.string(),
+    location: z.string(),
+    website: z.string().optional(),
+    active: z.boolean().default(true),
+  }),
+});
+
+export const collections = { clubs, sponsors, events };
