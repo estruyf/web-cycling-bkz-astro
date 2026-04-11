@@ -17,9 +17,16 @@ interface Props {
   meetingPoint: string;
   rides: Ride[];
   logo?: string;
+  gender?: "women" | "men" | "mixed";
 }
 
-const { name, slug, town, shortDescription, meetingPoint, rides, logo } = Astro.props;
+const { name, slug, town, shortDescription, meetingPoint, rides, logo, gender } = Astro.props;
+
+const genderBadge: Record<string, { label: string; classes: string; ariaLabel: string }> = {
+  women: { label: "Vrouwen", classes: "bg-pink-100 text-pink-700", ariaLabel: "Vrouwen enkel club" },
+  men:   { label: "Mannen",  classes: "bg-blue-100 text-blue-700",  ariaLabel: "Mannen enkel club" },
+  mixed: { label: "Gemengd", classes: "bg-purple-100 text-purple-700", ariaLabel: "Gemengde club" },
+};
 
 const dayOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const sortedRides = [...rides].sort((a, b) => dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day));
@@ -52,7 +59,17 @@ const dagAfkorting: Record<string, string> = {
         )}
         <div>
           <h3 class="font-bold text-gray-900 group-hover:text-primary-600 transition-colors leading-tight">{name}</h3>
-          <span class="text-xs text-gray-400 font-medium">{town}</span>
+          <div class="flex items-center gap-1.5 flex-wrap mt-0.5">
+            <span class="text-xs text-gray-400 font-medium">{town}</span>
+            {gender && genderBadge[gender] && (
+              <span
+                class={`inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full ${genderBadge[gender].classes}`}
+                aria-label={genderBadge[gender].ariaLabel}
+              >
+                {genderBadge[gender].label}
+              </span>
+            )}
+          </div>
         </div>
       </div>
     </div>
