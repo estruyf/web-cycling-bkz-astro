@@ -5,7 +5,7 @@ export interface WeekritOverzicht {
   uur: string;
   type: string;
   groep?: string;
-  gemiddeldeSnelheid?: number;
+  gemiddeldeSnelheid?: number | string;
   vertrekpunt: string;
   openVoorIedereen: boolean;
 }

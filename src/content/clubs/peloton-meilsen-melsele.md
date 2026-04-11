@@ -10,20 +10,20 @@ rides:
   - day: Wednesday
     time: "19:00"
     type: Clubrit
-    group: Groep A
     averageSpeed: 32
-    notes: Wekelijkse clubrit met twee vrije stukken.
-    openForAll: true
-  - day: Wednesday
-    time: "19:00"
-    type: Clubrit
-    group: Groep B
-    averageSpeed: 27
     notes: Wekelijkse clubrit met twee vrije stukken.
     openForAll: true
   - day: Sunday
     time: "09:00"
     type: Clubrit
+    group: A
+    averageSpeed: 33
+    openForAll: false
+  - day: Sunday
+    time: "09:00"
+    type: Clubrit
+    group: B
+    averageSpeed: 29
     openForAll: false
 ---
 

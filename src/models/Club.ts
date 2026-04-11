@@ -10,7 +10,7 @@ export interface Ride {
   time: string;
   type: string;
   group?: string;
-  averageSpeed?: number;
+  averageSpeed?: number | string;
   notes?: string;
   openForAll: boolean;
 }
