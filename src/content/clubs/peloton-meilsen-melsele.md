@@ -5,6 +5,7 @@ shortDescription: Peloton Meilsen is een hechte wielergemeenschap in Melsele, wa
 meetingPoint: Aardbei (dorp), Melsele
 website: https://pelotonmeilsen.be
 logo: /clubs/peloton-meilsen/peloton-meilsen.png
+gender: mixed
 active: true
 rides:
   - day: Wednesday

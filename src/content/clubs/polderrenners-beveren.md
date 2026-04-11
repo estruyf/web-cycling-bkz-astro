@@ -3,6 +3,7 @@ name: Polderrenners
 town: Beveren
 shortDescription: Losse renners die samen trainen vanuit het hart van Beveren, met een gemiddeld tempo rond 35 km/u.
 meetingPoint: Rondpunt Kasteeldreef, Beveren
+gender: mixed
 active: true
 rides:
   - day: Wednesday

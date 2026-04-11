@@ -79,6 +79,30 @@ import Layout from "../layouts/Layout.astro";
             </p>
           </div>
 
+          {/* Gender */}
+          <div>
+            <label
+              for="gender"
+              class="block text-sm font-semibold text-gray-900 mb-2"
+            >
+              Gender <span class="text-red-500">*</span>
+            </label>
+            <select
+              id="gender"
+              name="gender"
+              required
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-primary-600"
+            >
+              <option value="" disabled selected>Kies een optie</option>
+              <option value="mixed">gemengd</option>
+              <option value="men">mannen</option>
+              <option value="women">vrouwen</option>
+            </select>
+            <p class="text-xs text-gray-600 mt-1">
+              Voor wie is jullie club voornamelijk bedoeld?
+            </p>
+          </div>
+
           {/* Contact Email */}
           <div>
             <label
@@ -199,7 +223,7 @@ import Layout from "../layouts/Layout.astro";
               required
               rows={4}
               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
-              placeholder="Woensdag, 19:00 - Clubrit (open voor iedereen)\nZondag, 09:00 - Trainingsrit (enkel voor leden)"
+              placeholder="Woensdag, 19:00 - Clubrit (open voor iedereen) - 30gem\nZondag, 09:00 - Trainingsrit (enkel voor leden) - 34gem"
             ></textarea>
             <p class="text-xs text-gray-600 mt-1">
               Per rit: dag van de week, vertrektijdstip, type rit en of deze

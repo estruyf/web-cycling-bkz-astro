@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import RideSchedule from "../../components/RideSchedule.astro";
+import GenderBadge from "../../components/GenderBadge.astro";
 import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
@@ -25,12 +26,6 @@ const {
   logo,
   gender,
 } = club.data;
-
-const genderBadge: Record<string, { label: string; classes: string; ariaLabel: string }> = {
-  women: { label: "Vrouwen", classes: "bg-pink-100 text-pink-700", ariaLabel: "Vrouwen enkel club" },
-  men:   { label: "Mannen",  classes: "bg-blue-100 text-blue-700",  ariaLabel: "Mannen enkel club" },
-  mixed: { label: "Gemengd", classes: "bg-purple-100 text-purple-700", ariaLabel: "Gemengde club" },
-};
 ---
 
 <Layout title={`${name} — WielerWaas`} description={shortDescription}>
@@ -78,14 +73,7 @@ const genderBadge: Record<string, { label: string; classes: string; ariaLabel: s
                 class="bg-primary-100 text-primary-800 text-xs font-semibold px-3 py-1 rounded-full"
                 >{town}</span
               >
-              {gender && genderBadge[gender] && (
-                <span
-                  class={`inline-flex items-center gap-1 text-xs font-semibold px-3 py-1 rounded-full ${genderBadge[gender].classes}`}
-                  aria-label={genderBadge[gender].ariaLabel}
-                >
-                  {genderBadge[gender].label}
-                </span>
-              )}
+              <GenderBadge gender={gender} />
             </div>
             <p class="text-gray-500 leading-relaxed">{shortDescription}</p>
           </div>

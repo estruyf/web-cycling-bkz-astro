@@ -6,6 +6,7 @@ meetingPoint: Café De Meester - Schoolstraat 16, Melsele
 website: https://www.instagram.com/wtc_de_meester_fresa
 logo: /clubs/de-meester-fresa/436259031_420290267530796_572970180247843348_n.jpg
 contactEmail: ryckaertwim@gmail.com
+gender: mixed
 active: true
 rides:
   - day: Sunday

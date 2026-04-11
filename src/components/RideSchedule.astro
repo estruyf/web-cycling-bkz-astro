@@ -43,8 +43,9 @@ const dagNamen: Record<string, string> = {
 
 const typeColors: Record<string, string> = {
   Groepstraining: "bg-primary-100 text-primary-800",
-  "TTC Rit": "bg-primary-200 text-primary-900",
-  "TTC Koffierit": "bg-accent-100 text-accent-800",
+  Rit: "bg-primary-200 text-primary-900",
+  Koffierit: "bg-accent-100 text-accent-800",
+  Clubrit: "bg-red-100 text-red-800",
 };
 
 function getTypeColor(type: string) {
@@ -92,7 +93,9 @@ function formatSpeed(speed?: number | string): string | undefined {
             <td class="py-3 px-4 font-medium text-gray-900">
               {dagNamen[ride.day] ?? ride.day}
             </td>
-            <td class="py-3 px-4 text-gray-700 font-mono"><SeasonalTime time={ride.time} /></td>
+            <td class="py-3 px-4 text-gray-700 font-mono">
+              <SeasonalTime time={ride.time} />
+            </td>
             <td class="py-3 px-4">
               <span
                 class={`inline-block px-2.5 py-0.5 rounded-full text-xs font-medium ${getTypeColor(ride.type)}`}
@@ -111,7 +114,7 @@ function formatSpeed(speed?: number | string): string | undefined {
             </td>
             <td class="py-3 px-4">
               {ride.openForAll !== false ? (
-                <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 whitespace-nowrap">
+                <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 whitespace-nowrap">
                   Open
                 </span>
               ) : (

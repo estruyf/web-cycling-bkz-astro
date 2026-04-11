@@ -2,6 +2,7 @@
 import type { Club, WeekritOverzicht } from "../models";
 import { timeSortKey } from "../utils/time";
 import SeasonalTime from "./SeasonalTime.astro";
+import GenderBadge from "./GenderBadge.astro";
 
 interface Props {
   clubs: Club[];
@@ -33,6 +34,7 @@ const alleRitten: WeekritOverzicht[] = clubs.flatMap((club) =>
   club.data.rides.map((ride) => ({
     clubNaam: club.data.name,
     clubSlug: club.id.replace(/\.md$/, ""),
+    gender: club.data.gender,
     dag: ride.day,
     uur: ride.time,
     type: ride.type,
@@ -89,6 +91,16 @@ function formatSpeed(speed?: number | string): string | undefined {
       {dayOrder.map((day) => <option value={day}>{dagNamen[day]}</option>)}
     </select>
 
+    <select
+      id="filter-gender"
+      class="text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-300"
+    >
+      <option value="">Groep type</option>
+      <option value="mixed">Gemengd</option>
+      <option value="men">Mannen</option>
+      <option value="women">Vrouwen</option>
+    </select>
+
     <label
       class="inline-flex items-center gap-2 text-sm text-gray-700 border border-gray-200 rounded-lg px-3 py-2 bg-white cursor-pointer select-none"
     >
@@ -125,10 +137,6 @@ function formatSpeed(speed?: number | string): string | undefined {
               >Club</th
             >
             <th
-              class="text-left py-3.5 px-5 font-semibold text-gray-600 hidden sm:table-cell"
-              >Type rit</th
-            >
-            <th
               class="text-left py-3.5 px-5 font-semibold text-gray-600 hidden md:table-cell"
               >Groep</th
             >
@@ -142,6 +150,10 @@ function formatSpeed(speed?: number | string): string | undefined {
             >
             <th
               class="text-left py-3.5 px-5 font-semibold text-gray-600 hidden md:table-cell"
+              >Type</th
+            >
+            <th
+              class="text-left py-3.5 px-5 font-semibold text-gray-600 hidden md:table-cell"
               >Toegang</th
             >
           </tr>
@@ -152,12 +164,15 @@ function formatSpeed(speed?: number | string): string | undefined {
               <tr
                 class={`border-b border-gray-100 last:border-0 ${i % 2 === 0 ? "" : "bg-gray-50/40"}`}
                 data-dag={rit.dag}
+                data-gender={rit.gender ?? ""}
                 data-open={rit.openVoorIedereen ? "true" : "false"}
               >
                 <td class="py-3.5 px-5 font-semibold text-gray-900">
                   {dagNamen[rit.dag] ?? rit.dag}
                 </td>
-                <td class="py-3.5 px-5 font-mono text-gray-700"><SeasonalTime time={rit.uur} /></td>
+                <td class="py-3.5 px-5 font-mono text-gray-700">
+                  <SeasonalTime time={rit.uur} />
+                </td>
                 <td class="py-3.5 px-5">
                   <a
                     href={`/clubs/${rit.clubSlug}`}
@@ -165,9 +180,6 @@ function formatSpeed(speed?: number | string): string | undefined {
                   >
                     {rit.clubNaam}
                   </a>
-                </td>
-                <td class="py-3.5 px-5 hidden sm:table-cell text-gray-600">
-                  {rit.type}
                 </td>
                 <td class="py-3.5 px-5 hidden md:table-cell text-gray-600">
                   {rit.groep ?? "—"}
@@ -178,9 +190,12 @@ function formatSpeed(speed?: number | string): string | undefined {
                 <td class="py-3.5 px-5 hidden md:table-cell text-gray-500">
                   {rit.vertrekpunt}
                 </td>
+                <td class="py-3.5 px-5 hidden md:table-cell text-gray-600">
+                  <GenderBadge gender={rit.gender} fallback="—" />
+                </td>
                 <td class="py-3.5 px-5 hidden md:table-cell">
                   <span
-                    class={`inline-block px-2.5 py-0.5 rounded-full text-xs font-medium ${rit.openVoorIedereen ? "bg-primary-100 text-primary-800" : "bg-accent-100 text-accent-800"}`}
+                    class={`inline-block px-2.5 py-0.5 rounded-full text-xs font-medium ${rit.openVoorIedereen ? "bg-green-100 text-green-800" : "bg-accent-100 text-accent-800"}`}
                   >
                     {rit.openVoorIedereen ? "Open" : "Leden"}
                   </span>
@@ -196,6 +211,9 @@ function formatSpeed(speed?: number | string): string | undefined {
 
 <script>
   const dagSelect = document.getElementById("filter-dag") as HTMLSelectElement;
+  const genderSelect = document.getElementById(
+    "filter-gender",
+  ) as HTMLSelectElement;
   const openCheckbox = document.getElementById(
     "filter-open",
   ) as HTMLInputElement;
@@ -203,13 +221,16 @@ function formatSpeed(speed?: number | string): string | undefined {
 
   function applyFilters() {
     const selectedDag = dagSelect.value;
+    const selectedGender = genderSelect.value;
     const onlyOpen = openCheckbox.checked;
 
     const rows = table?.querySelectorAll<HTMLTableRowElement>("tbody tr");
     rows?.forEach((row) => {
       const dagMatch = !selectedDag || row.dataset.dag === selectedDag;
+      const genderMatch =
+        !selectedGender || row.dataset.gender === selectedGender;
       const openMatch = !onlyOpen || row.dataset.open === "true";
-      row.style.display = dagMatch && openMatch ? "" : "none";
+      row.style.display = dagMatch && genderMatch && openMatch ? "" : "none";
     });
   }
 
@@ -220,11 +241,17 @@ function formatSpeed(speed?: number | string): string | undefined {
   function updateResetVisibility() {
     resetButton.classList.toggle(
       "hidden",
-      dagSelect.value === "" && !openCheckbox.checked,
+      dagSelect.value === "" &&
+        genderSelect.value === "" &&
+        !openCheckbox.checked,
     );
   }
 
   dagSelect.addEventListener("change", () => {
+    applyFilters();
+    updateResetVisibility();
+  });
+  genderSelect.addEventListener("change", () => {
     applyFilters();
     updateResetVisibility();
   });
@@ -235,6 +262,7 @@ function formatSpeed(speed?: number | string): string | undefined {
 
   resetButton.addEventListener("click", () => {
     dagSelect.value = "";
+    genderSelect.value = "";
     openCheckbox.checked = false;
     applyFilters();
     updateResetVisibility();

@@ -5,6 +5,7 @@ shortDescription: Regelmatige TTC-ritten en ontspannen koffieritten doorheen de 
 meetingPoint: Verbroedering, Zwijndrecht
 website: https://ttc-cycling-team.webnode.be
 active: true
+gender: mixed
 rides:
   - day: Tuesday
     time:
@@ -14,13 +15,13 @@ rides:
       - from: 10
         to: 3
         time: "09:30"
-    type: TTC Rit
+    type: Rit
     averageSpeed: "30~32"
     notes: Gemiddelde afstand 70 km.
     openForAll: true
   - day: Wednesday
     time: "13:30"
-    type: TTC Koffierit
+    type: Koffierit
     averageSpeed: 28
     notes: Gemiddelde afstand 80 km.
     openForAll: true
@@ -32,7 +33,7 @@ rides:
       - from: 10
         to: 3
         time: "09:30"
-    type: TTC Rit
+    type: Rit
     averageSpeed: "30~32"
     notes: Gemiddelde afstand 70 km.
     openForAll: true
@@ -44,7 +45,7 @@ rides:
       - from: 10
         to: 3
         time: "09:30"
-    type: TTC Rit
+    type: Rit
     group: A
     averageSpeed: "36~38"
     notes: "Wedstrijdgericht, 100 km."
@@ -57,7 +58,7 @@ rides:
       - from: 10
         to: 3
         time: "09:30"
-    type: TTC Rit
+    type: Rit
     group: B
     averageSpeed: "34~36"
     notes: "Sportief, 90 km."
@@ -69,7 +70,7 @@ rides:
       - from: 10
         to: 3
         time: "09:30"
-    type: TTC Rit
+    type: Rit
     group: C
     averageSpeed: "30"
     notes: "Sportief, 70 km."
@@ -82,7 +83,7 @@ rides:
       - from: 10
         to: 3
         time: "09:30"
-    type: TTC Clubrit
+    type: Clubrit
     openForAll: false
 ---
 
