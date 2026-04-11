@@ -8,6 +8,7 @@ rides:
   - day: Wednesday
     time: "14:00"
     type: Groepstraining
+    averageSpeed: 35
     notes: Wekelijkse groepstraining. Alle niveaus welkom.
     openForAll: true
 ---
