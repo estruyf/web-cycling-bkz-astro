@@ -1,3 +1,9 @@
+export interface SeasonalTime {
+  from: number;
+  to: number;
+  time: string;
+}
+
 export interface Ride {
   day:
     | "Monday"
@@ -7,7 +13,7 @@ export interface Ride {
     | "Friday"
     | "Saturday"
     | "Sunday";
-  time: string;
+  time: string | SeasonalTime[];
   type: string;
   group?: string;
   averageSpeed?: number | string;

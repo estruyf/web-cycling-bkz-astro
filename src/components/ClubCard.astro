@@ -1,7 +1,10 @@
 ---
+import type { SeasonalTime as SeasonalTimeType } from "../models/Club";
+import SeasonalTime from "./SeasonalTime.astro";
+
 interface Ride {
   day: string;
-  time: string;
+  time: string | SeasonalTimeType[];
   type: string;
   notes?: string;
 }
@@ -68,7 +71,7 @@ const dagAfkorting: Record<string, string> = {
       {sortedRides.map(ride => (
         <span class="inline-flex items-center gap-1 bg-gray-50 border border-gray-200 rounded-full px-2.5 py-1 text-xs text-gray-600">
           <span class="font-medium">{dagAfkorting[ride.day] ?? ride.day.slice(0, 2)}</span>
-          <span class="text-gray-400">{ride.time}</span>
+          <span class="text-gray-400"><SeasonalTime time={ride.time} /></span>
         </span>
       ))}
     </div>

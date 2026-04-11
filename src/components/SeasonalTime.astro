@@ -1,0 +1,55 @@
+---
+import type { SeasonalTime } from "../models/Club";
+import { formatSeasonalFallback } from "../utils/time";
+
+interface Props {
+  time: string | SeasonalTime[];
+}
+
+const { time } = Astro.props;
+const isSeasonal = Array.isArray(time);
+---
+
+{
+  isSeasonal ? (
+    <span
+      class="seasonal-time"
+      data-seasonal-times={JSON.stringify(time)}
+    >
+      {formatSeasonalFallback(time as SeasonalTime[])}
+    </span>
+  ) : (
+    <span>{time}</span>
+  )
+}
+
+<script>
+  function resolveSeasonal() {
+    const now = new Date(
+      new Date().toLocaleString("en-US", { timeZone: "Europe/Brussels" }),
+    );
+    const month = now.getMonth() + 1;
+
+    document.querySelectorAll<HTMLSpanElement>(".seasonal-time").forEach((el) => {
+      const raw = el.dataset.seasonalTimes;
+      if (!raw) return;
+
+      try {
+        const times: { from: number; to: number; time: string }[] =
+          JSON.parse(raw);
+        const match = times.find((t) => {
+          if (t.from <= t.to) return month >= t.from && month <= t.to;
+          return month >= t.from || month <= t.to;
+        });
+        if (match) {
+          el.textContent = match.time;
+        }
+      } catch {
+        // keep fallback text
+      }
+    });
+  }
+
+  resolveSeasonal();
+  document.addEventListener("astro:after-swap", resolveSeasonal);
+</script>

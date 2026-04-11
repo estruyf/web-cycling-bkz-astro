@@ -1,5 +1,5 @@
 ---
-name: TTC Cycling
+name: TTC Cycling Team
 town: Zwijndrecht
 shortDescription: Regelmatige TTC-ritten en ontspannen koffieritten doorheen de week, vertrek aan Verbroedering Zwijndrecht.
 meetingPoint: Verbroedering, Zwijndrecht
@@ -7,7 +7,13 @@ website: https://ttc-cycling-team.webnode.be
 active: true
 rides:
   - day: Tuesday
-    time: "09:00"
+    time:
+      - from: 4
+        to: 9
+        time: "09:00"
+      - from: 10
+        to: 3
+        time: "09:30"
     type: TTC Rit
     averageSpeed: "30~32"
     notes: Gemiddelde afstand 70 km.
@@ -19,33 +25,63 @@ rides:
     notes: Gemiddelde afstand 80 km.
     openForAll: true
   - day: Thursday
-    time: "09:00"
+    time:
+      - from: 4
+        to: 9
+        time: "09:00"
+      - from: 10
+        to: 3
+        time: "09:30"
     type: TTC Rit
     averageSpeed: "30~32"
     notes: Gemiddelde afstand 70 km.
     openForAll: true
   - day: Saturday
-    time: "09:00"
+    time:
+      - from: 4
+        to: 9
+        time: "09:00"
+      - from: 10
+        to: 3
+        time: "09:30"
     type: TTC Rit
     group: A
     averageSpeed: "36~38"
     notes: "Wedstrijdgericht, 100 km."
     openForAll: true
   - day: Saturday
-    time: "09:00"
+    time:
+      - from: 4
+        to: 9
+        time: "09:00"
+      - from: 10
+        to: 3
+        time: "09:30"
     type: TTC Rit
     group: B
     averageSpeed: "34~36"
     notes: "Sportief, 90 km."
   - day: Saturday
-    time: "09:00"
+    time:
+      - from: 4
+        to: 9
+        time: "09:00"
+      - from: 10
+        to: 3
+        time: "09:30"
     type: TTC Rit
     group: C
     averageSpeed: "30"
     notes: "Sportief, 70 km."
     openForAll: true
   - day: Sunday
-    time: "09:00"
+    time:
+      - from: 4
+        to: 9
+        time: "09:00"
+      - from: 10
+        to: 3
+        time: "09:30"
     type: TTC Clubrit
     openForAll: false
 ---

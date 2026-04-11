@@ -1,7 +1,10 @@
 ---
+import type { SeasonalTime as SeasonalTimeType } from "../models/Club";
+import SeasonalTime from "./SeasonalTime.astro";
+
 interface Ride {
   day: string;
-  time: string;
+  time: string | SeasonalTimeType[];
   type: string;
   group?: string;
   averageSpeed?: number | string;
@@ -89,7 +92,7 @@ function formatSpeed(speed?: number | string): string | undefined {
             <td class="py-3 px-4 font-medium text-gray-900">
               {dagNamen[ride.day] ?? ride.day}
             </td>
-            <td class="py-3 px-4 text-gray-700 font-mono">{ride.time}</td>
+            <td class="py-3 px-4 text-gray-700 font-mono"><SeasonalTime time={ride.time} /></td>
             <td class="py-3 px-4">
               <span
                 class={`inline-block px-2.5 py-0.5 rounded-full text-xs font-medium ${getTypeColor(ride.type)}`}

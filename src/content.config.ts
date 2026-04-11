@@ -1,5 +1,11 @@
 import { defineCollection, z } from "astro:content";
 
+const seasonalTimeSchema = z.object({
+  from: z.number().int().min(1).max(12),
+  to: z.number().int().min(1).max(12),
+  time: z.string(),
+});
+
 const rideSchema = z.object({
   day: z.enum([
     "Monday",
@@ -10,7 +16,7 @@ const rideSchema = z.object({
     "Saturday",
     "Sunday",
   ]),
-  time: z.string(),
+  time: z.union([z.string(), z.array(seasonalTimeSchema).nonempty()]),
   type: z.string(),
   group: z.string().optional(),
   averageSpeed: z.union([z.number(), z.string()]).optional(),

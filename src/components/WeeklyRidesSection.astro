@@ -1,5 +1,7 @@
 ---
 import type { Club, WeekritOverzicht } from "../models";
+import { timeSortKey } from "../utils/time";
+import SeasonalTime from "./SeasonalTime.astro";
 
 interface Props {
   clubs: Club[];
@@ -44,7 +46,7 @@ const alleRitten: WeekritOverzicht[] = clubs.flatMap((club) =>
 const gesorteerdeRitten = alleRitten.sort((a, b) => {
   const dagVerschil = dayOrder.indexOf(a.dag) - dayOrder.indexOf(b.dag);
   if (dagVerschil !== 0) return dagVerschil;
-  return a.uur.localeCompare(b.uur);
+  return timeSortKey(a.uur).localeCompare(timeSortKey(b.uur));
 });
 
 function formatSpeed(speed?: number | string): string | undefined {
@@ -155,7 +157,7 @@ function formatSpeed(speed?: number | string): string | undefined {
                 <td class="py-3.5 px-5 font-semibold text-gray-900">
                   {dagNamen[rit.dag] ?? rit.dag}
                 </td>
-                <td class="py-3.5 px-5 font-mono text-gray-700">{rit.uur}</td>
+                <td class="py-3.5 px-5 font-mono text-gray-700"><SeasonalTime time={rit.uur} /></td>
                 <td class="py-3.5 px-5">
                   <a
                     href={`/clubs/${rit.clubSlug}`}

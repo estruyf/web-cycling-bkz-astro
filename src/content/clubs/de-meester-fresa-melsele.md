@@ -9,7 +9,13 @@ contactEmail: ryckaertwim@gmail.com
 active: true
 rides:
   - day: Sunday
-    time: "09:00"
+    time:
+      - from: 5
+        to: 8
+        time: "08:30"
+      - from: 9
+        to: 4
+        time: "09:00"
     type: Clubrit
     averageSpeed: 34
     notes: Meestal polderrit met finale op het einde waarna we samen binnenrijden. Iedereen steeds welkom en toegelaten tot kopwerk indien men zich aanpast aan de clubgewoonten.
