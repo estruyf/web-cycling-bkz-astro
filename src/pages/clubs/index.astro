@@ -84,13 +84,17 @@ const uniqueDays = Array.from(
           Reset filters
         </button>
 
-        <label class="inline-flex items-center gap-2 cursor-pointer select-none">
-          <input
-            id="club-filter-women"
-            type="checkbox"
-            class="w-4 h-4 rounded border-gray-300 text-pink-600 focus:ring-pink-500"
-          />
-          <span class="text-sm font-medium text-gray-700">Enkel vrouwenclubs</span>
+        <label class="block">
+          <span class="text-xs font-semibold uppercase tracking-wide text-gray-500">Geslacht</span>
+          <select
+            id="club-filter-gender"
+            class="mt-1 block w-44 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 focus:border-primary-500 focus:outline-none"
+          >
+            <option value="">Alle</option>
+            <option value="women">Vrouwen</option>
+            <option value="men">Mannen</option>
+            <option value="mixed">Gemengd</option>
+          </select>
         </label>
       </div>
     </div>
@@ -117,7 +121,7 @@ const uniqueDays = Array.from(
                   data-types={club.data.rides
                     .map((ride) => ride.type)
                     .join("|")}
-                  data-women={club.data.womenOnly ? "true" : "false"}
+                  data-gender={club.data.gender ?? ""}
                 >
                   <ClubCard
                     name={club.data.name}
@@ -127,7 +131,7 @@ const uniqueDays = Array.from(
                     meetingPoint={club.data.meetingPoint}
                     rides={club.data.rides}
                     logo={club.data.logo}
-                    womenOnly={club.data.womenOnly}
+                    gender={club.data.gender}
                   />
                 </div>
               ))}
@@ -157,7 +161,7 @@ const uniqueDays = Array.from(
   const townFilter = document.getElementById("club-filter-town");
   const dayFilter = document.getElementById("club-filter-day");
   const typeFilter = document.getElementById("club-filter-type");
-  const womenFilter = document.getElementById("club-filter-women");
+  const genderFilter = document.getElementById("club-filter-gender");
   const resetBtn = document.getElementById("club-filter-reset");
   const noResults = document.getElementById("club-filter-empty");
 
@@ -172,7 +176,7 @@ const uniqueDays = Array.from(
     const town = (townFilter as HTMLSelectElement | null)?.value ?? "";
     const day = (dayFilter as HTMLSelectElement | null)?.value ?? "";
     const type = (typeFilter as HTMLSelectElement | null)?.value ?? "";
-    const womenOnly = (womenFilter as HTMLInputElement | null)?.checked ?? false;
+    const gender = (genderFilter as HTMLSelectElement | null)?.value ?? "";
 
     let visibleCount = 0;
 
@@ -180,13 +184,13 @@ const uniqueDays = Array.from(
       const itemTown = item.dataset.town ?? "";
       const itemDays = (item.dataset.days ?? "").split("|");
       const itemTypes = (item.dataset.types ?? "").split("|");
-      const itemWomen = item.dataset.women === "true";
+      const itemGender = item.dataset.gender ?? "";
 
       const matchesTown = !town || itemTown === town;
       const matchesDay = !day || itemDays.includes(day);
       const matchesType = !type || itemTypes.includes(type);
-      const matchesWomen = !womenOnly || itemWomen;
-      const matches = matchesTown && matchesDay && matchesType && matchesWomen;
+      const matchesGender = !gender || itemGender === gender;
+      const matches = matchesTown && matchesDay && matchesType && matchesGender;
 
       item.classList.toggle("hidden", !matches);
       if (matches) visibleCount += 1;
@@ -210,12 +214,12 @@ const uniqueDays = Array.from(
   townFilter?.addEventListener("change", applyFilters);
   dayFilter?.addEventListener("change", applyFilters);
   typeFilter?.addEventListener("change", applyFilters);
-  womenFilter?.addEventListener("change", applyFilters);
+  genderFilter?.addEventListener("change", applyFilters);
   resetBtn?.addEventListener("click", () => {
     if (townFilter) (townFilter as HTMLSelectElement).value = "";
     if (dayFilter) (dayFilter as HTMLSelectElement).value = "";
     if (typeFilter) (typeFilter as HTMLSelectElement).value = "";
-    if (womenFilter) (womenFilter as HTMLInputElement).checked = false;
+    if (genderFilter) (genderFilter as HTMLSelectElement).value = "";
     applyFilters();
   });
 </script>

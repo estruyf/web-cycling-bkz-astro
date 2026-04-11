@@ -23,8 +23,14 @@ const {
   contactEmail,
   rides,
   logo,
-  womenOnly,
+  gender,
 } = club.data;
+
+const genderBadge: Record<string, { label: string; classes: string; ariaLabel: string }> = {
+  women: { label: "Vrouwen", classes: "bg-pink-100 text-pink-700", ariaLabel: "Vrouwen enkel club" },
+  men:   { label: "Mannen",  classes: "bg-blue-100 text-blue-700",  ariaLabel: "Mannen enkel club" },
+  mixed: { label: "Gemengd", classes: "bg-purple-100 text-purple-700", ariaLabel: "Gemengde club" },
+};
 ---
 
 <Layout title={`${name} — WielerWaas`} description={shortDescription}>
@@ -72,12 +78,12 @@ const {
                 class="bg-primary-100 text-primary-800 text-xs font-semibold px-3 py-1 rounded-full"
                 >{town}</span
               >
-              {womenOnly && (
-                <span class="inline-flex items-center gap-1 bg-pink-100 text-pink-700 text-xs font-semibold px-3 py-1 rounded-full" aria-label="Vrouwen enkel club">
-                  <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M12 2a5 5 0 1 1 0 10A5 5 0 0 1 12 2zm0 12c2.67 0 8 1.34 8 4v2H4v-2c0-2.66 5.33-4 8-4z"/>
-                  </svg>
-                  Vrouwen
+              {gender && genderBadge[gender] && (
+                <span
+                  class={`inline-flex items-center gap-1 text-xs font-semibold px-3 py-1 rounded-full ${genderBadge[gender].classes}`}
+                  aria-label={genderBadge[gender].ariaLabel}
+                >
+                  {genderBadge[gender].label}
                 </span>
               )}
             </div>
