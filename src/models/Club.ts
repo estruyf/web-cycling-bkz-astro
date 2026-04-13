@@ -15,9 +15,9 @@ export interface Ride {
     | "Sunday";
   time: string | SeasonalTime[];
   type: string;
-  group?: string;
+  group?: string | number;
   averageSpeed?: number | string;
-  notes?: string;
+  notes?: string | number;
   openForAll: boolean;
 }
 

@@ -1,9 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import ClubCard from "../components/ClubCard.astro";
-import EventCard from "../components/EventCard.astro";
 import AddClubCta from "../components/AddClubCta.astro";
 import WeeklyRidesSection from "../components/WeeklyRidesSection.astro";
+import UpcomingEventsSection from "../components/UpcomingEventsSection.astro";
+import ClubsSection from "../components/ClubsSection.astro";
 import { getCollection } from "astro:content";
 
 const clubs = (await getCollection("clubs")).filter((c) => c.data.active);
@@ -19,7 +19,7 @@ const upcomingEvents = (await getCollection("events"))
   .sort(
     (a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime(),
   )
-  .slice(0, 3);
+  .slice(0, 6);
 ---
 
 <Layout
@@ -100,100 +100,9 @@ const upcomingEvents = (await getCollection("events"))
 
   <WeeklyRidesSection clubs={clubs} />
 
-  {
-    upcomingEvents.length > 0 && (
-      <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div class="flex items-center justify-between mb-8">
-          <div>
-            <h2 class="text-2xl font-bold text-gray-900">
-              Aankomende evenementen
-            </h2>
-            <p class="text-gray-500 text-sm mt-1">
-              Ritten en evenementen van clubs in de regio
-            </p>
-          </div>
-          <a
-            href="/evenementen"
-            class="text-primary-500 hover:text-primary-600 text-sm font-medium flex items-center gap-1"
-          >
-            Alle evenementen
-            <svg
-              class="w-4 h-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </a>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {upcomingEvents.map((event) => (
-            <EventCard
-              name={event.data.name}
-              date={event.data.date}
-              time={event.data.time}
-              organizer={event.data.organizer}
-              location={event.data.location}
-              website={event.data.website}
-              slug={event.id}
-            />
-          ))}
-        </div>
-      </section>
-    )
-  }
+  <UpcomingEventsSection upcomingEvents={upcomingEvents} />
 
-  <section class="bg-white border-y border-gray-100 py-16">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between mb-8">
-        <div>
-          <h2 class="text-2xl font-bold text-gray-900">Actieve clubs</h2>
-          <p class="text-gray-500 text-sm mt-1">
-            {clubs.length} club{clubs.length !== 1 ? "s" : ""} in de regio
-          </p>
-        </div>
-        <a
-          href="/clubs"
-          class="text-primary-500 hover:text-primary-600 text-sm font-medium flex items-center gap-1"
-        >
-          Bekijk alle
-          <svg
-            class="w-4 h-4"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M9 5l7 7-7 7"></path>
-          </svg>
-        </a>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {
-          clubs.map((club) => (
-            <ClubCard
-              name={club.data.name}
-              slug={club.id.replace(/\.md$/, "")}
-              town={club.data.town}
-              shortDescription={club.data.shortDescription}
-              meetingPoint={club.data.meetingPoint}
-              rides={club.data.rides}
-              logo={club.data.logo}
-            />
-          ))
-        }
-      </div>
-    </div>
-  </section>
+  <ClubsSection clubs={clubs} />
 
   <AddClubCta />
 </Layout>

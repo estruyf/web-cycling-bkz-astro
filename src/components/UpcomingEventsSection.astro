@@ -1,0 +1,59 @@
+---
+import EventCard from "./EventCard.astro";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  upcomingEvents: CollectionEntry<"events">[];
+}
+
+const { upcomingEvents } = Astro.props;
+---
+
+{
+  upcomingEvents.length > 0 && (
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div class="flex items-center justify-between mb-8">
+        <div>
+          <h2 class="text-2xl font-bold text-gray-900">
+            Aankomende evenementen
+          </h2>
+          <p class="text-gray-500 text-sm mt-1">
+            Ritten en evenementen van clubs in de regio
+          </p>
+        </div>
+        <a
+          href="/evenementen"
+          class="text-primary-500 hover:text-primary-600 text-sm font-medium flex items-center gap-1"
+        >
+          Alle evenementen
+          <svg
+            class="w-4 h-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </a>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {upcomingEvents.map((event) => (
+          <EventCard
+            name={event.data.name}
+            date={event.data.date}
+            time={event.data.time}
+            organizer={event.data.organizer}
+            location={event.data.location}
+            website={event.data.website}
+            slug={event.id}
+          />
+        ))}
+      </div>
+    </section>
+  )
+}
