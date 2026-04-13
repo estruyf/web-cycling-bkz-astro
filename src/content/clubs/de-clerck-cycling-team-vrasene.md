@@ -2,7 +2,7 @@
 name: De Clerck Cycling Team
 town: Vrasene
 shortDescription: De Clerck Cycling Team Vrasene is, met 4 groepen en ondertussen al meer dan 200 leden, de laatste jaren uitgegroeid tot een van de grootste - en plezantste - fietsclubs uit het Waasland.
-logo: /clubs/de-clerck/logo.png
+logo: /clubs/de-clerck/logo.webp
 website: https://www.dctv.be/
 meetingPoint: Kerk, Vrasene
 active: true

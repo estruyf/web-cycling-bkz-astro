@@ -4,6 +4,7 @@ town: Zwijndrecht
 shortDescription: Regelmatige TTC-ritten en ontspannen koffieritten doorheen de week, vertrek aan Verbroedering Zwijndrecht.
 meetingPoint: Verbroedering, Zwijndrecht
 website: https://ttc-cycling-team.webnode.be
+logo: /clubs/ttc/logo.webp
 active: true
 gender: mixed
 rides:
