@@ -44,6 +44,22 @@ const sortedRides = [...rides].sort(
   (a, b) => dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day),
 );
 
+const displayedRides = sortedRides.filter((ride, index, allRides) => {
+  const rideTimeKey =
+    typeof ride.time === "string" ? ride.time : JSON.stringify(ride.time);
+  const rideKey = `${ride.day}|${rideTimeKey}`;
+
+  return (
+    allRides.findIndex((candidate) => {
+      const candidateTimeKey =
+        typeof candidate.time === "string"
+          ? candidate.time
+          : JSON.stringify(candidate.time);
+      return `${candidate.day}|${candidateTimeKey}` === rideKey;
+    }) === index
+  );
+});
+
 const dagAfkorting: Record<string, string> = {
   Monday: "Ma",
   Tuesday: "Di",
@@ -117,7 +133,7 @@ const dagAfkorting: Record<string, string> = {
 
     <div class="flex flex-wrap gap-1.5">
       {
-        sortedRides.map((ride) => (
+        displayedRides.map((ride) => (
           <span class="inline-flex items-center gap-1 bg-gray-50 border border-gray-200 rounded-full px-2.5 py-1 text-xs text-gray-600">
             <span class="font-medium">
               {dagAfkorting[ride.day] ?? ride.day.slice(0, 2)}
