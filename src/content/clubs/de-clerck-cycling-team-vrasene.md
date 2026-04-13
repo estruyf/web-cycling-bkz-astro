@@ -25,7 +25,7 @@ rides:
     group: 1
     averageSpeed: +33
     notes: ritten van +85 km
-    openForAll: true
+    openForAll: false
   - day: Sunday
     time:
       - from: 3
@@ -38,7 +38,7 @@ rides:
     group: 2
     averageSpeed: 30
     notes: ritten van 80 km
-    openForAll: true
+    openForAll: false
   - day: Sunday
     time:
       - from: 3
@@ -51,7 +51,7 @@ rides:
     group: 3
     averageSpeed: 28
     notes: ritten van 70 km
-    openForAll: true
+    openForAll: false
   - day: Sunday
     time:
       - from: 3
@@ -64,7 +64,7 @@ rides:
     group: 4
     averageSpeed: 24
     notes: ritten van 50 km
-    openForAll: true
+    openForAll: false
 ---
 
 De Clerck Cycling Team Vrasene is, met 4 groepen en ondertussen al meer dan 200 leden, de laatste jaren uitgegroeid tot een van de grootste - en plezantste - fietsclubs uit het Waasland. Kom jij ook meefietsen?
