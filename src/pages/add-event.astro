@@ -23,9 +23,9 @@ import Layout from "../layouts/Layout.astro";
         Wat hebben we nodig?
       </h2>
       <p class="text-sm text-blue-800">
-        We vragen basisgegevens over je evenement: naam, datum, startuur,
-        locatie en wie het organiseert. Dit helpt wielrenners jouw evenement te
-        vinden en in te schrijven.
+        We vragen basisgegevens over je evenement: naam, type rit, start- en
+        einddatum, startuur, gemeente, locatie en wie het organiseert. Dit helpt
+        wielrenners jouw evenement te vinden en in te schrijven.
       </p>
     </div>
 
@@ -58,23 +58,66 @@ import Layout from "../layouts/Layout.astro";
             </p>
           </div>
 
-          {/* Date */}
+          {/* Frequency */}
           <div>
             <label
-              for="date"
+              for="frequency"
               class="block text-sm font-semibold text-gray-900 mb-2"
             >
-              Datum <span class="text-red-500">*</span>
+              Frequentie <span class="text-red-500">*</span>
+            </label>
+            <select
+              id="frequency"
+              name="frequency"
+              required
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
+            >
+              <option value="once">Eenmalig</option>
+              <option value="weekly">Wekelijks</option>
+              <option value="monthly">Maandelijks</option>
+            </select>
+            <p class="text-xs text-gray-600 mt-1">
+              Kies of het om een eenmalige of terugkerende social ride gaat.
+            </p>
+          </div>
+
+          {/* Start Date */}
+          <div>
+            <label
+              for="startDate"
+              class="block text-sm font-semibold text-gray-900 mb-2"
+            >
+              Startdatum <span class="text-red-500">*</span>
             </label>
             <input
               type="date"
-              id="date"
-              name="date"
+              id="startDate"
+              name="startDate"
               required
               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
             />
             <p class="text-xs text-gray-600 mt-1">
-              Op welke datum gaat het evenement door?
+              Vanaf wanneer gaat de rit of reeks door?
+            </p>
+          </div>
+
+          {/* End Date */}
+          <div>
+            <label
+              for="endDate"
+              class="block text-sm font-semibold text-gray-900 mb-2"
+            >
+              Einddatum <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="date"
+              id="endDate"
+              name="endDate"
+              required
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
+            />
+            <p class="text-xs text-gray-600 mt-1">
+              Tot wanneer blijft de rit of reeks lopen?
             </p>
           </div>
 
@@ -95,6 +138,27 @@ import Layout from "../layouts/Layout.astro";
             />
             <p class="text-xs text-gray-600 mt-1">
               Het uur waarop deelnemers kunnen starten of verzamelen.
+            </p>
+          </div>
+
+          {/* Town */}
+          <div>
+            <label
+              for="town"
+              class="block text-sm font-semibold text-gray-900 mb-2"
+            >
+              Gemeente <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              id="town"
+              name="town"
+              required
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
+              placeholder="Bijv. Beveren"
+            />
+            <p class="text-xs text-gray-600 mt-1">
+              In welke gemeente vindt het evenement plaats?
             </p>
           </div>
 

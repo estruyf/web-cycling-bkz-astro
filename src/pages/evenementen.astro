@@ -3,30 +3,25 @@ import Layout from "../layouts/Layout.astro";
 import EventCard from "../components/EventCard.astro";
 import AddClubCta from "../components/AddClubCta.astro";
 import { getCollection } from "astro:content";
+import { expandEventsToOccurrences } from "../utils/events";
 
 const now = new Date();
+const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+const allEvents = await getCollection("events");
 
-const events = (await getCollection("events"))
-  .filter(
-    (e) =>
-      e.data.active &&
-      new Date(e.data.date) >=
-        new Date(now.getFullYear(), now.getMonth(), now.getDate()),
-  )
-  .sort(
-    (a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime(),
-  );
+const eventOccurrences = expandEventsToOccurrences(allEvents);
 
-const pastEvents = (await getCollection("events"))
-  .filter(
-    (e) =>
-      e.data.active &&
-      new Date(e.data.date) <
-        new Date(now.getFullYear(), now.getMonth(), now.getDate()),
-  )
-  .sort(
-    (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
-  );
+const events = eventOccurrences
+  .filter((occurrence) => occurrence.occurrenceDate >= today)
+  .sort((a, b) => a.occurrenceDate.getTime() - b.occurrenceDate.getTime());
+
+const pastEvents = eventOccurrences
+  .filter((occurrence) => occurrence.occurrenceDate < today)
+  .sort((a, b) => b.occurrenceDate.getTime() - a.occurrenceDate.getTime());
+
+const towns = Array.from(
+  new Set(eventOccurrences.map((occurrence) => occurrence.event.data.town)),
+).sort((a, b) => a.localeCompare(b, "nl"));
 ---
 
 <Layout
@@ -42,19 +37,77 @@ const pastEvents = (await getCollection("events"))
       </p>
     </div>
 
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label
+            for="event-search"
+            class="block text-sm font-semibold text-gray-900 mb-2"
+          >
+            Zoeken
+          </label>
+          <input
+            id="event-search"
+            type="search"
+            placeholder="Zoek op naam, organisator, gemeente of locatie"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
+          />
+        </div>
+        <div>
+          <label
+            for="event-town"
+            class="block text-sm font-semibold text-gray-900 mb-2"
+          >
+            Gemeente
+          </label>
+          <select
+            id="event-town"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
+          >
+            <option value="all">Alle gemeenten</option>
+            {towns.map((town) => <option value={town}>{town}</option>)}
+          </select>
+        </div>
+        <div>
+          <label
+            for="event-period"
+            class="block text-sm font-semibold text-gray-900 mb-2"
+          >
+            Periode
+          </label>
+          <select
+            id="event-period"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
+          >
+            <option value="all">Alles</option>
+            <option value="upcoming">Aankomend</option>
+            <option value="past">Voorbij</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
     {
       events.length > 0 ? (
-        <div class="space-y-4">
-          {events.map((event) => (
-            <EventCard
-              name={event.data.name}
-              date={event.data.date}
-              time={event.data.time}
-              organizer={event.data.organizer}
-              location={event.data.location}
-              website={event.data.website}
-              slug={event.id}
-            />
+        <div class="space-y-4" id="upcoming-events-list">
+          {events.map((occurrence) => (
+            <div
+              class="event-item"
+              data-period="upcoming"
+              data-town={occurrence.event.data.town}
+              data-search={`${occurrence.event.data.name} ${occurrence.event.data.organizer} ${occurrence.event.data.town} ${occurrence.event.data.location}`.toLowerCase()}
+            >
+              <EventCard
+                name={occurrence.event.data.name}
+                date={occurrence.occurrenceDate}
+                frequency={occurrence.event.data.frequency}
+                time={occurrence.event.data.time}
+                organizer={occurrence.event.data.organizer}
+                location={occurrence.event.data.location}
+                website={occurrence.event.data.website}
+                slug={occurrence.event.id}
+              />
+            </div>
           ))}
         </div>
       ) : (
@@ -80,26 +133,48 @@ const pastEvents = (await getCollection("events"))
 
     {
       pastEvents.length > 0 && (
-        <div class="mt-16">
-          <h2 class="text-xl font-bold text-gray-400 mb-4">
+        <div class="mt-16" id="past-events-section">
+          <h2
+            class="text-xl font-bold text-gray-400 mb-4"
+            id="past-events-title"
+          >
             Voorbije evenementen
           </h2>
-          <div class="space-y-4 opacity-60">
-            {pastEvents.map((event) => (
-              <EventCard
-                name={event.data.name}
-                date={event.data.date}
-                time={event.data.time}
-                organizer={event.data.organizer}
-                location={event.data.location}
-                website={event.data.website}
-                slug={event.id}
-              />
+          <div class="space-y-4 opacity-60" id="past-events-list">
+            {pastEvents.map((occurrence) => (
+              <div
+                class="event-item"
+                data-period="past"
+                data-town={occurrence.event.data.town}
+                data-search={`${occurrence.event.data.name} ${occurrence.event.data.organizer} ${occurrence.event.data.town} ${occurrence.event.data.location}`.toLowerCase()}
+              >
+                <EventCard
+                  name={occurrence.event.data.name}
+                  date={occurrence.occurrenceDate}
+                  frequency={occurrence.event.data.frequency}
+                  time={occurrence.event.data.time}
+                  organizer={occurrence.event.data.organizer}
+                  location={occurrence.event.data.location}
+                  website={occurrence.event.data.website}
+                  slug={occurrence.event.id}
+                />
+              </div>
             ))}
           </div>
         </div>
       )
     }
+
+    <div
+      id="events-empty-state"
+      class="hidden text-center py-10 bg-white rounded-2xl border border-gray-100 mt-8"
+    >
+      <p class="text-gray-500 font-medium">Geen resultaten voor je filters</p>
+      <p class="text-gray-400 text-sm mt-1">
+        Probeer een andere zoekterm of filtercombinatie.
+      </p>
+    </div>
+
     <AddClubCta
       variant="light"
       title="Staat jouw evenement er nog niet bij?"
@@ -107,4 +182,77 @@ const pastEvents = (await getCollection("events"))
       cta="event"
     />
   </div>
+
+  <script>
+    const searchInput = document.getElementById("event-search");
+    const townSelect = document.getElementById("event-town");
+    const periodSelect = document.getElementById("event-period");
+    const eventItems = Array.from(document.querySelectorAll(".event-item"));
+    const upcomingList = document.getElementById("upcoming-events-list");
+    const pastSection = document.getElementById("past-events-section");
+    const pastTitle = document.getElementById("past-events-title");
+    const emptyState = document.getElementById("events-empty-state");
+
+    const applyFilters = () => {
+      const searchTerm =
+        searchInput instanceof HTMLInputElement
+          ? searchInput.value.trim().toLowerCase()
+          : "";
+      const selectedTown =
+        townSelect instanceof HTMLSelectElement ? townSelect.value : "all";
+      const selectedPeriod =
+        periodSelect instanceof HTMLSelectElement ? periodSelect.value : "all";
+
+      let visibleUpcoming = 0;
+      let visiblePast = 0;
+
+      for (const item of eventItems) {
+        if (!(item instanceof HTMLElement)) continue;
+
+        const itemPeriod = item.dataset.period ?? "upcoming";
+        const itemTown = item.dataset.town ?? "";
+        const searchableText = item.dataset.search ?? "";
+
+        const matchesSearch =
+          searchTerm === "" || searchableText.includes(searchTerm);
+        const matchesTown = selectedTown === "all" || itemTown === selectedTown;
+        const matchesPeriod =
+          selectedPeriod === "all" || itemPeriod === selectedPeriod;
+
+        const isVisible = matchesSearch && matchesTown && matchesPeriod;
+        item.classList.toggle("hidden", !isVisible);
+
+        if (isVisible) {
+          if (itemPeriod === "upcoming") visibleUpcoming += 1;
+          if (itemPeriod === "past") visiblePast += 1;
+        }
+      }
+
+      if (upcomingList instanceof HTMLElement) {
+        upcomingList.classList.toggle("hidden", visibleUpcoming === 0);
+      }
+
+      if (pastSection instanceof HTMLElement) {
+        const hidePastSection =
+          selectedPeriod === "upcoming" || visiblePast === 0;
+        pastSection.classList.toggle("hidden", hidePastSection);
+      }
+
+      if (pastTitle instanceof HTMLElement) {
+        pastTitle.classList.toggle("hidden", selectedPeriod === "upcoming");
+      }
+
+      if (emptyState instanceof HTMLElement) {
+        emptyState.classList.toggle(
+          "hidden",
+          visibleUpcoming + visiblePast > 0,
+        );
+      }
+    };
+
+    searchInput?.addEventListener("input", applyFilters);
+    townSelect?.addEventListener("change", applyFilters);
+    periodSelect?.addEventListener("change", applyFilters);
+    applyFilters();
+  </script>
 </Layout>

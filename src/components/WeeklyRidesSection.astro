@@ -1,5 +1,5 @@
 ---
-import type { Club, WeekritOverzicht } from "../models";
+import type { Club } from "../models";
 import { timeSortKey } from "../utils/time";
 import SeasonalTime from "./SeasonalTime.astro";
 import GenderBadge from "./GenderBadge.astro";
@@ -30,10 +30,11 @@ const dayOrder = [
   "Sunday",
 ];
 
-const alleRitten: WeekritOverzicht[] = clubs.flatMap((club) =>
+const alleRitten = clubs.flatMap((club) =>
   club.data.rides.map((ride) => ({
     clubNaam: club.data.name,
     clubSlug: club.id.replace(/\.md$/, ""),
+    locatie: club.data.town,
     gender: club.data.gender,
     dag: ride.day,
     uur: ride.time,
@@ -50,6 +51,14 @@ const gesorteerdeRitten = alleRitten.sort((a, b) => {
   if (dagVerschil !== 0) return dagVerschil;
   return timeSortKey(a.uur).localeCompare(timeSortKey(b.uur));
 });
+
+const beschikbareDagen = dayOrder.filter((day) =>
+  gesorteerdeRitten.some((rit) => rit.dag === day),
+);
+
+const beschikbareLocaties = Array.from(
+  new Set(gesorteerdeRitten.map((rit) => rit.locatie)),
+).sort((a, b) => a.localeCompare(b, "nl"));
 
 function formatSpeed(speed?: number | string): string | undefined {
   return speed != null ? `${speed} km/u` : undefined;
@@ -89,7 +98,7 @@ function formatSpeed(speed?: number | string): string | undefined {
         Alle dagen
       </button>
       {
-        dayOrder.map((day) => (
+        beschikbareDagen.map((day) => (
           <button
             class="day-filter-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors border bg-white text-gray-700 hover:bg-gray-50 border-gray-200"
             data-day={day}
@@ -101,6 +110,18 @@ function formatSpeed(speed?: number | string): string | undefined {
     </div>
 
     <div class="flex flex-wrap gap-3">
+      <select
+        id="filter-town"
+        class="text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-300"
+      >
+        <option value="">Gemeente</option>
+        {
+          beschikbareLocaties.map((locatie) => (
+            <option value={locatie}>{locatie}</option>
+          ))
+        }
+      </select>
+
       <select
         id="filter-gender"
         class="text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-300"
@@ -138,6 +159,7 @@ function formatSpeed(speed?: number | string): string | undefined {
         <div
           class="bg-white rounded-xl border border-gray-100 shadow-sm p-4"
           data-dag={rit.dag}
+          data-town={rit.locatie}
           data-gender={rit.gender ?? ""}
           data-open={rit.openVoorIedereen ? "true" : "false"}
         >
@@ -229,6 +251,7 @@ function formatSpeed(speed?: number | string): string | undefined {
               <tr
                 class={`border-b border-gray-100 last:border-0 ${i % 2 === 0 ? "" : "bg-gray-50/40"}`}
                 data-dag={rit.dag}
+                data-town={rit.locatie}
                 data-gender={rit.gender ?? ""}
                 data-open={rit.openVoorIedereen ? "true" : "false"}
               >
@@ -297,208 +320,237 @@ function formatSpeed(speed?: number | string): string | undefined {
 </section>
 
 <script>
-  const dagBtns =
-    document.querySelectorAll<HTMLButtonElement>(".day-filter-btn");
-  let selectedDag = "";
+  function initWeeklyRidesSection() {
+    const dagBtns =
+      document.querySelectorAll<HTMLButtonElement>(".day-filter-btn");
+    const townSelect = document.getElementById("filter-town");
+    const genderSelect = document.getElementById("filter-gender");
+    const openCheckbox = document.getElementById("filter-open");
+    const table = document.getElementById("rides-table");
+    const cardsContainer = document.getElementById("rides-cards");
+    const pageInfo = document.getElementById("page-info");
+    const btnPrev = document.getElementById("btn-prev") as HTMLButtonElement;
+    const btnNext = document.getElementById("btn-next") as HTMLButtonElement;
+    const resetButton = document.getElementById("filter-reset");
 
-  const genderSelect = document.getElementById(
-    "filter-gender",
-  ) as HTMLSelectElement;
-  const openCheckbox = document.getElementById(
-    "filter-open",
-  ) as HTMLInputElement;
-  const table = document.getElementById("rides-table");
-  const cardsContainer = document.getElementById("rides-cards");
-
-  const ITEMS_PER_PAGE = 15;
-  let currentPage = 1;
-  let filteredRows: HTMLTableRowElement[] = [];
-  let filteredCards: HTMLDivElement[] = [];
-
-  const pageInfo = document.getElementById("page-info");
-  const btnPrev = document.getElementById("btn-prev") as HTMLButtonElement;
-  const btnNext = document.getElementById("btn-next") as HTMLButtonElement;
-
-  function updatePagination() {
-    const totalItems = filteredCards.length;
-    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE) || 1;
-
-    if (currentPage > totalPages) currentPage = totalPages;
-    if (currentPage < 1) currentPage = 1;
-
-    const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
-    const endIdx = Math.min(startIdx + ITEMS_PER_PAGE, totalItems);
-
-    if (pageInfo) {
-      pageInfo.textContent =
-        totalItems === 0
-          ? "0 resultaten"
-          : `${startIdx + 1}-${endIdx} van ${totalItems}`;
+    if (
+      !dagBtns.length ||
+      !townSelect ||
+      !genderSelect ||
+      !openCheckbox ||
+      !table ||
+      !cardsContainer ||
+      !resetButton
+    ) {
+      return;
     }
 
-    if (btnPrev) btnPrev.disabled = currentPage === 1;
-    if (btnNext) btnNext.disabled = currentPage === totalPages;
+    const townSelectEl = townSelect as HTMLSelectElement;
+    const genderSelectEl = genderSelect as HTMLSelectElement;
+    const openCheckboxEl = openCheckbox as HTMLInputElement;
+    const tableEl = table as HTMLTableElement;
+    const cardsContainerEl = cardsContainer as HTMLDivElement;
+    const resetButtonEl = resetButton as HTMLButtonElement;
 
-    filteredRows.forEach((row, idx) => {
-      row.style.display = idx >= startIdx && idx < endIdx ? "" : "none";
-    });
-    filteredCards.forEach((card, idx) => {
-      card.style.display = idx >= startIdx && idx < endIdx ? "" : "none";
-    });
-  }
+    const ITEMS_PER_PAGE = 15;
+    let selectedDag = "";
+    let currentPage = 1;
+    let filteredRows: HTMLTableRowElement[] = [];
+    let filteredCards: HTMLDivElement[] = [];
 
-  function applyFilters() {
-    currentPage = 1;
-    filteredRows = [];
-    filteredCards = [];
+    function updatePagination() {
+      const totalItems = filteredCards.length;
+      const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE) || 1;
 
-    const selectedGender = genderSelect.value;
-    const onlyOpen = openCheckbox.checked;
+      if (currentPage > totalPages) currentPage = totalPages;
+      if (currentPage < 1) currentPage = 1;
 
-    const rows = table?.querySelectorAll<HTMLTableRowElement>("tbody tr");
-    rows?.forEach((row) => {
-      const dagMatch = !selectedDag || row.dataset.dag === selectedDag;
-      const genderMatch =
-        !selectedGender || row.dataset.gender === selectedGender;
-      const openMatch = !onlyOpen || row.dataset.open === "true";
+      const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
+      const endIdx = Math.min(startIdx + ITEMS_PER_PAGE, totalItems);
 
-      if (dagMatch && genderMatch && openMatch) {
-        filteredRows.push(row);
-      } else {
-        row.style.display = "none";
+      if (pageInfo) {
+        pageInfo.textContent =
+          totalItems === 0
+            ? "0 resultaten"
+            : `${startIdx + 1}-${endIdx} van ${totalItems}`;
       }
-    });
 
-    const cards =
-      cardsContainer?.querySelectorAll<HTMLDivElement>("div[data-dag]");
-    cards?.forEach((card) => {
-      const dagMatch = !selectedDag || card.dataset.dag === selectedDag;
-      const genderMatch =
-        !selectedGender || card.dataset.gender === selectedGender;
-      const openMatch = !onlyOpen || card.dataset.open === "true";
+      if (btnPrev) btnPrev.disabled = currentPage === 1;
+      if (btnNext) btnNext.disabled = currentPage === totalPages;
 
-      if (dagMatch && genderMatch && openMatch) {
-        filteredCards.push(card);
-      } else {
-        card.style.display = "none";
-      }
-    });
+      filteredRows.forEach((row, idx) => {
+        row.style.display = idx >= startIdx && idx < endIdx ? "" : "none";
+      });
+      filteredCards.forEach((card, idx) => {
+        card.style.display = idx >= startIdx && idx < endIdx ? "" : "none";
+      });
+    }
 
-    updatePagination();
-  }
+    function applyFilters() {
+      currentPage = 1;
+      filteredRows = [];
+      filteredCards = [];
 
-  const resetButton = document.getElementById(
-    "filter-reset",
-  ) as HTMLButtonElement;
+      const selectedTown = townSelectEl.value;
+      const selectedGender = genderSelectEl.value;
+      const onlyOpen = openCheckboxEl.checked;
 
-  function updateResetVisibility() {
-    resetButton.classList.toggle(
-      "hidden",
-      selectedDag === "" && genderSelect.value === "" && !openCheckbox.checked,
-    );
-  }
+      const rows = tableEl.querySelectorAll<HTMLTableRowElement>("tbody tr");
+      rows.forEach((row) => {
+        const dagMatch = !selectedDag || row.dataset.dag === selectedDag;
+        const townMatch = !selectedTown || row.dataset.town === selectedTown;
+        const genderMatch =
+          !selectedGender || row.dataset.gender === selectedGender;
+        const openMatch = !onlyOpen || row.dataset.open === "true";
 
-  dagBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      dagBtns.forEach((b) => {
-        b.classList.remove(
-          "bg-primary-600",
-          "border-primary-600",
-          "text-white",
-          "hover:bg-primary-700",
-        );
-        b.classList.add(
+        if (dagMatch && townMatch && genderMatch && openMatch) {
+          filteredRows.push(row);
+        } else {
+          row.style.display = "none";
+        }
+      });
+
+      const cards =
+        cardsContainerEl.querySelectorAll<HTMLDivElement>("div[data-dag]");
+      cards.forEach((card) => {
+        const dagMatch = !selectedDag || card.dataset.dag === selectedDag;
+        const townMatch = !selectedTown || card.dataset.town === selectedTown;
+        const genderMatch =
+          !selectedGender || card.dataset.gender === selectedGender;
+        const openMatch = !onlyOpen || card.dataset.open === "true";
+
+        if (dagMatch && townMatch && genderMatch && openMatch) {
+          filteredCards.push(card);
+        } else {
+          card.style.display = "none";
+        }
+      });
+
+      updatePagination();
+    }
+
+    function updateResetVisibility() {
+      resetButtonEl.classList.toggle(
+        "hidden",
+        selectedDag === "" &&
+          townSelectEl.value === "" &&
+          genderSelectEl.value === "" &&
+          !openCheckboxEl.checked,
+      );
+    }
+
+    dagBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        dagBtns.forEach((b) => {
+          b.classList.remove(
+            "bg-primary-600",
+            "border-primary-600",
+            "text-white",
+            "hover:bg-primary-700",
+          );
+          b.classList.add(
+            "bg-white",
+            "text-gray-700",
+            "border-gray-200",
+            "hover:bg-gray-50",
+          );
+        });
+        btn.classList.remove(
           "bg-white",
           "text-gray-700",
           "border-gray-200",
           "hover:bg-gray-50",
         );
-      });
-      btn.classList.remove(
-        "bg-white",
-        "text-gray-700",
-        "border-gray-200",
-        "hover:bg-gray-50",
-      );
-      btn.classList.add(
-        "bg-primary-600",
-        "border-primary-600",
-        "text-white",
-        "hover:bg-primary-700",
-      );
+        btn.classList.add(
+          "bg-primary-600",
+          "border-primary-600",
+          "text-white",
+          "hover:bg-primary-700",
+        );
 
-      selectedDag = btn.dataset.day || "";
+        selectedDag = btn.dataset.day || "";
+        applyFilters();
+        updateResetVisibility();
+      });
+    });
+
+    townSelectEl.addEventListener("change", () => {
       applyFilters();
       updateResetVisibility();
     });
-  });
 
-  genderSelect.addEventListener("change", () => {
-    applyFilters();
-    updateResetVisibility();
-  });
-  openCheckbox.addEventListener("change", () => {
-    applyFilters();
-    updateResetVisibility();
-  });
+    genderSelectEl.addEventListener("change", () => {
+      applyFilters();
+      updateResetVisibility();
+    });
 
-  resetButton.addEventListener("click", () => {
-    const alleDagenBtn = Array.from(dagBtns).find((b) => b.dataset.day === "");
-    if (alleDagenBtn) {
-      dagBtns.forEach((b) => {
-        b.classList.remove(
-          "bg-primary-600",
-          "border-primary-600",
-          "text-white",
-          "hover:bg-primary-700",
-        );
-        b.classList.add(
+    openCheckboxEl.addEventListener("change", () => {
+      applyFilters();
+      updateResetVisibility();
+    });
+
+    resetButtonEl.addEventListener("click", () => {
+      const alleDagenBtn = Array.from(dagBtns).find(
+        (b) => b.dataset.day === "",
+      );
+      if (alleDagenBtn) {
+        dagBtns.forEach((b) => {
+          b.classList.remove(
+            "bg-primary-600",
+            "border-primary-600",
+            "text-white",
+            "hover:bg-primary-700",
+          );
+          b.classList.add(
+            "bg-white",
+            "text-gray-700",
+            "border-gray-200",
+            "hover:bg-gray-50",
+          );
+        });
+        alleDagenBtn.classList.remove(
           "bg-white",
           "text-gray-700",
           "border-gray-200",
           "hover:bg-gray-50",
         );
-      });
-      alleDagenBtn.classList.remove(
-        "bg-white",
-        "text-gray-700",
-        "border-gray-200",
-        "hover:bg-gray-50",
-      );
-      alleDagenBtn.classList.add(
-        "bg-primary-600",
-        "border-primary-600",
-        "text-white",
-        "hover:bg-primary-700",
-      );
-    }
+        alleDagenBtn.classList.add(
+          "bg-primary-600",
+          "border-primary-600",
+          "text-white",
+          "hover:bg-primary-700",
+        );
+      }
 
-    selectedDag = "";
-    genderSelect.value = "";
-    openCheckbox.checked = false;
-    applyFilters();
-    updateResetVisibility();
-  });
+      selectedDag = "";
+      townSelectEl.value = "";
+      genderSelectEl.value = "";
+      openCheckboxEl.checked = false;
+      applyFilters();
+      updateResetVisibility();
+    });
 
-  btnPrev?.addEventListener("click", () => {
-    if (currentPage > 1) {
-      currentPage--;
+    btnPrev?.addEventListener("click", () => {
+      if (currentPage > 1) {
+        currentPage--;
+        updatePagination();
+        const parentTop =
+          document.getElementById("filter-dag-group")?.offsetTop || 0;
+        window.scrollTo({ top: parentTop - 100, behavior: "smooth" });
+      }
+    });
+
+    btnNext?.addEventListener("click", () => {
+      currentPage++;
       updatePagination();
       const parentTop =
         document.getElementById("filter-dag-group")?.offsetTop || 0;
       window.scrollTo({ top: parentTop - 100, behavior: "smooth" });
-    }
-  });
+    });
 
-  btnNext?.addEventListener("click", () => {
-    currentPage++;
-    updatePagination();
-    const parentTop =
-      document.getElementById("filter-dag-group")?.offsetTop || 0;
-    window.scrollTo({ top: parentTop - 100, behavior: "smooth" });
-  });
+    applyFilters();
+    updateResetVisibility();
+  }
 
-  // Init
-  applyFilters();
-  updateResetVisibility();
+  document.addEventListener("astro:page-load", initWeeklyRidesSection);
 </script>

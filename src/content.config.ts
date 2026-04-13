@@ -55,15 +55,50 @@ const sponsors = defineCollection({
 
 const events = defineCollection({
   type: "content",
-  schema: z.object({
-    name: z.string(),
-    date: z.coerce.date(),
-    time: z.string().optional(),
-    organizer: z.string(),
-    location: z.string(),
-    website: z.string().optional(),
-    active: z.boolean().default(true),
-  }),
+  schema: z
+    .object({
+      name: z.string(),
+      frequency: z.enum(["once", "weekly", "monthly"]).default("once"),
+      date: z.coerce.date().optional(),
+      startDate: z.coerce.date().optional(),
+      endDate: z.coerce.date().optional(),
+      time: z.string().optional(),
+      organizer: z.string(),
+      town: z.string(),
+      location: z.string(),
+      website: z.string().optional(),
+      active: z.boolean().default(true),
+    })
+    .superRefine((data, ctx) => {
+      const hasSingleDate = !!data.date;
+      const hasStartDate = !!data.startDate;
+      const hasEndDate = !!data.endDate;
+
+      if (!hasSingleDate && !hasStartDate && !hasEndDate) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message:
+            "Gebruik `date` of een combinatie van `startDate` en `endDate`.",
+          path: ["date"],
+        });
+      }
+
+      if ((hasStartDate && !hasEndDate) || (!hasStartDate && hasEndDate)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "`startDate` en `endDate` moeten samen ingevuld worden.",
+          path: ["startDate"],
+        });
+      }
+
+      if (hasStartDate && hasEndDate && data.startDate! > data.endDate!) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "`endDate` moet gelijk aan of later zijn dan `startDate`.",
+          path: ["endDate"],
+        });
+      }
+    }),
 });
 
 export const collections = { clubs, sponsors, events };

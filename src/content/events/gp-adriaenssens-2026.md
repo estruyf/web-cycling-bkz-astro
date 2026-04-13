@@ -3,6 +3,7 @@ name: GP Adriaenssens 2026
 date: 2026-09-27
 time: "08:00"
 organizer: TTC Cycling Team
+town: Burcht
 location: Sportpleinen De Wallen, Burcht
 website: https://kinderkankerfonds.be/acties/gp-adriaenssens-2026/
 active: true

@@ -5,20 +5,17 @@ import WeeklyRidesSection from "../components/WeeklyRidesSection.astro";
 import UpcomingEventsSection from "../components/UpcomingEventsSection.astro";
 import ClubsSection from "../components/ClubsSection.astro";
 import { getCollection } from "astro:content";
+import { expandEventsToOccurrences } from "../utils/events";
 
 const clubs = (await getCollection("clubs")).filter((c) => c.data.active);
 
 const now = new Date();
-const upcomingEvents = (await getCollection("events"))
-  .filter(
-    (e) =>
-      e.data.active &&
-      new Date(e.data.date) >=
-        new Date(now.getFullYear(), now.getMonth(), now.getDate()),
-  )
-  .sort(
-    (a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime(),
-  )
+const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+const allEvents = await getCollection("events");
+
+const upcomingEvents = expandEventsToOccurrences(allEvents)
+  .filter((occurrence) => occurrence.occurrenceDate >= today)
+  .sort((a, b) => a.occurrenceDate.getTime() - b.occurrenceDate.getTime())
   .slice(0, 6);
 ---
 

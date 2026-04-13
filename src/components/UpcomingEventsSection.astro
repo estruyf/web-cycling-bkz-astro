@@ -1,9 +1,9 @@
 ---
 import EventCard from "./EventCard.astro";
-import type { CollectionEntry } from "astro:content";
+import type { EventOccurrence } from "../utils/events";
 
 interface Props {
-  upcomingEvents: CollectionEntry<"events">[];
+  upcomingEvents: EventOccurrence[];
 }
 
 const { upcomingEvents } = Astro.props;
@@ -44,13 +44,14 @@ const { upcomingEvents } = Astro.props;
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {upcomingEvents.map((event) => (
           <EventCard
-            name={event.data.name}
-            date={event.data.date}
-            time={event.data.time}
-            organizer={event.data.organizer}
-            location={event.data.location}
-            website={event.data.website}
-            slug={event.id}
+            name={event.event.data.name}
+            date={event.occurrenceDate}
+            frequency={event.event.data.frequency}
+            time={event.event.data.time}
+            organizer={event.event.data.organizer}
+            location={event.event.data.location}
+            website={event.event.data.website}
+            slug={event.event.id}
           />
         ))}
       </div>

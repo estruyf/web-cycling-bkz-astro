@@ -3,6 +3,7 @@ name: KSA Rit Zwijndrecht
 date: 2026-04-26
 time: "08:00"
 organizer: KSA Zwijndrecht
+town: Zwijndrecht
 location: R. Orlentstraat 43, Zwijndrecht
 website: https://ksafeesten.be/
 active: true
