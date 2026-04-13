@@ -82,42 +82,55 @@ function formatSpeed(speed?: number | string): string | undefined {
     </a>
   </div>
 
-  <div class="flex flex-wrap gap-3 mb-4">
-    <select
-      id="filter-dag"
-      class="text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-300"
-    >
-      <option value="">Alle dagen</option>
-      {dayOrder.map((day) => <option value={day}>{dagNamen[day]}</option>)}
-    </select>
+  <div class="flex flex-col gap-4 mb-6">
+    <div class="flex flex-wrap gap-2" id="filter-dag-group">
+      <button
+        class="day-filter-btn px-4 py-2 text-sm font-medium transition-colors border rounded-lg bg-primary-600 border-primary-600 text-white hover:bg-primary-700"
+        data-day=""
+      >
+        Alle dagen
+      </button>
+      {
+        dayOrder.map((day) => (
+          <button
+            class="day-filter-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors border bg-white text-gray-700 hover:bg-gray-50 border-gray-200"
+            data-day={day}
+          >
+            {dagNamen[day]}
+          </button>
+        ))
+      }
+    </div>
 
-    <select
-      id="filter-gender"
-      class="text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-300"
-    >
-      <option value="">Groep type</option>
-      <option value="mixed">Gemengd</option>
-      <option value="men">Mannen</option>
-      <option value="women">Vrouwen</option>
-    </select>
+    <div class="flex flex-wrap gap-3">
+      <select
+        id="filter-gender"
+        class="text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-300"
+      >
+        <option value="">Groep type</option>
+        <option value="mixed">Gemengd</option>
+        <option value="men">Mannen</option>
+        <option value="women">Vrouwen</option>
+      </select>
 
-    <label
-      class="inline-flex items-center gap-2 text-sm text-gray-700 border border-gray-200 rounded-lg px-3 py-2 bg-white cursor-pointer select-none"
-    >
-      <input
-        id="filter-open"
-        type="checkbox"
-        class="w-4 h-4 accent-primary-600"
-      />
-      Alleen open voor iedereen
-    </label>
+      <label
+        class="inline-flex items-center gap-2 text-sm text-gray-700 border border-gray-200 rounded-lg px-3 py-2 bg-white cursor-pointer select-none"
+      >
+        <input
+          id="filter-open"
+          type="checkbox"
+          class="w-4 h-4 accent-primary-600"
+        />
+        Alleen open voor iedereen
+      </label>
 
-    <button
-      id="filter-reset"
-      class="hidden text-sm text-gray-500 hover:text-gray-800 border border-gray-200 rounded-lg px-3 py-2 bg-white transition-colors"
-    >
-      Filters wissen
-    </button>
+      <button
+        id="filter-reset"
+        class="hidden text-sm text-gray-500 hover:text-gray-800 border border-gray-200 rounded-lg px-3 py-2 bg-white transition-colors"
+      >
+        Filters wissen
+      </button>
+    </div>
   </div>
 
   <!-- Mobile card layout -->
@@ -257,10 +270,39 @@ function formatSpeed(speed?: number | string): string | undefined {
       </table>
     </div>
   </div>
+
+  <!-- Pagination -->
+  <div
+    class="mt-6 flex flex-col sm:flex-row items-center justify-between border-t border-gray-200 pt-4 gap-4"
+    id="pagination-controls"
+  >
+    <div class="text-sm text-gray-500">
+      Tonen: <span id="page-info" class="font-medium text-gray-900"
+        >0-0 van 0</span
+      >
+    </div>
+    <div class="flex items-center gap-2">
+      <button
+        id="btn-prev"
+        class="px-3 py-1.5 border border-gray-200 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        Vorige
+      </button>
+      <button
+        id="btn-next"
+        class="px-3 py-1.5 border border-gray-200 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        Volgende
+      </button>
+    </div>
+  </div>
 </section>
 
 <script>
-  const dagSelect = document.getElementById("filter-dag") as HTMLSelectElement;
+  const dagBtns =
+    document.querySelectorAll<HTMLButtonElement>(".day-filter-btn");
+  let selectedDag = "";
+
   const genderSelect = document.getElementById(
     "filter-gender",
   ) as HTMLSelectElement;
@@ -270,8 +312,48 @@ function formatSpeed(speed?: number | string): string | undefined {
   const table = document.getElementById("rides-table");
   const cardsContainer = document.getElementById("rides-cards");
 
+  const ITEMS_PER_PAGE = 15;
+  let currentPage = 1;
+  let filteredRows: HTMLTableRowElement[] = [];
+  let filteredCards: HTMLDivElement[] = [];
+
+  const pageInfo = document.getElementById("page-info");
+  const btnPrev = document.getElementById("btn-prev") as HTMLButtonElement;
+  const btnNext = document.getElementById("btn-next") as HTMLButtonElement;
+
+  function updatePagination() {
+    const totalItems = filteredCards.length;
+    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE) || 1;
+
+    if (currentPage > totalPages) currentPage = totalPages;
+    if (currentPage < 1) currentPage = 1;
+
+    const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIdx = Math.min(startIdx + ITEMS_PER_PAGE, totalItems);
+
+    if (pageInfo) {
+      pageInfo.textContent =
+        totalItems === 0
+          ? "0 resultaten"
+          : `${startIdx + 1}-${endIdx} van ${totalItems}`;
+    }
+
+    if (btnPrev) btnPrev.disabled = currentPage === 1;
+    if (btnNext) btnNext.disabled = currentPage === totalPages;
+
+    filteredRows.forEach((row, idx) => {
+      row.style.display = idx >= startIdx && idx < endIdx ? "" : "none";
+    });
+    filteredCards.forEach((card, idx) => {
+      card.style.display = idx >= startIdx && idx < endIdx ? "" : "none";
+    });
+  }
+
   function applyFilters() {
-    const selectedDag = dagSelect.value;
+    currentPage = 1;
+    filteredRows = [];
+    filteredCards = [];
+
     const selectedGender = genderSelect.value;
     const onlyOpen = openCheckbox.checked;
 
@@ -281,7 +363,12 @@ function formatSpeed(speed?: number | string): string | undefined {
       const genderMatch =
         !selectedGender || row.dataset.gender === selectedGender;
       const openMatch = !onlyOpen || row.dataset.open === "true";
-      row.style.display = dagMatch && genderMatch && openMatch ? "" : "none";
+
+      if (dagMatch && genderMatch && openMatch) {
+        filteredRows.push(row);
+      } else {
+        row.style.display = "none";
+      }
     });
 
     const cards =
@@ -291,8 +378,15 @@ function formatSpeed(speed?: number | string): string | undefined {
       const genderMatch =
         !selectedGender || card.dataset.gender === selectedGender;
       const openMatch = !onlyOpen || card.dataset.open === "true";
-      card.style.display = dagMatch && genderMatch && openMatch ? "" : "none";
+
+      if (dagMatch && genderMatch && openMatch) {
+        filteredCards.push(card);
+      } else {
+        card.style.display = "none";
+      }
     });
+
+    updatePagination();
   }
 
   const resetButton = document.getElementById(
@@ -302,16 +396,45 @@ function formatSpeed(speed?: number | string): string | undefined {
   function updateResetVisibility() {
     resetButton.classList.toggle(
       "hidden",
-      dagSelect.value === "" &&
-        genderSelect.value === "" &&
-        !openCheckbox.checked,
+      selectedDag === "" && genderSelect.value === "" && !openCheckbox.checked,
     );
   }
 
-  dagSelect.addEventListener("change", () => {
-    applyFilters();
-    updateResetVisibility();
+  dagBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      dagBtns.forEach((b) => {
+        b.classList.remove(
+          "bg-primary-600",
+          "border-primary-600",
+          "text-white",
+          "hover:bg-primary-700",
+        );
+        b.classList.add(
+          "bg-white",
+          "text-gray-700",
+          "border-gray-200",
+          "hover:bg-gray-50",
+        );
+      });
+      btn.classList.remove(
+        "bg-white",
+        "text-gray-700",
+        "border-gray-200",
+        "hover:bg-gray-50",
+      );
+      btn.classList.add(
+        "bg-primary-600",
+        "border-primary-600",
+        "text-white",
+        "hover:bg-primary-700",
+      );
+
+      selectedDag = btn.dataset.day || "";
+      applyFilters();
+      updateResetVisibility();
+    });
   });
+
   genderSelect.addEventListener("change", () => {
     applyFilters();
     updateResetVisibility();
@@ -322,10 +445,62 @@ function formatSpeed(speed?: number | string): string | undefined {
   });
 
   resetButton.addEventListener("click", () => {
-    dagSelect.value = "";
+    const alleDagenBtn = Array.from(dagBtns).find((b) => b.dataset.day === "");
+    if (alleDagenBtn) {
+      dagBtns.forEach((b) => {
+        b.classList.remove(
+          "bg-primary-600",
+          "border-primary-600",
+          "text-white",
+          "hover:bg-primary-700",
+        );
+        b.classList.add(
+          "bg-white",
+          "text-gray-700",
+          "border-gray-200",
+          "hover:bg-gray-50",
+        );
+      });
+      alleDagenBtn.classList.remove(
+        "bg-white",
+        "text-gray-700",
+        "border-gray-200",
+        "hover:bg-gray-50",
+      );
+      alleDagenBtn.classList.add(
+        "bg-primary-600",
+        "border-primary-600",
+        "text-white",
+        "hover:bg-primary-700",
+      );
+    }
+
+    selectedDag = "";
     genderSelect.value = "";
     openCheckbox.checked = false;
     applyFilters();
     updateResetVisibility();
   });
+
+  btnPrev?.addEventListener("click", () => {
+    if (currentPage > 1) {
+      currentPage--;
+      updatePagination();
+      const parentTop =
+        document.getElementById("filter-dag-group")?.offsetTop || 0;
+      window.scrollTo({ top: parentTop - 100, behavior: "smooth" });
+    }
+  });
+
+  btnNext?.addEventListener("click", () => {
+    currentPage++;
+    updatePagination();
+    const parentTop =
+      document.getElementById("filter-dag-group")?.offsetTop || 0;
+    window.scrollTo({ top: parentTop - 100, behavior: "smooth" });
+  });
+
+  // Init
+  applyFilters();
+  updateResetVisibility();
 </script>
