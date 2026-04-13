@@ -18,7 +18,7 @@ const rideSchema = z.object({
   ]),
   time: z.union([z.string(), z.array(seasonalTimeSchema).nonempty()]),
   type: z.string(),
-  group: z.string().optional(),
+  group: z.union([z.number(), z.string()]).optional(),
   averageSpeed: z.union([z.number(), z.string()]).optional(),
   notes: z.string().optional(),
   openForAll: z.boolean().default(true),
@@ -28,7 +28,7 @@ const clubs = defineCollection({
   type: "content",
   schema: z.object({
     name: z.string(),
-    town: z.enum(["Beveren", "Kruibeke", "Zwijndrecht", "Melsele"]),
+    town: z.enum(["Beveren", "Kruibeke", "Zwijndrecht", "Melsele", "Vrasene"]),
     shortDescription: z.string(),
     logo: z.string().optional(),
     website: z.string().optional(),

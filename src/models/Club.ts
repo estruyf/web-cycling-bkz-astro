@@ -23,7 +23,7 @@ export interface Ride {
 
 export interface ClubData {
   name: string;
-  town: "Beveren" | "Kruibeke" | "Zwijndrecht" | "Melsele";
+  town: "Beveren" | "Kruibeke" | "Zwijndrecht" | "Melsele" | "Vrasene";
   shortDescription: string;
   logo?: string;
   website?: string;

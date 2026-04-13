@@ -84,6 +84,7 @@ rides:
         to: 3
         time: "09:30"
     type: Clubrit
+    averageSpeed: 30
     openForAll: false
 ---
 

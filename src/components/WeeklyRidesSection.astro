@@ -145,6 +145,7 @@ function formatSpeed(speed?: number | string): string | undefined {
             >
               {rit.openVoorIedereen ? "Open" : "Leden"}
             </span>
+            <GenderBadge gender={rit.gender} />
           </div>
           <a
             href={`/clubs/${rit.clubSlug}`}
@@ -155,7 +156,8 @@ function formatSpeed(speed?: number | string): string | undefined {
           <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500">
             {rit.groep && (
               <span>
-                <span class="font-medium text-gray-700">Groep:</span> {rit.groep}
+                <span class="font-medium text-gray-700">Groep:</span>{" "}
+                {rit.groep}
               </span>
             )}
             {rit.gemiddeldeSnelheid != null && (
@@ -170,7 +172,6 @@ function formatSpeed(speed?: number | string): string | undefined {
                 {rit.vertrekpunt}
               </span>
             )}
-            <GenderBadge gender={rit.gender} />
           </div>
         </div>
       ))
@@ -234,15 +235,11 @@ function formatSpeed(speed?: number | string): string | undefined {
                     {rit.clubNaam}
                   </a>
                 </td>
-                <td class="py-3.5 px-5 text-gray-600">
-                  {rit.groep ?? "—"}
-                </td>
+                <td class="py-3.5 px-5 text-gray-600">{rit.groep ?? "—"}</td>
                 <td class="py-3.5 px-5 text-gray-600">
                   {formatSpeed(rit.gemiddeldeSnelheid) ?? "—"}
                 </td>
-                <td class="py-3.5 px-5 text-gray-500">
-                  {rit.vertrekpunt}
-                </td>
+                <td class="py-3.5 px-5 text-gray-500">{rit.vertrekpunt}</td>
                 <td class="py-3.5 px-5 text-gray-600">
                   <GenderBadge gender={rit.gender} fallback="—" />
                 </td>
@@ -287,9 +284,8 @@ function formatSpeed(speed?: number | string): string | undefined {
       row.style.display = dagMatch && genderMatch && openMatch ? "" : "none";
     });
 
-    const cards = cardsContainer?.querySelectorAll<HTMLDivElement>(
-      "div[data-dag]",
-    );
+    const cards =
+      cardsContainer?.querySelectorAll<HTMLDivElement>("div[data-dag]");
     cards?.forEach((card) => {
       const dagMatch = !selectedDag || card.dataset.dag === selectedDag;
       const genderMatch =

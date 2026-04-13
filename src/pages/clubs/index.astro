@@ -5,7 +5,13 @@ import AddClubCta from "../../components/AddClubCta.astro";
 import { getCollection } from "astro:content";
 
 const allClubs = (await getCollection("clubs")).filter((c) => c.data.active);
-const towns = ["Beveren", "Kruibeke", "Melsele", "Zwijndrecht"] as const;
+const towns = [
+  "Beveren",
+  "Kruibeke",
+  "Melsele",
+  "Zwijndrecht",
+  "Vrasene",
+] as const;
 const dayOrder = [
   "Monday",
   "Tuesday",
