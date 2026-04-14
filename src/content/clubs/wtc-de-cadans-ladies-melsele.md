@@ -5,6 +5,7 @@ shortDescription: De Cadans ladies is een ploeg voor vrouwen die samen graag fun
 meetingPoint: KAN-TIEN, Albrecht Rodenbachlaan 23, 9120 Melsele
 website: https://www.facebook.com/share/1Fs6aJo5PZ/
 contactEmail: wtcdecadansladies@gmail.com
+logo: /clubs/de-cadans-ladies/logo.webp
 gender: women
 active: true
 rides:
