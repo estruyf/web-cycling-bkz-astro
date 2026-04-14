@@ -25,6 +25,9 @@ const {
   slug,
 } = Astro.props;
 
+const eventSlug = slug.replace(/\.md$/, "");
+const eventDetailsUrl = `/evenementen/${eventSlug}`;
+
 const maandNamen = [
   "jan",
   "feb",
@@ -94,7 +97,14 @@ const hasDateRange =
 
   <div class="flex-1 min-w-0">
     <div class="flex flex-wrap items-center gap-2">
-      <h3 class="font-bold text-gray-900 text-base truncate">{name}</h3>
+      <h3 class="font-bold text-gray-900 text-base truncate">
+        <a
+          href={eventDetailsUrl}
+          class="hover:text-primary-700 transition-colors"
+        >
+          {name}
+        </a>
+      </h3>
       {
         frequency !== "once" && (
           <span class="inline-flex items-center rounded-full bg-primary-50 px-2 py-0.5 text-xs font-semibold text-primary-700">
@@ -199,30 +209,48 @@ const hasDateRange =
         {organizer}
       </span>
     </div>
-    {
-      website && (
-        <a
-          href={website}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center gap-1 text-sm text-primary-600 hover:text-primary-800 font-medium mt-2"
+    <div class="flex flex-wrap items-center gap-3 mt-2">
+      <a
+        href={eventDetailsUrl}
+        class="inline-flex items-center gap-1 text-sm text-primary-600 hover:text-primary-800 font-medium"
+      >
+        Bekijk details
+        <svg
+          class="w-3.5 h-3.5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
         >
-          Meer info
-          <svg
-            class="w-3.5 h-3.5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"
+          ></path>
+        </svg>
+      </a>
+      {
+        website && (
+          <a
+            href={website}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 font-medium"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-            />
-          </svg>
-        </a>
-      )
-    }
+            Eventwebsite
+            <svg
+              class="w-3.5 h-3.5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+              />
+            </svg>
+          </a>
+        )
+      }
+    </div>
   </div>
 </div>
