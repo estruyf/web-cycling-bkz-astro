@@ -1,5 +1,5 @@
 ---
-name: Wil jij ook sponsor worden?
+name: Wil jij sponsor worden?
 website: http://wielerwaas.be/sponsors
 tier: gold
 order: 1
