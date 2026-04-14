@@ -30,16 +30,16 @@ const sponsors = (await getCollection("sponsors"))
                 href={sponsor.data.website || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="flex items-center justify-center rounded-2xl border border-gray-200 bg-white px-10 py-7 transition-all hover:border-gray-400 hover:shadow-md min-w-48 font-semibold text-gray-800"
+                class="flex h-28 w-56 items-center justify-center rounded-2xl border border-gray-200 bg-white px-6 py-5 transition-all hover:border-gray-400 hover:shadow-md font-semibold text-gray-800"
               >
                 {sponsor.data.logo ? (
                   <img
                     src={sponsor.data.logo}
                     alt={sponsor.data.name}
-                    class="h-12 object-contain"
+                    class="max-h-12 w-full object-contain"
                   />
                 ) : (
-                  sponsor.data.name
+                  <span class="text-center">{sponsor.data.name}</span>
                 )}
               </a>
             ))}

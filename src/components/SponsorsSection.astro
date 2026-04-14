@@ -20,18 +20,19 @@ const sponsors = (await getCollection("sponsors"))
         {sponsors.map((s) => (
           <a
             href={s.data.website || "#"}
+            title={s.data.name || ""}
             target="_blank"
             rel="noopener noreferrer"
-            class="flex items-center justify-center bg-white border border-gray-200 rounded-xl px-8 py-5 hover:border-gray-400 transition-colors min-w-40 font-semibold text-gray-800"
+            class="flex h-28 w-56 items-center justify-center bg-white border border-gray-200 rounded-xl px-6 py-5 hover:border-gray-400 transition-colors font-semibold text-gray-800"
           >
             {s.data.logo ? (
               <img
                 src={s.data.logo}
                 alt={s.data.name}
-                class="h-10 object-contain"
+                class="max-h-12 w-full object-contain"
               />
             ) : (
-              s.data.name
+              <span class="text-center">{s.data.name}</span>
             )}
           </a>
         ))}

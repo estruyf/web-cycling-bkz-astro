@@ -45,6 +45,7 @@ const sponsors = defineCollection({
   type: "content",
   schema: z.object({
     name: z.string(),
+    description: z.string().optional(),
     logo: z.string().optional(),
     website: z.string().optional(),
     tier: z.enum(["gold", "silver", "bronze"]),
