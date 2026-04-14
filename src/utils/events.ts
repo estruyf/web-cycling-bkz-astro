@@ -43,6 +43,81 @@ function addUtcMonths(inputDate: Date, months: number): Date {
   );
 }
 
+function getDaysInUtcMonth(year: number, month: number): number {
+  return new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
+}
+
+interface MonthlyRecurrencePattern {
+  weekday: number;
+  occurrenceInMonth: number;
+  isLastWeekdayOfMonth: boolean;
+}
+
+function getMonthlyRecurrencePattern(date: Date): MonthlyRecurrencePattern {
+  const dayOfMonth = date.getUTCDate();
+  const daysInMonth = getDaysInUtcMonth(
+    date.getUTCFullYear(),
+    date.getUTCMonth(),
+  );
+
+  return {
+    weekday: date.getUTCDay(),
+    occurrenceInMonth: Math.ceil(dayOfMonth / 7),
+    isLastWeekdayOfMonth: dayOfMonth + 7 > daysInMonth,
+  };
+}
+
+function getLastWeekdayInUtcMonth(
+  year: number,
+  month: number,
+  weekday: number,
+): Date {
+  const daysInMonth = getDaysInUtcMonth(year, month);
+  const lastDayOfMonth = new Date(Date.UTC(year, month, daysInMonth));
+  const delta = (lastDayOfMonth.getUTCDay() - weekday + 7) % 7;
+
+  return new Date(Date.UTC(year, month, daysInMonth - delta));
+}
+
+function getNthWeekdayInUtcMonth(
+  year: number,
+  month: number,
+  weekday: number,
+  nth: number,
+): Date {
+  const firstDayOfMonth = new Date(Date.UTC(year, month, 1));
+  const offset = (weekday - firstDayOfMonth.getUTCDay() + 7) % 7;
+  const dayOfMonth = 1 + offset + (nth - 1) * 7;
+  const daysInMonth = getDaysInUtcMonth(year, month);
+
+  if (dayOfMonth > daysInMonth) {
+    return getLastWeekdayInUtcMonth(year, month, weekday);
+  }
+
+  return new Date(Date.UTC(year, month, dayOfMonth));
+}
+
+function getMonthlyOccurrenceDate(
+  startDate: Date,
+  monthOffset: number,
+  pattern: MonthlyRecurrencePattern,
+): Date {
+  const targetMonthBase = addUtcMonths(startDate, monthOffset);
+  const year = targetMonthBase.getUTCFullYear();
+  const month = targetMonthBase.getUTCMonth();
+
+  if (pattern.isLastWeekdayOfMonth) {
+    return getLastWeekdayInUtcMonth(year, month, pattern.weekday);
+  }
+
+  return getNthWeekdayInUtcMonth(
+    year,
+    month,
+    pattern.weekday,
+    pattern.occurrenceInMonth,
+  );
+}
+
 export function expandEventsToOccurrences(
   events: EventEntry[],
 ): EventOccurrence[] {
@@ -73,20 +148,46 @@ export function expandEventsToOccurrences(
       continue;
     }
 
-    let cursor = normalizedStart;
+    if (frequency === "weekly") {
+      let cursor = normalizedStart;
+      let count = 0;
+
+      while (cursor <= normalizedEnd && count < MAX_OCCURRENCES_PER_EVENT) {
+        occurrences.push({
+          event,
+          occurrenceDate: cursor,
+          key: `${event.id}-${cursor.toISOString()}`,
+        });
+
+        cursor = addUtcDays(cursor, 7);
+        count += 1;
+      }
+
+      continue;
+    }
+
+    const pattern = getMonthlyRecurrencePattern(normalizedStart);
+    let monthOffset = 0;
     let count = 0;
 
-    while (cursor <= normalizedEnd && count < MAX_OCCURRENCES_PER_EVENT) {
+    while (count < MAX_OCCURRENCES_PER_EVENT) {
+      const occurrenceDate = getMonthlyOccurrenceDate(
+        normalizedStart,
+        monthOffset,
+        pattern,
+      );
+
+      if (occurrenceDate > normalizedEnd) {
+        break;
+      }
+
       occurrences.push({
         event,
-        occurrenceDate: cursor,
-        key: `${event.id}-${cursor.toISOString()}`,
+        occurrenceDate,
+        key: `${event.id}-${occurrenceDate.toISOString()}`,
       });
 
-      cursor =
-        frequency === "weekly"
-          ? addUtcDays(cursor, 7)
-          : addUtcMonths(cursor, 1);
+      monthOffset += 1;
       count += 1;
     }
   }
