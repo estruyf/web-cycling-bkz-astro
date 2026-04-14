@@ -7,7 +7,17 @@ active: true
 gender: mixed
 rides:
   - day: Tuesday
-    time: "09:00" # or use seasonal format below
+    time:
+      - from: 3
+        to: 9
+        time: "09:00"
+      - from: 10
+        to: 2
+        time: "09:30"
+    type: Groepstraining
+    averageSpeed: "28-30"
+    openForAll: true
+  - day: Thursday
     time:
       - from: 3
         to: 9
