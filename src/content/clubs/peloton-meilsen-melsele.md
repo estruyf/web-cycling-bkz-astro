@@ -9,23 +9,24 @@ gender: mixed
 active: true
 rides:
   - day: Wednesday
-    time: "19:00"
+    time: 19:00
     type: Clubrit
     averageSpeed: 32
     notes: Wekelijkse clubrit met twee vrije stukken.
     openForAll: true
   - day: Sunday
-    time: "09:00"
+    time: 09:00
     type: Clubrit
     group: A
     averageSpeed: 33
     openForAll: false
   - day: Sunday
-    time: "09:00"
+    time: 09:00
     type: Clubrit
     group: B
     averageSpeed: 29
     openForAll: false
+contactEmail: info@pelotonmeilsen.be
 ---
 
 Peloton Meilsen is een warme en hechte club waar samen rijden centraal staat. We vertrekken vanuit het dorp van Melsele en bieden ritten aan voor verschillende profielen, zodat zowel recreatieve als sportieve fietsers hun plaats vinden.
