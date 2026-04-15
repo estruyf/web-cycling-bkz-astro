@@ -31,7 +31,7 @@ const dayOrder = [
 ];
 
 const alleRitten = clubs.flatMap((club) =>
-  club.data.rides.map((ride) => ({
+  (club.data.rides ?? []).map((ride) => ({
     clubNaam: club.data.name,
     clubSlug: club.id.replace(/\.md$/, ""),
     locatie: club.data.town,

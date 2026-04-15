@@ -32,7 +32,7 @@ const dayLabels: Record<string, string> = {
 };
 
 const uniqueDays = Array.from(
-  new Set(allClubs.flatMap((club) => club.data.rides.map((ride) => ride.day))),
+  new Set(allClubs.flatMap((club) => (club.data.rides ?? []).map((ride) => ride.day))),
 ).sort((a, b) => dayOrder.indexOf(a) - dayOrder.indexOf(b));
 ---
 
@@ -124,10 +124,10 @@ const uniqueDays = Array.from(
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {townClubs.map((club) => (
                 <div
-                  class="club-filter-item"
+                  class="club-filter-item h-full"
                   data-town={club.data.town}
-                  data-days={club.data.rides.map((ride) => ride.day).join("|")}
-                  data-types={club.data.rides
+                  data-days={(club.data.rides ?? []).map((ride) => ride.day).join("|")}
+                  data-types={(club.data.rides ?? [])
                     .map((ride) => ride.type)
                     .join("|")}
                   data-gender={club.data.gender ?? ""}

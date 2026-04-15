@@ -30,8 +30,7 @@
         {
           "name": "shortDescription",
           "type": "string",
-          "single": true,
-          "required": true
+          "single": true
         },
         {
           "name": "logo",
@@ -46,8 +45,7 @@
         {
           "name": "meetingPoint",
           "type": "string",
-          "single": true,
-          "required": true
+          "single": true
         },
         {
           "name": "meetingPointDetail",
@@ -65,7 +63,11 @@
           "default": true
         },
         {
-          "name": "gender",
+          "name": "claimable",
+          "type": "boolean",
+          "default": false
+        },
+        {
           "type": "choice",
           "choices": [
             "women",
@@ -75,8 +77,12 @@
         },
         {
           "name": "rides",
-          "type": "list",
-          "required": true
+          "type": "list"
+        },
+        {
+          "name": "claimable",
+          "type": "boolean",
+          "default": false
         }
       ]
     },

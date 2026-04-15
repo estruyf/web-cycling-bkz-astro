@@ -24,15 +24,16 @@ export interface Ride {
 export interface ClubData {
   name: string;
   town: "Beveren" | "Kruibeke" | "Zwijndrecht" | "Melsele" | "Vrasene";
-  shortDescription: string;
+  shortDescription?: string;
   logo?: string;
   website?: string;
-  meetingPoint: string;
+  meetingPoint?: string;
   meetingPointDetail?: string;
   contactEmail?: string;
   active: boolean;
+  claimable: boolean;
   gender?: "women" | "men" | "mixed";
-  rides: Ride[];
+  rides?: Ride[];
 }
 
 export interface Club {
