@@ -31,7 +31,7 @@ contactEmail: info@pelotonmeilsen.be
 
 Peloton Meilsen is een warme en hechte club waar samen rijden centraal staat. We vertrekken vanuit het dorp van Melsele en bieden ritten aan voor verschillende profielen, zodat zowel recreatieve als sportieve fietsers hun plaats vinden.
 
-## Over ons
+Over ons:
 
 - **Niveau ritten:** recreatief en sportief
 - **Groepen:** Groep A en Groep B
