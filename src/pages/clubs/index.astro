@@ -50,6 +50,33 @@ const uniqueDays = Array.from(
       class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-10"
     >
       <div class="flex flex-wrap items-end gap-4">
+        <label class="block flex-1 min-w-[200px]">
+          <span
+            class="text-xs font-semibold uppercase tracking-wide text-gray-500"
+            >Zoeken</span
+          >
+          <div class="relative mt-1">
+            <svg
+              class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <input
+              id="club-filter-search"
+              type="text"
+              placeholder="Zoek op clubnaam..."
+              class="block w-full rounded-lg border border-gray-200 bg-white pl-9 pr-3 py-2 text-sm text-gray-700 focus:border-primary-500 focus:outline-none"
+            />
+          </div>
+        </label>
+
         <label class="block">
           <span
             class="text-xs font-semibold uppercase tracking-wide text-gray-500"
@@ -125,6 +152,7 @@ const uniqueDays = Array.from(
               {townClubs.map((club) => (
                 <div
                   class="club-filter-item h-full"
+                  data-name={club.data.name.toLowerCase()}
                   data-town={club.data.town}
                   data-days={(club.data.rides ?? []).map((ride) => ride.day).join("|")}
                   data-types={(club.data.rides ?? [])
@@ -171,6 +199,7 @@ const uniqueDays = Array.from(
   const dayFilter = document.getElementById("club-filter-day");
   const typeFilter = document.getElementById("club-filter-type");
   const genderFilter = document.getElementById("club-filter-gender");
+  const searchFilter = document.getElementById("club-filter-search") as HTMLInputElement | null;
   const resetBtn = document.getElementById("club-filter-reset");
   const noResults = document.getElementById("club-filter-empty");
 
@@ -186,6 +215,7 @@ const uniqueDays = Array.from(
     const day = (dayFilter as HTMLSelectElement | null)?.value ?? "";
     const type = (typeFilter as HTMLSelectElement | null)?.value ?? "";
     const gender = (genderFilter as HTMLSelectElement | null)?.value ?? "";
+    const search = (searchFilter?.value ?? "").toLowerCase().trim();
 
     let visibleCount = 0;
 
@@ -194,12 +224,14 @@ const uniqueDays = Array.from(
       const itemDays = (item.dataset.days ?? "").split("|");
       const itemTypes = (item.dataset.types ?? "").split("|");
       const itemGender = item.dataset.gender ?? "";
+      const itemName = item.dataset.name ?? "";
 
       const matchesTown = !town || itemTown === town;
       const matchesDay = !day || itemDays.includes(day);
       const matchesType = !type || itemTypes.includes(type);
       const matchesGender = !gender || itemGender === gender;
-      const matches = matchesTown && matchesDay && matchesType && matchesGender;
+      const matchesSearch = !search || itemName.includes(search);
+      const matches = matchesTown && matchesDay && matchesType && matchesGender && matchesSearch;
 
       item.classList.toggle("hidden", !matches);
       if (matches) visibleCount += 1;
@@ -224,11 +256,13 @@ const uniqueDays = Array.from(
   dayFilter?.addEventListener("change", applyFilters);
   typeFilter?.addEventListener("change", applyFilters);
   genderFilter?.addEventListener("change", applyFilters);
+  searchFilter?.addEventListener("input", applyFilters);
   resetBtn?.addEventListener("click", () => {
     if (townFilter) (townFilter as HTMLSelectElement).value = "";
     if (dayFilter) (dayFilter as HTMLSelectElement).value = "";
     if (typeFilter) (typeFilter as HTMLSelectElement).value = "";
     if (genderFilter) (genderFilter as HTMLSelectElement).value = "";
+    if (searchFilter) searchFilter.value = "";
     applyFilters();
   });
 </script>
