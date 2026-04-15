@@ -162,5 +162,12 @@
     }
   ],
   "frontMatter.content.publicFolder": "public",
+  "frontMatter.dashboard.content.filters": [
+    {
+      "title": "Content type",
+      "name": "fmContentType",
+      "type": "choice"
+    }
+  ],
   "frontMatter.git.enabled": true
 }
