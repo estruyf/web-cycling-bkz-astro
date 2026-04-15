@@ -78,11 +78,6 @@
         {
           "name": "rides",
           "type": "list"
-        },
-        {
-          "name": "claimable",
-          "type": "boolean",
-          "default": false
         }
       ]
     },

@@ -4,9 +4,11 @@ import ClubCard from "./ClubCard.astro";
 
 interface Props {
   clubs: CollectionEntry<"clubs">[];
+  totalCount?: number;
 }
 
-const { clubs } = Astro.props;
+const { clubs, totalCount } = Astro.props;
+const displayCount = totalCount ?? clubs.length;
 ---
 
 <section class="bg-white py-16">
@@ -15,7 +17,7 @@ const { clubs } = Astro.props;
       <div>
         <h2 class="text-2xl font-bold text-gray-900">Clubs</h2>
         <p class="text-gray-500 text-sm mt-1">
-          {clubs.length} club{clubs.length !== 1 ? "s" : ""} in de regio
+          {displayCount} club{displayCount !== 1 ? "s" : ""} in de regio
         </p>
       </div>
       <a

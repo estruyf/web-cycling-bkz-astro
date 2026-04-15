@@ -7,7 +7,8 @@ import ClubsSection from "../components/ClubsSection.astro";
 import { getCollection } from "astro:content";
 import { expandEventsToOccurrences } from "../utils/events";
 
-const clubs = (await getCollection("clubs")).filter((c) => c.data.active);
+const allClubs = (await getCollection("clubs")).filter((c) => c.data.active);
+const shuffledClubs = [...allClubs].sort(() => Math.random() - 0.5).slice(0, 9);
 
 const now = new Date();
 const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -90,11 +91,11 @@ const upcomingEvents = expandEventsToOccurrences(allEvents)
     </div>
   </section>
 
-  <WeeklyRidesSection clubs={clubs} />
+  <WeeklyRidesSection clubs={allClubs} />
 
   <UpcomingEventsSection upcomingEvents={upcomingEvents} />
 
-  <ClubsSection clubs={clubs} />
+  <ClubsSection clubs={shuffledClubs} totalCount={allClubs.length} />
 
   <AddClubCta />
 </Layout>
