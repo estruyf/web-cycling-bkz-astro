@@ -34,8 +34,8 @@
         },
         {
           "name": "logo",
-          "type": "string",
-          "single": true
+          "type": "image",
+          "isPreviewImage": true
         },
         {
           "name": "website",
