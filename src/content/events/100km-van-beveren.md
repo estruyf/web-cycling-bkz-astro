@@ -7,7 +7,7 @@ time: 08:00
 town: Beveren
 location: Tent grote markt, Beveren
 organizer: Zondagrijders
-website: https://www.vwb.be/173/Kalender
+website: https://www.vwb.be/go/kalender/event/20160/0
 ---
 
 Rit langs vlaamse en nederlandse wegen.
