@@ -8,6 +8,7 @@ organizer: Zondagrijders
 location: "'T Kolenhof, Lt Van eepoelstraat 167, Beveren"
 town: Beveren
 website: https://www.vwb.be/go/kalender/event/20166/0
+contactEmail: dany.verheyen@skynet.be
 ---
 
 Valke rit langs Vlaamse en Nederlandse wegen

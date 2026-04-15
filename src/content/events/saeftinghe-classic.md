@@ -8,6 +8,7 @@ time: 07:30
 organizer: WTC Barsele
 town: Bazel
 location: Sint-Jorisinstituut, Kruibekestraat 55A, Bazel
+contactEmail: joris.mees1958@gmail.com
 ---
 
 WTC Barsele en Kruibeke Tegen Kanker organiseren

@@ -178,6 +178,11 @@
           "single": true
         },
         {
+          "name": "contactEmail",
+          "type": "string",
+          "single": true
+        },
+        {
           "name": "active",
           "type": "boolean",
           "default": true

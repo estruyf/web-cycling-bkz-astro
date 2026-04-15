@@ -6,6 +6,7 @@ organizer: TTC Cycling Team
 town: Burcht
 location: Sportpleinen De Wallen, Burcht
 website: https://kinderkankerfonds.be/acties/gp-adriaenssens-2026/
+contactEmail: herbert.de.coster@telenet.be
 active: true
 ---
 

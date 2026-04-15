@@ -68,6 +68,7 @@ const events = defineCollection({
       town: z.string(),
       location: z.string(),
       website: z.string().optional(),
+      contactEmail: z.string().optional(),
       active: z.boolean().default(true),
     })
     .superRefine((data, ctx) => {

@@ -8,6 +8,7 @@ town: Beveren
 location: Tent grote markt, Beveren
 organizer: Zondagrijders
 website: https://www.vwb.be/go/kalender/event/20160/0
+contactEmail: dany.verheyen@skynet.be
 ---
 
 Rit langs vlaamse en nederlandse wegen.
