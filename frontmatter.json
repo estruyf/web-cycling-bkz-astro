@@ -5,6 +5,7 @@
     {
       "name": "clubs",
       "previewPath": "'clubs'",
+      "filePrefix": null,
       "pageBundle": false,
       "clearEmpty": true,
       "fields": [
@@ -82,6 +83,7 @@
     {
       "name": "sponsors",
       "previewPath": "'sponsors'",
+      "filePrefix": null,
       "pageBundle": false,
       "clearEmpty": true,
       "fields": [
@@ -131,9 +133,56 @@
     {
       "name": "events",
       "previewPath": "'events'",
+      "filePrefix": null,
       "pageBundle": false,
       "clearEmpty": true,
-      "fields": []
+      "fields": [
+        {
+          "name": "name",
+          "type": "string",
+          "single": true,
+          "required": true
+        },
+        {
+          "name": "date",
+          "type": "datetime",
+          "dateFormat": "yyyy-MM-dd",
+          "required": true
+        },
+        {
+          "name": "time",
+          "type": "string",
+          "single": true
+        },
+        {
+          "name": "organizer",
+          "type": "string",
+          "single": true,
+          "required": true
+        },
+        {
+          "name": "town",
+          "type": "string",
+          "single": true,
+          "required": true
+        },
+        {
+          "name": "location",
+          "type": "string",
+          "single": true,
+          "required": true
+        },
+        {
+          "name": "website",
+          "type": "string",
+          "single": true
+        },
+        {
+          "name": "active",
+          "type": "boolean",
+          "default": true
+        }
+      ]
     }
   ],
   "frontMatter.framework.id": "astro",
@@ -169,5 +218,7 @@
       "type": "choice"
     }
   ],
-  "frontMatter.git.enabled": true
+  "frontMatter.git.enabled": true,
+  "frontMatter.taxonomy.dateFormat": "yyyy-MM-dd'T'HH:mm:ssXXX",
+  "frontMatter.taxonomy.timezone": "Europe/Brussels"
 }
