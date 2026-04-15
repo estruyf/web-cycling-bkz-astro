@@ -4,7 +4,7 @@ fmContentType: events
 name: Memorial Gerrit Van Der Aa
 date: 2026-06-21
 time: 08:00
-organizer: WTC De Kadans
+organizer: WTC De Cadans
 town: Melsele
 location: Kan-TIen Sportcafė, Melsele
 contactEmail: tim.engels@sgs.com
