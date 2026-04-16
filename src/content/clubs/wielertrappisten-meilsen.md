@@ -25,6 +25,6 @@ rides:
 
 Trappist zit in ons bloed...wij vallen niet, wij Orvallen... wij trappen niet, wij Latrappen...
 
-Ook wij /doen soms wel eens westMAL...maar als team staan we sterk als een Rochefort 🍻 schol!
+Ook wij doen soms wel eens westMAL...maar als team staan we sterk als een Rochefort 🍻 schol!
 
 Wij zijn een eigenzinnige ploeg die atypisch is tov andere wielerploegen. Wij werken met Max aantal leden. Zo is de mannenploeg quasi volzet, maar bij onze damesploeg is er nog plaats voor enthousiaste dames!
