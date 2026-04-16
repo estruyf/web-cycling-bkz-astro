@@ -30,4 +30,5 @@ rides:
     averageSpeed: "+32"
     openForAll: true
 meetingPoint: Kapel Gaverland, Gaverlandstraat 150, Melsele
+gender: mixed
 ---

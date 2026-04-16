@@ -28,6 +28,17 @@
           "required": true
         },
         {
+          "name": "gender",
+          "type": "choice",
+          "choices": [
+            "women",
+            "men",
+            "mixed"
+          ],
+          "required": true,
+          "single": true
+        },
+        {
           "name": "shortDescription",
           "type": "string",
           "single": true
@@ -66,18 +77,6 @@
           "name": "claimable",
           "type": "boolean",
           "default": false
-        },
-        {
-          "type": "choice",
-          "choices": [
-            "women",
-            "men",
-            "mixed"
-          ]
-        },
-        {
-          "name": "rides",
-          "type": "list"
         }
       ]
     },

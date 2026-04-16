@@ -15,12 +15,14 @@ rides:
     notes: Damesploeg (Trappistas)
     averageSpeed: 28
     openForAll: false
+    gender: women
   - day: Thursday
     time: "19:00"
     type: Clubrit
     notes: Mannenploeg
     averageSpeed: 32
     openForAll: false
+    gender: men
 ---
 
 Trappist zit in ons bloed...wij vallen niet, wij Orvallen... wij trappen niet, wij Latrappen...

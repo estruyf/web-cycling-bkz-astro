@@ -35,7 +35,7 @@ const alleRitten = clubs.flatMap((club) =>
     clubNaam: club.data.name,
     clubSlug: club.id.replace(/\.md$/, ""),
     locatie: club.data.town,
-    gender: club.data.gender,
+    gender: ride.gender ?? club.data.gender,
     dag: ride.day,
     uur: ride.time,
     type: ride.type,

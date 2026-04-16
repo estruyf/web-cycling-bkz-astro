@@ -19,6 +19,7 @@ export interface Ride {
   averageSpeed?: number | string;
   notes?: string | number;
   openForAll: boolean;
+  gender?: "women" | "men" | "mixed";
 }
 
 export interface ClubData {

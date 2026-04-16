@@ -22,6 +22,7 @@ const rideSchema = z.object({
   averageSpeed: z.union([z.number(), z.string()]).optional(),
   notes: z.string().optional(),
   openForAll: z.boolean().default(true),
+  gender: z.enum(["women", "men", "mixed"]).optional(),
 });
 
 const clubs = defineCollection({
