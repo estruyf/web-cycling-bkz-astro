@@ -234,7 +234,7 @@ const {
           <div class="px-6 py-4 border-b border-gray-100">
             <h2 class="font-bold text-gray-900">Weekschema ritten</h2>
           </div>
-          <RideSchedule rides={rides} />
+          <RideSchedule rides={rides.map(r => ({ ...r, gender: r.gender ?? gender }))} />
         </div>
       )
     }

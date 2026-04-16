@@ -1,6 +1,8 @@
 ---
 import type { SeasonalTime as SeasonalTimeType } from "../models/Club";
+import type { Gender } from "../utils/gender";
 import SeasonalTime from "./SeasonalTime.astro";
+import GenderBadge from "./GenderBadge.astro";
 
 interface Ride {
   day: string;
@@ -10,6 +12,7 @@ interface Ride {
   averageSpeed?: number | string;
   notes?: string;
   openForAll?: boolean;
+  gender?: Gender;
 }
 
 interface Props {
@@ -79,6 +82,10 @@ function formatSpeed(speed?: number | string): string | undefined {
           class="text-left py-3 px-4 font-semibold text-gray-600 hidden sm:table-cell"
           >Opmerkingen</th
         >
+        <th
+          class="text-left py-3 px-4 font-semibold text-gray-600 hidden sm:table-cell"
+          >Groep type</th
+        >
         <th class="text-left py-3 px-4 font-semibold text-gray-600 w-36"
           >Toegang</th
         >
@@ -111,6 +118,9 @@ function formatSpeed(speed?: number | string): string | undefined {
             </td>
             <td class="py-3 px-4 text-gray-500 hidden sm:table-cell">
               {ride.notes ?? "—"}
+            </td>
+            <td class="py-3 px-4 text-gray-600 hidden sm:table-cell">
+              <GenderBadge gender={ride.gender} fallback="—" />
             </td>
             <td class="py-3 px-4">
               {ride.openForAll !== false ? (
