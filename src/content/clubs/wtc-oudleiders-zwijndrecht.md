@@ -9,10 +9,12 @@ rides:
   - day: Wednesday
     time: 19:00
     type: Clubrit
+    averageSpeed: 28~30
     openForAll: true
   - day: Sunday
     time: "Afhankelijk van de afstand"
     type: Clubrit
+    averageSpeed: 28~30
     openForAll: true
 shortDescription: Gezellige vriendengroep. Gezapig tempo
 website: https://wtc2070.webnode.nl/
