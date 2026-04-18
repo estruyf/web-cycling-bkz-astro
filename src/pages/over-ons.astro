@@ -128,11 +128,9 @@ import Layout from "../layouts/Layout.astro";
               class="ww-btn ww-btn-outline-chalk"
               title="Dien je evenement in">Dien evenement in →</a
             >
-            <a
-              href="mailto:elio@struyfconsulting.be?subject=WielerWaas%20—%20Feedback"
-              class="ww-btn ww-btn-outline-chalk"
-              title="Stuur feedback">Stuur feedback →</a
-            >
+            <Fragment
+              set:html={`<!--email_off--><a href="mailto:elio@struyfconsulting.be?subject=WielerWaas%20—%20Feedback" class="ww-btn ww-btn-outline-chalk" title="Stuur feedback">elio@struyfconsulting.be</a><!--/email_off-->.`}
+            />
           </div>
         </div>
       </section>

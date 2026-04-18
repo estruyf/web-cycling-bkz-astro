@@ -57,8 +57,9 @@ const year = new Date().getFullYear();
           </li>
           <li><a href="/sponsors" title="Partner worden">Partner worden</a></li>
           <li>
-            <a href="mailto:elio@struyfconsulting.be" title="Contact">Contact</a
-            >
+            <Fragment
+              set:html={`<!--email_off--><a href="mailto:elio@struyfconsulting.be" title="Contact">elio@struyfconsulting.be</a><!--/email_off-->.`}
+            />
           </li>
         </ul>
       </div>
@@ -67,7 +68,8 @@ const year = new Date().getFullYear();
     <div class="ww-foot-bottom">
       <span
         >&copy; {year} WielerWaas · Gebouwd door <a
-          href="https://eliostruyf.com" title="Bezoek de website van Elio Struyf">Elio Struyf</a
+          href="https://eliostruyf.com"
+          title="Bezoek de website van Elio Struyf">Elio Struyf</a
         ></span
       >
       <a

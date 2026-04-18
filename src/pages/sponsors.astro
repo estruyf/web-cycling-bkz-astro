@@ -72,13 +72,9 @@ const sponsors = (await getCollection("sponsors"))
             </p>
           </div>
           <div class="ww-cta-actions">
-            <a
-              href="mailto:elio@struyfconsulting.be?subject=Sponsoring%20aanvraag"
-              class="ww-btn ww-btn-chalk"
-              title="Stuur een e-mail naar de beheerder"
-            >
-              Neem contact op →
-            </a>
+            <Fragment
+              set:html={`<!--email_off--><a href="mailto:elio@struyfconsulting.be?subject=Sponsoring%20aanvraag" class="ww-btn ww-btn-chalk" title="Stuur een e-mail naar de beheerder">Neem contact op →</a><!--/email_off-->.`}
+            />
           </div>
         </div>
       </section>
