@@ -22,13 +22,8 @@ interface Props {
 const { rides } = Astro.props;
 
 const dayOrder = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-  "Sunday",
+  "Monday", "Tuesday", "Wednesday", "Thursday",
+  "Friday", "Saturday", "Sunday",
 ];
 const sorted = [...rides].sort(
   (a, b) => dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day),
@@ -44,93 +39,47 @@ const dagNamen: Record<string, string> = {
   Sunday: "Zondag",
 };
 
-const typeColors: Record<string, string> = {
-  Groepstraining: "bg-primary-100 text-primary-800",
-  Rit: "bg-primary-200 text-primary-900",
-  Koffierit: "bg-accent-100 text-accent-800",
-  Clubrit: "bg-red-100 text-red-800",
-};
-
-function getTypeColor(type: string) {
-  return typeColors[type] ?? "bg-gray-100 text-gray-700";
-}
-
-function formatSpeed(speed?: number | string): string | undefined {
-  return speed != null ? `${speed} km/u` : undefined;
+function formatSpeed(speed?: number | string): string {
+  return speed != null ? `${speed} km/u` : "—";
 }
 ---
 
-<div class="overflow-x-auto">
-  <table class="w-full text-sm">
+<div class="ww-rides">
+  <table class="ww-rides-tbl">
     <thead>
-      <tr class="border-b border-gray-200">
-        <th class="text-left py-3 px-4 font-semibold text-gray-600 w-32">Dag</th
-        >
-        <th class="text-left py-3 px-4 font-semibold text-gray-600 w-24">Uur</th
-        >
-        <th class="text-left py-3 px-4 font-semibold text-gray-600">Type rit</th
-        >
-        <th
-          class="text-left py-3 px-4 font-semibold text-gray-600 hidden sm:table-cell"
-          >Groep</th
-        >
-        <th
-          class="text-left py-3 px-4 font-semibold text-gray-600 hidden sm:table-cell"
-          >Gem. snelheid</th
-        >
-        <th
-          class="text-left py-3 px-4 font-semibold text-gray-600 hidden sm:table-cell"
-          >Opmerkingen</th
-        >
-        <th
-          class="text-left py-3 px-4 font-semibold text-gray-600 hidden sm:table-cell"
-          >Groep type</th
-        >
-        <th class="text-left py-3 px-4 font-semibold text-gray-600 w-36"
-          >Toegang</th
-        >
+      <tr>
+        <th>Dag</th>
+        <th>Uur</th>
+        <th>Type rit</th>
+        <th>Groep</th>
+        <th>Gem. snelheid</th>
+        <th>Opmerkingen</th>
+        <th>Groep type</th>
+        <th>Toegang</th>
       </tr>
     </thead>
     <tbody>
       {
-        sorted.map((ride, i) => (
-          <tr
-            class={`border-b border-gray-100 ${i % 2 === 0 ? "bg-white" : "bg-gray-50/50"}`}
-          >
-            <td class="py-3 px-4 font-medium text-gray-900">
+        sorted.map((ride) => (
+          <tr>
+            <td data-label="Dag" class="ww-cell-day">
               {dagNamen[ride.day] ?? ride.day}
             </td>
-            <td class="py-3 px-4 text-gray-700 font-mono">
+            <td data-label="Uur" class="ww-cell-time">
               <SeasonalTime time={ride.time} />
             </td>
-            <td class="py-3 px-4">
-              <span
-                class={`inline-block px-2.5 py-0.5 rounded-full text-xs font-medium ${getTypeColor(ride.type)}`}
-              >
-                {ride.type}
-              </span>
-            </td>
-            <td class="py-3 px-4 text-gray-600 hidden sm:table-cell">
-              {ride.group ?? "—"}
-            </td>
-            <td class="py-3 px-4 text-gray-600 hidden sm:table-cell">
-              {formatSpeed(ride.averageSpeed) ?? "—"}
-            </td>
-            <td class="py-3 px-4 text-gray-500 hidden sm:table-cell">
-              {ride.notes ?? "—"}
-            </td>
-            <td class="py-3 px-4 text-gray-600 hidden sm:table-cell">
+            <td data-label="Type rit">{ride.type}</td>
+            <td data-label="Groep">{ride.group ?? "—"}</td>
+            <td data-label="Gem. snelheid">{formatSpeed(ride.averageSpeed)}</td>
+            <td data-label="Opmerkingen">{ride.notes ?? "—"}</td>
+            <td data-label="Groep type">
               <GenderBadge gender={ride.gender} fallback="—" />
             </td>
-            <td class="py-3 px-4">
+            <td data-label="Toegang">
               {ride.openForAll !== false ? (
-                <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 whitespace-nowrap">
-                  Open
-                </span>
+                <span class="ww-badge open">Open</span>
               ) : (
-                <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-medium bg-accent-100 text-accent-800 whitespace-nowrap">
-                  Leden
-                </span>
+                <span class="ww-badge leden">Leden</span>
               )}
             </td>
           </tr>

@@ -43,7 +43,7 @@ const formatDate = (inputDate: Date) =>
     timeZone: "UTC",
   }).format(inputDate);
 
-const frequencyLabels = {
+const frequencyLabels: Record<string, string> = {
   once: "Eenmalig",
   weekly: "Wekelijks",
   monthly: "Maandelijks",
@@ -51,202 +51,181 @@ const frequencyLabels = {
 ---
 
 <Layout title={`${event.data.name} — WielerWaas`} description={event.data.name}>
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <a
-      href="/evenementen"
-      class="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 mb-8 transition-colors"
-    >
-      <svg
-        class="w-4 h-4"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        stroke-width="2"
+  <section class="ww-page-hero">
+    <div class="ww-wrap">
+      <a
+        href="/evenementen"
+        style="display: inline-flex; align-items: center; gap: 6px; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--chalk); opacity: .75; text-decoration: none; margin-bottom: 20px;"
       >
-        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"
-        ></path>
-      </svg>
-      Terug naar evenementen
-    </a>
-
-    <div
-      class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-8"
-    >
-      <div class="bg-gradient-to-r from-primary-600 to-primary-500 h-3"></div>
-      <div class="p-8">
-        <div class="flex flex-wrap items-start gap-3 mb-3">
-          <h1 class="text-2xl font-extrabold text-gray-900">
-            {event.data.name}
-          </h1>
-          <span
-            class="bg-primary-100 text-primary-800 text-xs font-semibold px-3 py-1 rounded-full"
-          >
-            {frequencyLabels[event.data.frequency ?? "once"]}
-          </span>
-        </div>
-        <p class="text-gray-500 leading-relaxed">
-          Georganiseerd door {event.data.organizer} in {event.data.town}.
-        </p>
+        ← Terug naar evenementen
+      </a>
+      <div class="kicker">
+        {frequencyLabels[event.data.frequency ?? "once"]}
+        {event.data.town}
       </div>
+      <h1>{event.data.name}<br /><em>{event.data.town}.</em></h1>
+      <p>Georganiseerd door {event.data.organizer} in {event.data.town}.</p>
     </div>
+  </section>
+  <div class="ww-checker ww-checker-red"></div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-      <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
-        <div
-          class="flex items-center gap-2 text-gray-400 text-xs font-semibold uppercase tracking-wide mb-2"
-        >
-          Datum
-        </div>
-        {
-          startDate && endDate ? (
-            startDate.getTime() === endDate.getTime() ? (
-              <p class="text-gray-800 font-medium text-sm">
-                {formatDate(startDate)}
-              </p>
-            ) : (
-              <>
-                <p class="text-gray-800 font-medium text-sm">
-                  Van {formatDate(startDate)}
+  <section class="ww-band white">
+    <div class="ww-wrap" style="padding: 48px 0 56px;">
+      <div
+        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px;"
+      >
+        <div class="ww-card">
+          <div
+            class="kicker"
+            style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--red); margin-bottom: 8px;"
+          >
+            Datum
+          </div>
+          {
+            startDate && endDate ? (
+              startDate.getTime() === endDate.getTime() ? (
+                <p style="color: var(--ink); font-weight: 600; margin: 0;">
+                  {formatDate(startDate)}
                 </p>
-                <p class="text-gray-600 text-sm">Tot {formatDate(endDate)}</p>
-              </>
+              ) : (
+                <>
+                  <p style="color: var(--ink); font-weight: 600; margin: 0;">
+                    Van {formatDate(startDate)}
+                  </p>
+                  <p style="color: var(--ink-2); margin: 4px 0 0; font-size: 14px;">
+                    Tot {formatDate(endDate)}
+                  </p>
+                </>
+              )
+            ) : (
+              <p style="color: var(--ink); font-weight: 600; margin: 0;">
+                Nog te bepalen
+              </p>
             )
-          ) : (
-            <p class="text-gray-800 font-medium text-sm">Nog te bepalen</p>
+          }
+        </div>
+
+        {
+          event.data.time && (
+            <div class="ww-card">
+              <div
+                class="kicker"
+                style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--red); margin-bottom: 8px;"
+              >
+                Tijdstip
+              </div>
+              <p style="color: var(--ink); font-weight: 600; margin: 0;">
+                {event.data.time}
+              </p>
+            </div>
+          )
+        }
+
+        <div class="ww-card">
+          <div
+            class="kicker"
+            style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--red); margin-bottom: 8px;"
+          >
+            Locatie
+          </div>
+          <p style="color: var(--ink); font-weight: 600; margin: 0;">
+            {event.data.location}
+          </p>
+        </div>
+
+        <div class="ww-card">
+          <div
+            class="kicker"
+            style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--red); margin-bottom: 8px;"
+          >
+            Organisator
+          </div>
+          <p style="color: var(--ink); font-weight: 600; margin: 0;">
+            {event.data.organizer}
+          </p>
+        </div>
+      </div>
+
+      <div
+        style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 32px;"
+      >
+        {
+          event.data.website && (
+            <a
+              href={event.data.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="ww-btn ww-btn-red"
+              title="Ga naar de eventwebsite"
+            >
+              Naar eventwebsite →
+            </a>
+          )
+        }
+        {
+          event.data.contactEmail && (
+            <a
+              href={`mailto:${event.data.contactEmail}`}
+              class="ww-btn ww-btn-outline-ink"
+              title="Stuur een e-mail naar de organisator"
+            >
+              {event.data.contactEmail}
+            </a>
           )
         }
       </div>
 
       {
-        event.data.time && (
-          <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
-            <div class="flex items-center gap-2 text-gray-400 text-xs font-semibold uppercase tracking-wide mb-2">
-              Tijdstip
-            </div>
-            <p class="text-gray-800 font-medium text-sm">{event.data.time}</p>
-          </div>
-        )
-      }
-
-      <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
-        <div
-          class="flex items-center gap-2 text-gray-400 text-xs font-semibold uppercase tracking-wide mb-2"
-        >
-          Locatie
-        </div>
-        <p class="text-gray-800 font-medium text-sm">{event.data.location}</p>
-      </div>
-
-      <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
-        <div
-          class="flex items-center gap-2 text-gray-400 text-xs font-semibold uppercase tracking-wide mb-2"
-        >
-          Organisator
-        </div>
-        <p class="text-gray-800 font-medium text-sm">{event.data.organizer}</p>
-      </div>
-    </div>
-
-    <div class="flex flex-wrap gap-4 mb-8">
-      {
-        event.data.website && (
-          <a
-            href={event.data.website}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 rounded-lg bg-primary-600 hover:bg-primary-500 text-white px-4 py-2 text-sm font-semibold transition-colors"
-          >
-            Naar eventwebsite
-            <svg
-              class="w-4 h-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M14 5h5m0 0v5m0-5L10 14M5 19h14"
-              />
-            </svg>
-          </a>
-        )
-      }
-
-      {
-        event.data.contactEmail && (
-          <a
-            href={`mailto:${event.data.contactEmail}`}
-            class="inline-flex items-center gap-2 rounded-lg border border-gray-200 hover:border-gray-300 bg-white text-gray-700 px-4 py-2 text-sm font-semibold transition-colors"
-          >
-            <svg
-              class="w-4 h-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-              />
-            </svg>
-            {event.data.contactEmail}
-          </a>
-        )
-      }
-    </div>
-
-    {
-      upcomingOccurrences.length > 0 && (
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 mb-8">
-          <h2 class="font-bold text-gray-900 mb-4">Komende data</h2>
-          <ul class="space-y-2 text-sm text-gray-700">
-            {upcomingOccurrences.slice(0, 12).map((occurrence) => (
-              <li class="flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-primary-500" />
-                <span>{formatDate(occurrence.occurrenceDate)}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )
-    }
-
-    {
-      pastOccurrences.length > 0 && (
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 mb-8">
-          <h2 class="font-bold text-gray-900 mb-4">Voorbije data</h2>
-          <ul class="space-y-2 text-sm text-gray-500">
-            {pastOccurrences
-              .slice(-6)
-              .reverse()
-              .map((occurrence) => (
-                <li>{formatDate(occurrence.occurrenceDate)}</li>
+        upcomingOccurrences.length > 0 && (
+          <article class="ww-card" style="margin-bottom: 24px;">
+            <h2 style="font-family: 'Anton', sans-serif; font-size: 24px; text-transform: uppercase; margin: 0 0 16px;">
+              Komende data
+            </h2>
+            <ul style="list-style: none; padding: 0; margin: 0; display: grid; gap: 8px;">
+              {upcomingOccurrences.slice(0, 12).map((occurrence) => (
+                <li style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--ink-2);">
+                  <span style="width: 8px; height: 8px; background: var(--red); display: inline-block;" />
+                  <span>{formatDate(occurrence.occurrenceDate)}</span>
+                </li>
               ))}
-          </ul>
-        </div>
-      )
-    }
+            </ul>
+          </article>
+        )
+      }
 
-    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
-      <h2 class="font-bold text-gray-900 mb-5">Over dit evenement</h2>
-      <div
-        class="max-w-none text-base text-gray-800 leading-relaxed [&_p]:my-4 [&_ul]:my-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:my-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:my-1.5 [&_strong]:font-bold [&_a]:text-primary-600 [&_a]:underline"
-      >
+      {
+        pastOccurrences.length > 0 && (
+          <article class="ww-card" style="margin-bottom: 24px;">
+            <h2 style="font-family: 'Anton', sans-serif; font-size: 24px; text-transform: uppercase; margin: 0 0 16px;">
+              Voorbije data
+            </h2>
+            <ul style="list-style: none; padding: 0; margin: 0; display: grid; gap: 8px;">
+              {pastOccurrences
+                .slice(-6)
+                .reverse()
+                .map((occurrence) => (
+                  <li style="font-size: 14px; color: var(--mute);">
+                    {formatDate(occurrence.occurrenceDate)}
+                  </li>
+                ))}
+            </ul>
+          </article>
+        )
+      }
+
+      <article class="ww-card ww-prose">
+        <h2>Over dit evenement</h2>
         <Content />
-      </div>
-    </div>
+      </article>
 
-    <div class="mt-8 py-5 text-sm text-gray-500">
-      Zie je een fout op deze pagina? Laat het ons weten via
-      <a
-        href={`mailto:elio@struyfconsulting.be?subject=Probleem op evenementpagina: ${event.data.name}`}
-        class="text-primary-600 hover:text-primary-700 underline"
-        >elio@struyfconsulting.be</a
-      >.
+      <p style="margin-top: 32px; font-size: 13px; color: var(--mute);">
+        Zie je een fout op deze pagina? Laat het ons weten via
+        <a
+          href={`mailto:elio@struyfconsulting.be?subject=Probleem op evenementpagina: ${event.data.name}`}
+          style="color: var(--red); text-decoration: underline;"
+          title="Stuur een e-mail naar de beheerder">elio@struyfconsulting.be</a
+        >.
+      </p>
     </div>
-  </div>
+  </section>
 </Layout>

@@ -1,0 +1,310 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import EventCard from "../../components/EventCard.astro";
+import AddClubCta from "../../components/AddClubCta.astro";
+import { getCollection } from "astro:content";
+import { expandEventsToOccurrences } from "../../utils/events";
+
+const now = new Date();
+const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+const allEvents = await getCollection("events");
+
+const eventOccurrences = expandEventsToOccurrences(allEvents);
+
+const events = eventOccurrences
+  .filter((occurrence) => occurrence.occurrenceDate >= today)
+  .sort((a, b) => a.occurrenceDate.getTime() - b.occurrenceDate.getTime());
+
+const pastEvents = eventOccurrences
+  .filter((occurrence) => occurrence.occurrenceDate < today)
+  .sort((a, b) => b.occurrenceDate.getTime() - a.occurrenceDate.getTime());
+
+const towns = Array.from(
+  new Set(eventOccurrences.map((occurrence) => occurrence.event.data.town)),
+).sort((a, b) => a.localeCompare(b, "nl"));
+
+type Occurrence = (typeof eventOccurrences)[number];
+
+function groupByMonth(occurrences: Occurrence[]): Map<string, Occurrence[]> {
+  const map = new Map<string, Occurrence[]>();
+  for (const occ of occurrences) {
+    const key = `${occ.occurrenceDate.getUTCFullYear()}-${String(occ.occurrenceDate.getUTCMonth() + 1).padStart(2, "0")}`;
+    if (!map.has(key)) map.set(key, []);
+    map.get(key)!.push(occ);
+  }
+  return map;
+}
+
+function monthLabel(key: string): string {
+  const [year, month] = key.split("-").map(Number);
+  return new Intl.DateTimeFormat("nl-BE", {
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(new Date(Date.UTC(year, month - 1, 1)));
+}
+
+const upcomingByMonth = groupByMonth(events);
+const pastByMonth = groupByMonth(pastEvents);
+---
+
+<Layout
+  title="Evenementen — WielerWaas"
+  description="Overzicht van wielerevenementen en ritten georganiseerd door clubs in de regio."
+>
+  <section class="ww-page-hero">
+    <div class="ww-wrap">
+      <div class="kicker">Overzicht</div>
+      <h1>Evenementen<br /><em>in het waasland</em></h1>
+      <p>
+        Ritten en wielerevenementen georganiseerd door clubs in en rond de
+        regio.
+      </p>
+    </div>
+  </section>
+  <div class="ww-checker ww-checker-red"></div>
+
+  <section class="ww-band white">
+    <div class="ww-wrap" style="padding-top: 32px; padding-bottom: 56px;">
+      <div class="ww-filters" style="border-top: 0; margin-bottom: 56px;">
+        <input
+          id="event-search"
+          type="search"
+          placeholder="Zoek op naam, organisator, gemeente of locatie"
+          class="ww-input"
+          style="flex: 1; min-width: 240px;"
+        />
+        <select id="event-town" class="ww-select">
+          <option value="all">Alle gemeenten</option>
+          {towns.map((town) => <option value={town}>{town}</option>)}
+        </select>
+        <select id="event-period" class="ww-select">
+          <option value="all">Alle periodes</option>
+          <option value="upcoming">Aankomend</option>
+          <option value="past">Voorbij</option>
+        </select>
+        <button
+          id="event-filter-reset"
+          type="button"
+          class="ww-btn ww-btn-outline-ink"
+        >
+          Reset
+        </button>
+      </div>
+
+      {
+        events.length > 0 ? (
+          <div id="upcoming-events-list">
+            {Array.from(upcomingByMonth.entries()).map(([key, occs]) => (
+              <div
+                data-month-section
+                data-period-section="upcoming"
+                style="margin-bottom: 40px;"
+              >
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--red); padding: 0 0 10px; border-bottom: 2px solid var(--ink); margin-bottom: 18px;">
+                  {monthLabel(key)}
+                </div>
+                <div class="ww-events-grid">
+                  {occs.map((occurrence) => (
+                    <div
+                      class="event-item"
+                      data-period="upcoming"
+                      data-town={occurrence.event.data.town}
+                      data-search={`${occurrence.event.data.name} ${occurrence.event.data.organizer} ${occurrence.event.data.town} ${occurrence.event.data.location}`.toLowerCase()}
+                    >
+                      <EventCard
+                        name={occurrence.event.data.name}
+                        date={occurrence.occurrenceDate}
+                        frequency={occurrence.event.data.frequency}
+                        time={occurrence.event.data.time}
+                        organizer={occurrence.event.data.organizer}
+                        location={occurrence.event.data.location}
+                        website={occurrence.event.data.website}
+                        slug={occurrence.event.id}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div class="ww-card" style="text-align: center;">
+            <p style="font-family: 'Anton', sans-serif; font-size: 28px; margin: 0; text-transform: uppercase;">
+              Geen aankomende evenementen
+            </p>
+            <p style="color: var(--mute); margin-top: 8px;">
+              Kom later nog eens terug!
+            </p>
+          </div>
+        )
+      }
+
+      {
+        pastEvents.length > 0 && (
+          <div style="margin-top: 56px;" id="past-events-section">
+            <header class="ww-section-head">
+              <div>
+                <div class="num">Voorbij</div>
+                <h2 id="past-events-title">Voorbije evenementen</h2>
+              </div>
+            </header>
+            {Array.from(pastByMonth.entries()).map(([key, occs]) => (
+              <div
+                data-month-section
+                data-period-section="past"
+                style="margin-bottom: 40px;"
+              >
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--mute); padding: 0 0 10px; border-bottom: 2px solid var(--line); margin-bottom: 18px;">
+                  {monthLabel(key)}
+                </div>
+                <div class="ww-events-grid" style="opacity: 0.6;">
+                  {occs.map((occurrence) => (
+                    <div
+                      class="event-item"
+                      data-period="past"
+                      data-town={occurrence.event.data.town}
+                      data-search={`${occurrence.event.data.name} ${occurrence.event.data.organizer} ${occurrence.event.data.town} ${occurrence.event.data.location}`.toLowerCase()}
+                    >
+                      <EventCard
+                        name={occurrence.event.data.name}
+                        date={occurrence.occurrenceDate}
+                        frequency={occurrence.event.data.frequency}
+                        time={occurrence.event.data.time}
+                        organizer={occurrence.event.data.organizer}
+                        location={occurrence.event.data.location}
+                        website={occurrence.event.data.website}
+                        slug={occurrence.event.id}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )
+      }
+
+      <div
+        id="events-empty-state"
+        class="ww-card hidden"
+        style="text-align: center; margin-top: 24px;"
+      >
+        <p
+          style="font-family: 'Anton', sans-serif; font-size: 24px; margin: 0; text-transform: uppercase;"
+        >
+          Geen resultaten voor je filters
+        </p>
+        <p style="color: var(--mute); margin-top: 8px;">
+          Probeer een andere zoekterm of filtercombinatie.
+        </p>
+      </div>
+
+      <AddClubCta
+        variant="light"
+        title="Staat jouw evenement er nog niet bij?"
+        description="Stuur je evenementgegevens door en we zetten het op de website."
+        cta="event"
+      />
+    </div>
+  </section>
+
+  <script>
+    function initEventFilters() {
+      const searchInput = document.getElementById("event-search");
+      const townSelect = document.getElementById("event-town");
+      const periodSelect = document.getElementById("event-period");
+      const resetBtn = document.getElementById("event-filter-reset");
+      const eventItems = Array.from(
+        document.querySelectorAll<HTMLElement>(".event-item"),
+      );
+      const monthSections = Array.from(
+        document.querySelectorAll<HTMLElement>("[data-month-section]"),
+      );
+      const upcomingList = document.getElementById("upcoming-events-list");
+      const pastSection = document.getElementById("past-events-section");
+      const pastTitle = document.getElementById("past-events-title");
+      const emptyState = document.getElementById("events-empty-state");
+
+      if (!searchInput && !townSelect && !periodSelect) return;
+
+      const applyFilters = () => {
+        const searchTerm =
+          searchInput instanceof HTMLInputElement
+            ? searchInput.value.trim().toLowerCase()
+            : "";
+        const selectedTown =
+          townSelect instanceof HTMLSelectElement ? townSelect.value : "all";
+        const selectedPeriod =
+          periodSelect instanceof HTMLSelectElement
+            ? periodSelect.value
+            : "all";
+
+        let visibleUpcoming = 0;
+        let visiblePast = 0;
+
+        for (const item of eventItems) {
+          if (!(item instanceof HTMLElement)) continue;
+          const itemPeriod = item.dataset.period ?? "upcoming";
+          const itemTown = item.dataset.town ?? "";
+          const searchableText = item.dataset.search ?? "";
+
+          const matchesSearch =
+            searchTerm === "" || searchableText.includes(searchTerm);
+          const matchesTown =
+            selectedTown === "all" || itemTown === selectedTown;
+          const matchesPeriod =
+            selectedPeriod === "all" || itemPeriod === selectedPeriod;
+
+          const isVisible = matchesSearch && matchesTown && matchesPeriod;
+          item.classList.toggle("hidden", !isVisible);
+
+          if (isVisible) {
+            if (itemPeriod === "upcoming") visibleUpcoming += 1;
+            if (itemPeriod === "past") visiblePast += 1;
+          }
+        }
+
+        // Hide month sections that have no visible items
+        for (const section of monthSections) {
+          const hasVisible =
+            section.querySelectorAll(".event-item:not(.hidden)").length > 0;
+          section.classList.toggle("hidden", !hasVisible);
+        }
+
+        if (upcomingList instanceof HTMLElement) {
+          upcomingList.classList.toggle("hidden", visibleUpcoming === 0);
+        }
+        if (pastSection instanceof HTMLElement) {
+          pastSection.classList.toggle(
+            "hidden",
+            selectedPeriod === "upcoming" || visiblePast === 0,
+          );
+        }
+        if (pastTitle instanceof HTMLElement) {
+          pastTitle.classList.toggle("hidden", selectedPeriod === "upcoming");
+        }
+        if (emptyState instanceof HTMLElement) {
+          emptyState.classList.toggle(
+            "hidden",
+            visibleUpcoming + visiblePast > 0,
+          );
+        }
+      };
+
+      searchInput?.addEventListener("input", applyFilters);
+      townSelect?.addEventListener("change", applyFilters);
+      periodSelect?.addEventListener("change", applyFilters);
+      resetBtn?.addEventListener("click", () => {
+        if (searchInput instanceof HTMLInputElement) searchInput.value = "";
+        if (townSelect instanceof HTMLSelectElement) townSelect.value = "all";
+        if (periodSelect instanceof HTMLSelectElement)
+          periodSelect.value = "all";
+        applyFilters();
+      });
+      applyFilters();
+    }
+
+    document.addEventListener("astro:page-load", initEventFilters);
+  </script>
+</Layout>

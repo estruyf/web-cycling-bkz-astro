@@ -12,83 +12,77 @@ const sponsors = (await getCollection("sponsors"))
   description="Steun het lokale wielrennen in het Waasland als sponsor."
   hideSponsors={true}
 >
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="text-center mb-12">
-      <h1 class="text-3xl font-extrabold text-gray-900 mb-3">Onze sponsors</h1>
-      <p class="text-gray-500 max-w-xl mx-auto">
+  <section class="ww-page-hero">
+    <div class="ww-wrap">
+      <div class="kicker">Partners</div>
+      <h1>Onze<br /><em>sponsors</em></h1>
+      <p>
         Deze organisaties steunen het lokale wielrennen in het Waasland. We zijn
         hen dankbaar voor hun bijdrage aan de wielerwereld.
       </p>
     </div>
+  </section>
+  <div class="ww-checker ww-checker-red"></div>
 
-    {
-      sponsors.length > 0 ? (
-        <div class="mb-16">
-          <div class="flex flex-wrap gap-5">
+  <section class="ww-band white">
+    <div class="ww-wrap" style="padding: 56px 0;">
+      {
+        sponsors.length > 0 ? (
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 56px;">
             {sponsors.map((sponsor) => (
               <a
                 href={sponsor.data.website || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="flex h-28 w-56 items-center justify-center rounded-2xl border border-gray-200 bg-white px-6 py-5 transition-all hover:border-gray-400 hover:shadow-md font-semibold text-gray-800"
+                class="ww-sponsor-logo ww-sponsor-logo-large"
+                style="height: 180px;"
+                title={`Bezoek de website van ${sponsor.data.name}`}
               >
                 {sponsor.data.logo ? (
-                  <img
-                    src={sponsor.data.logo}
-                    alt={sponsor.data.name}
-                    class="max-h-12 w-full object-contain"
-                  />
+                  <img src={sponsor.data.logo} alt={sponsor.data.name} />
                 ) : (
-                  <span class="text-center">{sponsor.data.name}</span>
+                  <span>{sponsor.data.name}</span>
                 )}
               </a>
             ))}
           </div>
-        </div>
-      ) : (
-        <div class="text-center text-gray-400 py-12 mb-12">
-          <p class="text-lg font-medium mb-1">Nog geen sponsors</p>
-          <p class="text-sm">
-            Wees de eerste om het lokale wielrennen te steunen.
-          </p>
-        </div>
-      )
-    }
+        ) : (
+          <div class="ww-card" style="text-align: center; margin-bottom: 56px;">
+            <p style="font-family: 'Anton', sans-serif; font-size: 24px; margin: 0; text-transform: uppercase;">
+              Nog geen sponsors
+            </p>
+            <p style="color: var(--mute); margin-top: 8px;">
+              Wees de eerste om het lokale wielrennen te steunen.
+            </p>
+          </div>
+        )
+      }
 
-    <div
-      class="bg-linear-to-br from-primary-800 to-primary-900 rounded-3xl text-white p-10 md:p-12"
-    >
-      <div class="max-w-xl">
-        <h2 class="text-2xl font-extrabold mb-3">Word sponsor</h2>
-        <p class="text-primary-200 leading-relaxed mb-6">
-          Steun het lokale wielrennen en zet je bedrijf in de kijker bij een
-          betrokken, actieve gemeenschap.
-        </p>
-        <p class="text-primary-200 text-sm mb-8">
-          Stuur ons een e-mail met je bedrijfsnaam, website en je logo (indien
-          beschikbaar). We nemen snel contact met je op.
-        </p>
-
-        <a
-          href="mailto:elio@struyfconsulting.be?subject=Sponsoring%20aanvraag"
-          class="inline-flex items-center gap-2 bg-accent-500 text-primary-900 hover:bg-accent-400 font-bold px-7 py-3 rounded-xl transition-colors"
-        >
-          <svg
-            class="w-4 h-4"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-            ></path>
-          </svg>
-          Neem contact op over sponsoring
-        </a>
-      </div>
+      <section
+        class="ww-cta-band"
+        style="margin: 0 -100vw; padding: 64px 100vw;"
+      >
+        <div class="ww-wrap">
+          <div>
+            <h2 class="max-w-2/3">Word sponsor</h2>
+            <p>
+              Steun het lokale wielrennen en zet je bedrijf in de kijker bij een
+              betrokken, actieve gemeenschap. Stuur ons een e-mail met je
+              bedrijfsnaam, website en je logo (indien beschikbaar). We nemen
+              snel contact met je op.
+            </p>
+          </div>
+          <div class="ww-cta-actions">
+            <a
+              href="mailto:elio@struyfconsulting.be?subject=Sponsoring%20aanvraag"
+              class="ww-btn ww-btn-chalk"
+              title="Stuur een e-mail naar de beheerder"
+            >
+              Neem contact op →
+            </a>
+          </div>
+        </div>
+      </section>
     </div>
-  </div>
+  </section>
 </Layout>

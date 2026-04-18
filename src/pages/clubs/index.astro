@@ -32,7 +32,9 @@ const dayLabels: Record<string, string> = {
 };
 
 const uniqueDays = Array.from(
-  new Set(allClubs.flatMap((club) => (club.data.rides ?? []).map((ride) => ride.day))),
+  new Set(
+    allClubs.flatMap((club) => (club.data.rides ?? []).map((ride) => ride.day)),
+  ),
 ).sort((a, b) => dayOrder.indexOf(a) - dayOrder.indexOf(b));
 ---
 
@@ -40,229 +42,210 @@ const uniqueDays = Array.from(
   title="Wielerclubs — WielerWaas"
   description="Bekijk alle wielerclubs van WielerWaas."
 >
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="mb-10">
-      <h1 class="text-3xl font-extrabold text-gray-900 mb-2">Wielerclubs</h1>
-      <p class="text-gray-500">Alle actieve clubs uit onze community.</p>
+  <section class="ww-page-hero">
+    <div class="ww-wrap">
+      <div class="kicker">Overzicht</div>
+      <h1>Alle<br /><em>clubs.</em></h1>
+      <p>Alle actieve wielerclubs uit onze community in het Waasland.</p>
     </div>
+  </section>
+  <div class="ww-checker ww-checker-red"></div>
 
-    <div
-      class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-10"
-    >
-      <div class="flex flex-wrap items-end gap-4">
-        <label class="block flex-1 min-w-[200px]">
-          <span
-            class="text-xs font-semibold uppercase tracking-wide text-gray-500"
-            >Zoeken</span
-          >
-          <div class="relative mt-1">
-            <svg
-              class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-            </svg>
-            <input
-              id="club-filter-search"
-              type="text"
-              placeholder="Zoek op clubnaam..."
-              class="block w-full rounded-lg border border-gray-200 bg-white pl-9 pr-3 py-2 text-sm text-gray-700 focus:border-primary-500 focus:outline-none"
-            />
-          </div>
-        </label>
-
-        <label class="block">
-          <span
-            class="text-xs font-semibold uppercase tracking-wide text-gray-500"
-            >Gemeente</span
-          >
-          <select
-            id="club-filter-town"
-            class="mt-1 block w-44 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 focus:border-primary-500 focus:outline-none"
-          >
-            <option value="">Alle gemeenten</option>
-            {towns.map((town) => <option value={town}>{town}</option>)}
-          </select>
-        </label>
-
-        <label class="block">
-          <span
-            class="text-xs font-semibold uppercase tracking-wide text-gray-500"
-            >Dag</span
-          >
-          <select
-            id="club-filter-day"
-            class="mt-1 block w-44 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 focus:border-primary-500 focus:outline-none"
-          >
-            <option value="">Alle dagen</option>
-            {
-              uniqueDays.map((day) => (
-                <option value={day}>{dayLabels[day] ?? day}</option>
-              ))
-            }
-          </select>
-        </label>
-
-        <label class="block">
-          <span
-            class="text-xs font-semibold uppercase tracking-wide text-gray-500"
-            >Groep Type</span
-          >
-          <select
-            id="club-filter-gender"
-            class="mt-1 block w-44 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 focus:border-primary-500 focus:outline-none"
-          >
-            <option value="">Alle</option>
-            <option value="women">Vrouwen</option>
-            <option value="men">Mannen</option>
-            <option value="mixed">Gemengd</option>
-          </select>
-        </label>
-
+  <section class="ww-band white">
+    <div class="ww-wrap" style="padding: 40px 0 56px;">
+      <div class="ww-filters" style="border-top: 0;">
+        <input
+          id="club-filter-search"
+          type="search"
+          placeholder="Zoek op clubnaam..."
+          class="ww-input"
+          style="flex: 1; min-width: 200px;"
+        />
+        <select id="club-filter-town" class="ww-select">
+          <option value="">Alle gemeenten</option>
+          {towns.map((town) => <option value={town}>{town}</option>)}
+        </select>
+        <select id="club-filter-day" class="ww-select">
+          <option value="">Alle dagen</option>
+          {
+            uniqueDays.map((day) => (
+              <option value={day}>{dayLabels[day] ?? day}</option>
+            ))
+          }
+        </select>
+        <select id="club-filter-gender" class="ww-select">
+          <option value="">Alle groepen</option>
+          <option value="women">Vrouwen</option>
+          <option value="men">Mannen</option>
+          <option value="mixed">Gemengd</option>
+        </select>
         <button
           id="club-filter-reset"
           type="button"
-          class="inline-flex items-center rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+          class="ww-btn ww-btn-outline-ink"
         >
-          Reset filters
+          Reset
         </button>
       </div>
-    </div>
 
-    {
-      towns.map((town) => {
-        const townClubs = allClubs.filter((c) => c.data.town === town);
-        if (townClubs.length === 0) return null;
-        return (
-          <div class="mb-12" data-town-section>
-            <div class="flex items-center gap-3 mb-6">
-              <div class="w-1 h-7 bg-primary-500 rounded-full" />
-              <h2 class="text-xl font-bold text-gray-900">{town}</h2>
-              <span class="text-sm text-gray-400" data-town-count>
-                {townClubs.length} club{townClubs.length !== 1 ? "s" : ""}
-              </span>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {townClubs.map((club) => (
-                <div
-                  class="club-filter-item h-full"
-                  data-name={club.data.name.toLowerCase()}
-                  data-town={club.data.town}
-                  data-days={(club.data.rides ?? []).map((ride) => ride.day).join("|")}
-                  data-types={(club.data.rides ?? [])
-                    .map((ride) => ride.type)
-                    .join("|")}
-                  data-gender={club.data.gender ?? ""}
-                >
-                  <ClubCard
-                    name={club.data.name}
-                    slug={club.id.replace(/\.md$/, "")}
-                    town={club.data.town}
-                    shortDescription={club.data.shortDescription}
-                    meetingPoint={club.data.meetingPoint}
-                    rides={club.data.rides}
-                    logo={club.data.logo}
-                    gender={club.data.gender}
-                  />
+      {
+        towns.map((town) => {
+          const townClubs = allClubs.filter((c) => c.data.town === town);
+          if (townClubs.length === 0) return null;
+          return (
+            <div style="margin-bottom: 48px;" data-town-section>
+              <header class="ww-section-head" style="margin-bottom: 18px;">
+                <div>
+                  <h2>
+                    {town}
+                    <em
+                      style="margin-left: 12px; font-size: .6em;"
+                      data-town-count
+                    >
+                      {townClubs.length} club{townClubs.length !== 1 ? "s" : ""}
+                    </em>
+                  </h2>
                 </div>
-              ))}
+              </header>
+              <div class="ww-clubs-grid">
+                {townClubs.map((club) => (
+                  <div
+                    class="club-filter-item"
+                    data-name={club.data.name.toLowerCase()}
+                    data-town={club.data.town}
+                    data-days={(club.data.rides ?? [])
+                      .map((ride) => ride.day)
+                      .join("|")}
+                    data-types={(club.data.rides ?? [])
+                      .map((ride) => ride.type)
+                      .join("|")}
+                    data-gender={club.data.gender ?? ""}
+                  >
+                    <ClubCard
+                      name={club.data.name}
+                      slug={club.id.replace(/\.md$/, "")}
+                      town={club.data.town}
+                      shortDescription={club.data.shortDescription}
+                      meetingPoint={club.data.meetingPoint}
+                      rides={club.data.rides}
+                      logo={club.data.logo}
+                      gender={club.data.gender}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        );
-      })
-    }
+          );
+        })
+      }
 
-    <div
-      id="club-filter-empty"
-      class="hidden text-center text-gray-500 bg-white border border-gray-100 rounded-2xl p-10 mb-12"
-    >
-      Geen clubs gevonden voor deze filters.
+      <div
+        id="club-filter-empty"
+        class="ww-card hidden"
+        style="text-align: center; margin-bottom: 32px;"
+      >
+        <p
+          style="font-family: 'Anton', sans-serif; font-size: 24px; margin: 0; text-transform: uppercase;"
+        >
+          Geen clubs gevonden
+        </p>
+        <p style="color: var(--mute); margin-top: 8px;">
+          Probeer een andere filtercombinatie.
+        </p>
+      </div>
+
+      <AddClubCta
+        variant="light"
+        title="Staat jouw club er niet bij?"
+        description="Stuur je clubgegevens door en we zetten je op de website."
+        cta="club"
+      />
     </div>
-
-    <AddClubCta
-      variant="light"
-      title="Staat jouw club er niet bij?"
-      description="Stuur je clubgegevens door en we zetten je op de website."
-      cta="club"
-    />
-  </div>
+  </section>
 </Layout>
 
 <script>
-  const townFilter = document.getElementById("club-filter-town");
-  const dayFilter = document.getElementById("club-filter-day");
-  const typeFilter = document.getElementById("club-filter-type");
-  const genderFilter = document.getElementById("club-filter-gender");
-  const searchFilter = document.getElementById("club-filter-search") as HTMLInputElement | null;
-  const resetBtn = document.getElementById("club-filter-reset");
-  const noResults = document.getElementById("club-filter-empty");
+  function initClubFilters() {
+    const townFilter = document.getElementById("club-filter-town");
+    const dayFilter = document.getElementById("club-filter-day");
+    const typeFilter = document.getElementById("club-filter-type");
+    const genderFilter = document.getElementById("club-filter-gender");
+    const searchFilter = document.getElementById(
+      "club-filter-search",
+    ) as HTMLInputElement | null;
+    const resetBtn = document.getElementById("club-filter-reset");
+    const noResults = document.getElementById("club-filter-empty");
 
-  const filterItems = Array.from(
-    document.querySelectorAll<HTMLElement>(".club-filter-item"),
-  );
-  const townSections = Array.from(
-    document.querySelectorAll<HTMLElement>("[data-town-section]"),
-  );
+    const filterItems = Array.from(
+      document.querySelectorAll<HTMLElement>(".club-filter-item"),
+    );
+    const townSections = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-town-section]"),
+    );
 
-  const applyFilters = () => {
-    const town = (townFilter as HTMLSelectElement | null)?.value ?? "";
-    const day = (dayFilter as HTMLSelectElement | null)?.value ?? "";
-    const type = (typeFilter as HTMLSelectElement | null)?.value ?? "";
-    const gender = (genderFilter as HTMLSelectElement | null)?.value ?? "";
-    const search = (searchFilter?.value ?? "").toLowerCase().trim();
+    if (!townFilter && filterItems.length === 0) return;
 
-    let visibleCount = 0;
+    const applyFilters = () => {
+      const town = (townFilter as HTMLSelectElement | null)?.value ?? "";
+      const day = (dayFilter as HTMLSelectElement | null)?.value ?? "";
+      const type = (typeFilter as HTMLSelectElement | null)?.value ?? "";
+      const gender = (genderFilter as HTMLSelectElement | null)?.value ?? "";
+      const search = (searchFilter?.value ?? "").toLowerCase().trim();
 
-    filterItems.forEach((item) => {
-      const itemTown = item.dataset.town ?? "";
-      const itemDays = (item.dataset.days ?? "").split("|");
-      const itemTypes = (item.dataset.types ?? "").split("|");
-      const itemGender = item.dataset.gender ?? "";
-      const itemName = item.dataset.name ?? "";
+      let visibleCount = 0;
 
-      const matchesTown = !town || itemTown === town;
-      const matchesDay = !day || itemDays.includes(day);
-      const matchesType = !type || itemTypes.includes(type);
-      const matchesGender = !gender || itemGender === gender;
-      const matchesSearch = !search || itemName.includes(search);
-      const matches = matchesTown && matchesDay && matchesType && matchesGender && matchesSearch;
+      filterItems.forEach((item) => {
+        const itemTown = item.dataset.town ?? "";
+        const itemDays = (item.dataset.days ?? "").split("|");
+        const itemTypes = (item.dataset.types ?? "").split("|");
+        const itemGender = item.dataset.gender ?? "";
+        const itemName = item.dataset.name ?? "";
 
-      item.classList.toggle("hidden", !matches);
-      if (matches) visibleCount += 1;
+        const matchesTown = !town || itemTown === town;
+        const matchesDay = !day || itemDays.includes(day);
+        const matchesType = !type || itemTypes.includes(type);
+        const matchesGender = !gender || itemGender === gender;
+        const matchesSearch = !search || itemName.includes(search);
+        const matches =
+          matchesTown &&
+          matchesDay &&
+          matchesType &&
+          matchesGender &&
+          matchesSearch;
+
+        item.classList.toggle("hidden", !matches);
+        if (matches) visibleCount += 1;
+      });
+
+      townSections.forEach((section) => {
+        const sectionVisible = section.querySelectorAll(
+          ".club-filter-item:not(.hidden)",
+        ).length;
+        section.classList.toggle("hidden", sectionVisible === 0);
+
+        const countEl = section.querySelector<HTMLElement>("[data-town-count]");
+        if (countEl) {
+          countEl.textContent = `${sectionVisible} club${sectionVisible !== 1 ? "s" : ""}`;
+        }
+      });
+
+      noResults?.classList.toggle("hidden", visibleCount > 0);
+    };
+
+    townFilter?.addEventListener("change", applyFilters);
+    dayFilter?.addEventListener("change", applyFilters);
+    typeFilter?.addEventListener("change", applyFilters);
+    genderFilter?.addEventListener("change", applyFilters);
+    searchFilter?.addEventListener("input", applyFilters);
+    resetBtn?.addEventListener("click", () => {
+      if (townFilter) (townFilter as HTMLSelectElement).value = "";
+      if (dayFilter) (dayFilter as HTMLSelectElement).value = "";
+      if (typeFilter) (typeFilter as HTMLSelectElement).value = "";
+      if (genderFilter) (genderFilter as HTMLSelectElement).value = "";
+      if (searchFilter) searchFilter.value = "";
+      applyFilters();
     });
+  }
 
-    townSections.forEach((section) => {
-      const sectionVisible = section.querySelectorAll(
-        ".club-filter-item:not(.hidden)",
-      ).length;
-      section.classList.toggle("hidden", sectionVisible === 0);
-
-      const countEl = section.querySelector<HTMLElement>("[data-town-count]");
-      if (countEl) {
-        countEl.textContent = `${sectionVisible} club${sectionVisible !== 1 ? "s" : ""}`;
-      }
-    });
-
-    noResults?.classList.toggle("hidden", visibleCount > 0);
-  };
-
-  townFilter?.addEventListener("change", applyFilters);
-  dayFilter?.addEventListener("change", applyFilters);
-  typeFilter?.addEventListener("change", applyFilters);
-  genderFilter?.addEventListener("change", applyFilters);
-  searchFilter?.addEventListener("input", applyFilters);
-  resetBtn?.addEventListener("click", () => {
-    if (townFilter) (townFilter as HTMLSelectElement).value = "";
-    if (dayFilter) (dayFilter as HTMLSelectElement).value = "";
-    if (typeFilter) (typeFilter as HTMLSelectElement).value = "";
-    if (genderFilter) (genderFilter as HTMLSelectElement).value = "";
-    if (searchFilter) searchFilter.value = "";
-    applyFilters();
-  });
+  document.addEventListener("astro:page-load", initClubFilters);
 </script>

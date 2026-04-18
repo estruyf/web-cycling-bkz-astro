@@ -9,46 +9,30 @@ interface Props {
 const {
   variant = "dark",
   title = "Staat jouw club er nog niet bij?",
-  description = "Zet jouw club in de kijker bij lokale fietsers. Het kost maar een paar minuten om je gegevens door te sturen.",
+  description = "Zet jouw club in de kijker bij lokale fietsers. Het kost maar een paar minuten om je gegevens door te sturen. We publiceren zo snel mogelijk.",
   cta = "both",
 } = Astro.props;
-
-const isDark = variant === "dark";
 ---
 
 {
-  isDark ? (
-    <section class="bg-primary-900 text-white">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 text-center">
-        <h2 class="text-2xl md:text-3xl font-bold mb-3">{title}</h2>
-        <p class="text-primary-200 mb-7 max-w-xl mx-auto">{description}</p>
-        <div class="flex flex-wrap justify-center gap-3">
+  variant === "dark" ? (
+    <section class="ww-cta-band">
+      <svg class="wheels-cta" width="420" height="210" aria-hidden="true">
+        <use href="#ww-wheels-big" />
+      </svg>
+      <div class="ww-wrap">
+        <div>
+          <h2 class="max-w-2/3">{title}</h2>
+          <p>{description}</p>
+        </div>
+        <div class="ww-cta-actions">
           {(cta === "club" || cta === "both") && (
-            <a
-              href="/add-club"
-              class="inline-flex items-center gap-2 bg-accent-500 text-primary-900 hover:bg-accent-400 font-semibold px-7 py-3 rounded-xl transition-colors"
-            >
-              Voeg je club toe
-              <svg
-                class="w-4 h-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
+            <a href="/add-club" class="ww-btn ww-btn-chalk">
+              Voeg je club toe →
             </a>
           )}
           {(cta === "event" || cta === "both") && (
-            <a
-              href="/add-event"
-              class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold px-7 py-3 rounded-xl transition-colors"
-            >
+            <a href="/add-event" class="ww-btn ww-btn-outline-chalk">
               Voeg je evenement toe
             </a>
           )}
@@ -56,23 +40,21 @@ const isDark = variant === "dark";
       </div>
     </section>
   ) : (
-    <div class="mt-4 bg-primary-50 border border-primary-100 rounded-2xl p-8 text-center">
-      <h3 class="text-lg font-bold text-gray-900 mb-2">{title}</h3>
-      <p class="text-gray-500 mb-5 text-sm">{description}</p>
-      <div class="flex flex-wrap justify-center gap-3">
+    <div class="ww-card" style="text-align:center; margin-top: 24px;">
+      <h3 style="font-family:'Anton',sans-serif; font-size:28px; text-transform:uppercase; letter-spacing:0.02em; margin:0 0 10px; font-weight:400;">
+        {title}
+      </h3>
+      <p style="color: var(--mute); margin: 0 0 18px; font-size: 14px;">
+        {description}
+      </p>
+      <div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center;">
         {(cta === "club" || cta === "both") && (
-          <a
-            href="/add-club"
-            class="inline-flex items-center gap-2 bg-accent-600 hover:bg-accent-700 text-white font-semibold px-6 py-3 rounded-xl transition-colors text-sm"
-          >
-            Voeg je club toe
+          <a href="/add-club" class="ww-btn ww-btn-red">
+            Voeg je club toe →
           </a>
         )}
         {(cta === "event" || cta === "both") && (
-          <a
-            href="/add-event"
-            class="inline-flex items-center gap-2 bg-accent-600 hover:bg-accent-700 text-white font-semibold px-6 py-3 rounded-xl transition-colors text-sm"
-          >
+          <a href="/add-event" class="ww-btn ww-btn-outline-ink">
             Voeg je evenement toe
           </a>
         )}

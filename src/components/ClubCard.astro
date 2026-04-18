@@ -20,16 +20,8 @@ interface Props {
   gender?: "women" | "men" | "mixed";
 }
 
-const {
-  name,
-  slug,
-  town,
-  shortDescription,
-  meetingPoint,
-  rides,
-  logo,
-  gender,
-} = Astro.props;
+const { name, slug, town, shortDescription, meetingPoint, rides, logo } =
+  Astro.props;
 
 const dayOrder = [
   "Monday",
@@ -44,20 +36,10 @@ const sortedRides = [...(rides ?? [])].sort(
   (a, b) => dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day),
 );
 
-const displayedRides = sortedRides.filter((ride, index, allRides) => {
-  const rideTimeKey =
-    typeof ride.time === "string" ? ride.time : JSON.stringify(ride.time);
-  const rideKey = `${ride.day}|${rideTimeKey}`;
-
-  return (
-    allRides.findIndex((candidate) => {
-      const candidateTimeKey =
-        typeof candidate.time === "string"
-          ? candidate.time
-          : JSON.stringify(candidate.time);
-      return `${candidate.day}|${candidateTimeKey}` === rideKey;
-    }) === index
-  );
+const displayedRides = sortedRides.filter((ride, index, all) => {
+  const key = (r: Ride) =>
+    `${r.day}|${typeof r.time === "string" ? r.time : JSON.stringify(r.time)}`;
+  return all.findIndex((c) => key(c) === key(ride)) === index;
 });
 
 const dagAfkorting: Record<string, string> = {
@@ -71,85 +53,34 @@ const dagAfkorting: Record<string, string> = {
 };
 ---
 
-<a
-  href={`/clubs/${slug}`}
-  class="group bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md hover:border-primary-200 transition-all duration-200 flex flex-col overflow-hidden h-full"
->
-  <div class="bg-gradient-to-br from-primary-500 to-primary-700 h-2 w-full">
-  </div>
-  <div class="p-6 flex flex-col flex-1">
-    <div class="flex items-start justify-between gap-4 mb-4">
-      <div class="flex items-center gap-3">
-        {
-          logo ? (
-            <img
-              src={logo}
-              alt={name}
-              class="w-12 h-12 rounded-full object-cover border border-gray-100"
-            />
-          ) : (
-            <div class="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 font-bold text-lg shrink-0">
-              {name.charAt(0)}
-            </div>
-          )
-        }
-        <div>
-          <h3
-            class="font-bold text-gray-900 group-hover:text-primary-600 transition-colors leading-tight"
-          >
-            {name}
-          </h3>
-          <div class="flex items-center gap-1.5 flex-wrap mt-0.5">
-            <span class="text-xs text-gray-400 font-medium">{town}</span>
-          </div>
-        </div>
+<a href={`/clubs/${slug}`} class="ww-club">
+  <div class="ww-club-top"></div>
+  <div class="ww-club-body">
+    <div class="ww-club-head">
+      <div class="ww-club-mono">
+        {logo ? <img src={logo} alt={name} /> : <span>{name.charAt(0)}</span>}
+      </div>
+      <div style="min-width:0; flex:1;">
+        <h3>{name}</h3>
+        <div class="town">{town}</div>
       </div>
     </div>
 
-    {shortDescription && (
-      <p class="text-sm text-gray-500 leading-relaxed mb-5 flex-1">
-        {shortDescription}
-      </p>
-    )}
+    {shortDescription && <p class="desc">{shortDescription}</p>}
 
-    {meetingPoint && (
-      <div class="flex items-center gap-2 text-xs text-gray-500 mb-4">
-        <svg
-          class="w-3.5 h-3.5 text-gray-400 shrink-0"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        stroke-width="2"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-        ></path>
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-      </svg>
-      <span>{meetingPoint}</span>
-      </div>
-    )}
+    {meetingPoint && <div class="meet">↳ {meetingPoint}</div>}
 
-    {displayedRides.length > 0 && (
-      <div class="flex flex-wrap gap-1.5">
-        {
-          displayedRides.map((ride) => (
-            <span class="inline-flex items-center gap-1 bg-gray-50 border border-gray-200 rounded-full px-2.5 py-1 text-xs text-gray-600">
-              <span class="font-medium">
-                {dagAfkorting[ride.day] ?? ride.day.slice(0, 2)}
-              </span>
-              <span class="text-gray-400">
-                <SeasonalTime time={ride.time} />
-              </span>
+    {
+      displayedRides.length > 0 && (
+        <div class="rides-pills">
+          {displayedRides.map((ride) => (
+            <span class="ww-ride-pill">
+              <b>{dagAfkorting[ride.day] ?? ride.day.slice(0, 2)}</b>
+              <SeasonalTime time={ride.time} />
             </span>
-          ))
-        }
-      </div>
-    )}
+          ))}
+        </div>
+      )
+    }
   </div>
 </a>

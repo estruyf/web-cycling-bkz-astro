@@ -10,6 +10,15 @@ import { expandEventsToOccurrences } from "../utils/events";
 const allClubs = (await getCollection("clubs")).filter((c) => c.data.active);
 const shuffledClubs = [...allClubs].sort(() => Math.random() - 0.5).slice(0, 9);
 
+const towns = Array.from(new Set(allClubs.map((c) => c.data.town))).sort(
+  (a, b) => a.localeCompare(b, "nl"),
+);
+
+const totalRides = allClubs.reduce(
+  (sum, c) => sum + (c.data.rides?.length ?? 0),
+  0,
+);
+
 const now = new Date();
 const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 const allEvents = await getCollection("events");
@@ -24,72 +33,72 @@ const upcomingEvents = expandEventsToOccurrences(allEvents)
   title="WielerWaas"
   description="Ontdek wielerclubs en evenementen in het Waasland. Bekijk wanneer en waar ze vertrekken."
 >
-  <section
-    class="relative bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white overflow-hidden"
-  >
-    <div class="absolute inset-0 opacity-10">
-      <img
-        src="https://images.unsplash.com/photo-1452573992436-6d508f200b30?q=80&w=1600&auto=format&fit=crop"
-        alt=""
-        class="w-full h-full object-cover"
-      />
-    </div>
-    <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
-      <div class="max-w-2xl">
-        <div
-          class="inline-flex items-center gap-2 bg-primary-500/20 border border-primary-400/30 rounded-full px-4 py-1.5 text-primary-200 text-sm font-medium mb-6"
-        >
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-            <path
-              fill-rule="evenodd"
-              d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-              clip-rule="evenodd"></path>
-          </svg>
-          Wielrennen in het Waasland
+  <section class="ww-hero">
+    <svg class="wheels" width="520" height="260" aria-hidden="true">
+      <use href="#ww-wheels-big"></use>
+    </svg>
+    <div class="ww-wrap">
+      <div class="ww-hero-grid">
+        <div>
+          <div class="kicker">
+            01 · Community Platform · Wielrennen in het Waasland
+          </div>
+          <h1>Vind je<br />Peloton.<br /><em>Trap mee.</em></h1>
+          <p class="lede">
+            Ontdek wielerclubs en evenementen in het Waasland. Bekijk wanneer en
+            waar ze vertrekken en sluit je aan bij een groep die bij jou past.
+          </p>
+          <div class="ww-hero-actions">
+            <a href="/clubs" class="ww-btn ww-btn-red">Bekijk alle clubs →</a>
+            <a href="/add-club" class="ww-btn ww-btn-outline-chalk">
+              Voeg je club toe
+            </a>
+          </div>
         </div>
-        <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-6">
-          Vind jouw groep,<br />
-          <span class="text-accent-500">trap mee.</span>
-        </h1>
-        <p class="text-lg text-gray-300 leading-relaxed mb-8">
-          Ontdek de wielerclubs in onze regio. Bekijk wanneer en waar ze
-          vertrekken, en sluit je aan bij een groep die bij jou past.
-        </p>
-        <div class="flex flex-wrap gap-3">
-          <a
-            href="/clubs"
-            class="inline-flex items-center gap-2 bg-accent-600 hover:bg-accent-500 text-white font-semibold px-6 py-3 rounded-xl transition-colors"
+
+        <div>
+          <div
+            style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--chalk); opacity: .6; margin-bottom: 10px;"
           >
-            Bekijk alle clubs
-            <svg
-              class="w-4 h-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M9 5l7 7-7 7"></path>
-            </svg>
-          </a>
-          <a
-            href="/add-club"
-            class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold px-6 py-3 rounded-xl transition-colors"
-          >
-            Voeg je club toe
-          </a>
-          <a
-            href="/add-event"
-            class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold px-6 py-3 rounded-xl transition-colors"
-          >
-            Voeg je evenement toe
-          </a>
+            · Live statistieken
+          </div>
+          <div class="ww-hero-stats">
+            <div class="s">
+              <div class="n">{allClubs.length}</div>
+              <div class="l">Clubs</div>
+            </div>
+            <div class="s">
+              <div class="n">{totalRides}</div>
+              <div class="l">Wekelijkse ritten</div>
+            </div>
+            <div class="s">
+              <div class="n">{towns.length}</div>
+              <div class="l">Gemeenten</div>
+            </div>
+            <div class="s">
+              <div class="n">{upcomingEvents.length}</div>
+              <div class="l">Evenementen</div>
+            </div>
+          </div>
+          <div class="ww-hero-region">
+            <span class="mono">Regio Waasland</span>
+            <div class="towns">
+              {
+                towns.slice(0, 8).map((town, i) => (
+                  <>
+                    {i > 0 && " · "}
+                    {town}
+                  </>
+                ))
+              }
+              {towns.length > 8 && <span> · …</span>}
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
+  <div class="ww-checker ww-checker-red"></div>
 
   <WeeklyRidesSection clubs={allClubs} />
 
