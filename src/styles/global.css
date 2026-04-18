@@ -112,7 +112,7 @@ button:hover {
 .ww-btn {
   font-family: "Archivo", system-ui, sans-serif;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13px;
   padding: 12px 22px;
   text-decoration: none;
   border: 2px solid transparent;
@@ -1104,6 +1104,27 @@ button:hover {
 @media (max-width: 680px) {
   .ww-hero-stats .s .n {
     font-size: 56px;
+  }
+
+  .ww-filters {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .ww-filters > .ww-input,
+  .ww-filters > .ww-btn,
+  .ww-filters > .ww-select,
+  .ww-filters > .ww-select-wrapper,
+  .ww-filters > .ww-select-wrapper .ww-select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .ww-filters > .ww-input,
+  .ww-filters > .ww-btn {
+    grid-column: 1 / -1;
   }
 
   .ww-events-grid,
