@@ -7,7 +7,7 @@
   --color-red-d: oklch(0.54 0.19 27);
   --color-ink: oklch(0.16 0.01 60);
   --color-ink-2: oklch(0.28 0.01 60);
-  --color-mute: oklch(0.52 0.01 60);
+  --color-mute: oklch(0.44 0.01 60);
   --color-line: oklch(0.86 0.01 85);
   --color-chalk: oklch(0.97 0.01 90);
   --color-paper: oklch(0.94 0.012 85);
@@ -42,7 +42,7 @@
   --red-d: oklch(0.54 0.19 27);
   --ink: oklch(0.16 0.01 60);
   --ink-2: oklch(0.28 0.01 60);
-  --mute: oklch(0.52 0.01 60);
+  --mute: oklch(0.44 0.01 60);
   --line: oklch(0.86 0.01 85);
   --chalk: oklch(0.97 0.01 90);
   --paper: oklch(0.94 0.012 85);
