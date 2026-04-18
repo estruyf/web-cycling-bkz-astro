@@ -192,14 +192,14 @@ button:hover {
   background: repeating-linear-gradient(
     90deg,
     var(--ink) 0 14px,
-    var(--chalk) 14px 28px
+    var(--paper) 14px 28px
   );
 }
 .ww-checker-red {
   background: repeating-linear-gradient(
     90deg,
     var(--red) 0 14px,
-    var(--chalk) 14px 28px
+    var(--paper) 14px 28px
   );
 }
 
