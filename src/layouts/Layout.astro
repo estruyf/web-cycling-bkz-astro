@@ -77,5 +77,13 @@ const {
     {!hideSponsors && <SponsorsSection />}
 
     <Footer slug={Astro.url.pathname.replace(/\//g, "-").slice(1) || "home"} />
+
+    <script>
+      document.addEventListener("astro:before-swap", (e) => {
+        e.newDocument
+          .querySelector('script[src*="/cloudflare-static/email-decode"]')
+          ?.setAttribute("data-astro-rerun", "");
+      });
+    </script>
   </body>
 </html>

@@ -164,7 +164,13 @@ const frequencyLabels: Record<string, string> = {
         }
         {
           event.data.contactEmail && (
-            <Fragment set:html={`<!--email_off--><a href="mailto:${event.data.contactEmail}" class="ww-btn ww-btn-outline-ink" title="Stuur een e-mail naar de organisator">${event.data.contactEmail}</a><!--/email_off-->`} />
+            <a
+              href={`mailto:${event.data.contactEmail}`}
+              class="ww-btn ww-btn-outline-ink"
+              title="Stuur een e-mail naar de organisator"
+            >
+              {event.data.contactEmail}
+            </a>
           )
         }
       </div>
@@ -214,7 +220,11 @@ const frequencyLabels: Record<string, string> = {
 
       <p style="margin-top: 32px; font-size: 13px; color: var(--mute);">
         Zie je een fout op deze pagina? Laat het ons weten via
-        <Fragment set:html={`<!--email_off--><a href="mailto:elio@struyfconsulting.be?subject=Probleem op evenementpagina: ${event.data.name}" style="color: var(--red); text-decoration: underline;" title="Stuur een e-mail naar de beheerder">elio@struyfconsulting.be</a><!--/email_off-->.`} />
+        <a
+          href={`mailto:elio@struyfconsulting.be?subject=Probleem op evenementpagina: ${event.data.name}`}
+          style="color: var(--red); text-decoration: underline;"
+          title="Stuur een e-mail naar de beheerder">elio@struyfconsulting.be</a
+        >.
       </p>
     </div>
   </section>

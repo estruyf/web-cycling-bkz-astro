@@ -143,9 +143,11 @@ const {
                 >
                   Contact
                 </div>
-                <Fragment
-                  set:html={`<!--email_off--><a href="mailto:${contactEmail}" style="color: var(--red); font-weight: 600; word-break: break-all; text-decoration: underline;" title="Neem contact op met ${name}">${contactEmail}</a><!--/email_off-->.`}
-                />
+                <a
+                  href={`mailto:${contactEmail}`}
+                  style="color: var(--red); font-weight: 600; word-break: break-all; text-decoration: underline;"
+                  title={`Neem contact op met ${name}`}>{contactEmail}</a
+                >
               </div>
             )}
           </div>
@@ -191,9 +193,11 @@ const {
 
       <p style="margin-top: 32px; font-size: 13px; color: var(--mute);">
         Zie je een fout op deze pagina? Laat het ons weten via
-        <Fragment
-          set:html={`<!--email_off--><a href="mailto:elio@struyfconsulting.be?subject=Probleem op clubpagina: ${name}" style="color: var(--red); text-decoration: underline;" title="Stuur een e-mail naar de beheerder">elio@struyfconsulting.be</a><!--/email_off-->.`}
-        />
+        <a
+          href={`mailto:elio@struyfconsulting.be?subject=Probleem op clubpagina: ${name}`}
+          style="color: var(--red); text-decoration: underline;"
+          title="Stuur een e-mail naar de beheerder">elio@struyfconsulting.be</a
+        >.
       </p>
     </div>
   </section>
