@@ -274,6 +274,12 @@ button:hover {
   border-bottom: 1px solid var(--line);
   align-items: center;
 }
+.ww-filters .ww-input,
+.ww-filters .ww-select,
+.ww-filters .ww-btn {
+  min-height: 48px;
+  box-sizing: border-box;
+}
 .ww-chip {
   font-family: "Archivo", system-ui, sans-serif;
   font-weight: 600;
@@ -309,12 +315,12 @@ button:hover {
   font-family: "Archivo", system-ui, sans-serif;
   font-size: 13px;
   padding: 9px 12px;
-  outline: 2px solid var(--ink);
-  border: 2px solid transparent;
+  border: 2px solid var(--ink);
   background: var(--chalk);
   font-weight: 600;
   color: var(--ink);
   cursor: pointer;
+  line-height: 1.3;
 }
 .ww-check {
   display: inline-flex;
@@ -342,10 +348,16 @@ button:hover {
   width: 100%;
   line-height: 1.3;
 }
+.ww-filters .ww-btn {
+  justify-content: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
 .ww-input:focus,
 .ww-select:focus,
 .ww-check:focus-within {
-  outline-color: var(--red);
+  outline: none;
+  border-color: var(--red);
 }
 .ww-label {
   font-family: "JetBrains Mono", ui-monospace, monospace;
@@ -1090,6 +1102,10 @@ button:hover {
   }
 }
 @media (max-width: 680px) {
+  .ww-hero-stats .s .n {
+    font-size: 56px;
+  }
+
   .ww-events-grid,
   .ww-clubs-grid {
     grid-template-columns: 1fr;
@@ -1198,12 +1214,70 @@ button:hover {
   object-fit: contain;
 }
 .ww-sponsor-logo-large {
+  height: 180px;
+
   img {
     max-height: 40%;
   }
 
   span {
     font-size: 1.5em;
+  }
+}
+
+.ww-sponsors-page {
+  padding-top: 56px;
+  padding-bottom: 56px;
+}
+
+.ww-sponsors-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 56px;
+}
+
+.ww-sponsors-empty-state {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+@media (max-width: 680px) {
+  .ww-sponsors .ww-wrap {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    align-items: stretch;
+  }
+
+  .ww-sponsors .label {
+    grid-column: 1 / -1;
+    border-right: 0;
+    padding-right: 0;
+  }
+
+  .ww-sponsor-logo {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .ww-sponsors-page {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+
+  .ww-sponsors-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+
+  .ww-sponsor-logo-large {
+    height: 140px;
+  }
+
+  .ww-sponsors-empty-state {
+    margin-bottom: 40px;
   }
 }
 

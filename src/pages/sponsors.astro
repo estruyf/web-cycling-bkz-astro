@@ -25,17 +25,16 @@ const sponsors = (await getCollection("sponsors"))
   <div class="ww-checker ww-checker-red"></div>
 
   <section class="ww-band white">
-    <div class="ww-wrap" style="padding: 56px 0;">
+    <div class="ww-wrap ww-sponsors-page">
       {
         sponsors.length > 0 ? (
-          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 56px;">
+          <div class="ww-sponsors-grid">
             {sponsors.map((sponsor) => (
               <a
                 href={sponsor.data.website || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
                 class="ww-sponsor-logo ww-sponsor-logo-large"
-                style="height: 180px;"
                 title={`Bezoek de website van ${sponsor.data.name}`}
               >
                 {sponsor.data.logo ? (
@@ -47,7 +46,7 @@ const sponsors = (await getCollection("sponsors"))
             ))}
           </div>
         ) : (
-          <div class="ww-card" style="text-align: center; margin-bottom: 56px;">
+          <div class="ww-card ww-sponsors-empty-state">
             <p style="font-family: 'Anton', sans-serif; font-size: 24px; margin: 0; text-transform: uppercase;">
               Nog geen sponsors
             </p>
