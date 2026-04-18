@@ -1085,6 +1085,20 @@ button:hover {
   gap: 20px;
   padding-bottom: 56px;
 }
+.ww-clubs-page-wrap {
+  padding-top: 40px;
+  padding-bottom: 56px;
+}
+
+.ww-events-page-wrap {
+  padding-top: 32px;
+  padding-bottom: 56px;
+}
+
+.ww-town-section {
+  margin-bottom: 48px;
+}
+
 .ww-clubs-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1102,6 +1116,16 @@ button:hover {
   }
 }
 @media (max-width: 680px) {
+  .ww-hero .ww-wrap {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+
+  .ww-section-head {
+    padding-top: 28px;
+    padding-bottom: 18px;
+  }
+
   .ww-hero-stats .s .n {
     font-size: 56px;
   }
@@ -1125,6 +1149,20 @@ button:hover {
   .ww-filters > .ww-input,
   .ww-filters > .ww-btn {
     grid-column: 1 / -1;
+  }
+
+  .ww-clubs-page-wrap {
+    padding-top: 28px;
+    padding-bottom: 40px;
+  }
+
+  .ww-events-page-wrap {
+    padding-top: 24px;
+    padding-bottom: 40px;
+  }
+
+  .ww-town-section {
+    margin-bottom: 0px;
   }
 
   .ww-events-grid,
