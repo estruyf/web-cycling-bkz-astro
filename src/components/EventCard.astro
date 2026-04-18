@@ -105,11 +105,13 @@ const hasDateRange =
       {time && <span>{time}</span>}
     </div>
     <div class="meta">
-      <span>📍 {location}</span>
+      <span>↳ {location}</span>
       <span>👥 {organizer}</span>
     </div>
     <div class="links">
-      <a href={eventDetailsUrl} title={`Bekijk details van ${name}`}>Bekijk details →</a>
+      <a href={eventDetailsUrl} title={`Bekijk details van ${name}`}
+        >Bekijk details →</a
+      >
       {
         website && (
           <a
