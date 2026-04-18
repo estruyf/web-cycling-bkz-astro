@@ -91,7 +91,7 @@ const hasDateRange =
   </div>
   <div class="ww-event-body">
     <h3>
-      <a href={eventDetailsUrl}>{name}</a>
+      <a href={eventDetailsUrl} title={`Bekijk details van ${name}`}>{name}</a>
     </h3>
     <div class="meta">
       <span class="cap">{dagNaam}</span>
@@ -109,7 +109,7 @@ const hasDateRange =
       <span>👥 {organizer}</span>
     </div>
     <div class="links">
-      <a href={eventDetailsUrl}>Bekijk details →</a>
+      <a href={eventDetailsUrl} title={`Bekijk details van ${name}`}>Bekijk details →</a>
       {
         website && (
           <a
@@ -117,6 +117,7 @@ const hasDateRange =
             target="_blank"
             rel="noopener noreferrer"
             class="ext"
+            title={`Bezoek de eventwebsite van ${name}`}
           >
             Eventwebsite ↗
           </a>

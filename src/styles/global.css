@@ -957,7 +957,7 @@ button:hover {
 .ww-hero h1 {
   font-family: "Anton", sans-serif;
   font-size: clamp(56px, 9vw, 136px);
-  line-height: 0.86;
+  line-height: 0.88;
   letter-spacing: 0.005em;
   text-transform: uppercase;
   margin: 0 0 28px;

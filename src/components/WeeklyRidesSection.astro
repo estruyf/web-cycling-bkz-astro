@@ -75,7 +75,7 @@ function formatSpeed(speed?: number | string): string {
           Geplande ritten van alle clubs — filter op dag, gemeente, type
         </div>
       </div>
-      <a href="/clubs" class="link">Alle clubs →</a>
+      <a href="/clubs" class="link" title="Bekijk alle clubs">Alle clubs →</a>
     </header>
 
     <div class="ww-filters" id="filter-dag-group">
@@ -148,7 +148,7 @@ function formatSpeed(speed?: number | string): string {
                   <SeasonalTime time={rit.uur} />
                 </td>
                 <td data-label="Club">
-                  <a href={`/clubs/${rit.clubSlug}`} class="ww-cell-club">
+                  <a href={`/clubs/${rit.clubSlug}`} class="ww-cell-club" title={`Bekijk ${rit.clubNaam}`}>
                     {rit.clubNaam}
                   </a>
                 </td>

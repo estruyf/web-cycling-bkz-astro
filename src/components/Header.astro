@@ -14,7 +14,7 @@ const isActive = (href: string) =>
 
 <header class="ww-header">
   <div class="ww-wrap ww-hdr">
-    <a href="/" class="ww-brand">
+    <a href="/" class="ww-brand" title="WielerWaas — home">
       <svg width="44" height="18" aria-hidden="true">
         <use href="#ww-bike"></use>
       </svg>
@@ -29,6 +29,7 @@ const isActive = (href: string) =>
         navLinks.map((link) => (
           <a
             href={link.href}
+            title={link.label}
             class={isActive(link.href) ? "active" : undefined}
           >
             {link.label}
@@ -37,6 +38,7 @@ const isActive = (href: string) =>
       }
       <a
         href="/add-club"
+        title="Voeg je club toe"
         class={`cta ${isActive("/add-club") ? "active" : ""}`}
       >
         + Voeg je club toe
@@ -64,12 +66,12 @@ const isActive = (href: string) =>
   <div id="mobile-menu" class="ww-mobile-menu">
     {
       navLinks.map((link) => (
-        <a href={link.href} class={isActive(link.href) ? "active" : undefined}>
+        <a href={link.href} title={link.label} class={isActive(link.href) ? "active" : undefined}>
           {link.label}
         </a>
       ))
     }
-    <a href="/add-club" class="cta">+ Voeg je club toe</a>
+    <a href="/add-club" title="Voeg je club toe" class="cta">+ Voeg je club toe</a>
   </div>
 </header>
 
