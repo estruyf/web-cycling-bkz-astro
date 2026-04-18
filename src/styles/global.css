@@ -329,7 +329,7 @@ button:hover {
   font-family: "Archivo", system-ui, sans-serif;
   font-weight: 600;
   font-size: 13px;
-  padding: 9px 12px;
+  padding: 12px;
   border: 2px solid var(--ink);
   background: var(--chalk);
   cursor: pointer;
