@@ -1,20 +1,31 @@
 ---
 active: true
-claimable: true
 fmContentType: clubs
 name: Laarridders
 town: Zwijndrecht
 gender: mixed
-meetingPoint: Sporthal, Zwijndrecht
+meetingPoint: Station Zwijndrecht, parking sporthal
 rides:
   - day: Wednesday
-    time: "09:00"
+    time: 09:00
     type: Clubrit
     averageSpeed: 28
     openForAll: true
   - day: Saturday
-    time: "08:30"
+    time:
+      - from: 11
+        to: 3
+        time: "09:00"
+      - from: 4
+        to: 10
+        time: "08:30"
     type: Clubrit
     averageSpeed: 28
     openForAll: true
+contactEmail: marc.vanremoortere@skynet.be
+shortDescription: "Vriendenclub voornamelijk gestart door oud-voetballers. Leuze: samen uit, samen thuis."
 ---
+
+Vriendenclub voornamelijk gestart door oud-voetballers.
+
+Leuze: samen uit, samen thuis.
