@@ -148,9 +148,14 @@ function formatSpeed(speed?: number | string): string {
                   <SeasonalTime time={rit.uur} />
                 </td>
                 <td data-label="Club">
-                  <a href={`/clubs/${rit.clubSlug}`} class="ww-cell-club" title={`Bekijk ${rit.clubNaam}`}>
+                  <a
+                    href={`/clubs/${rit.clubSlug}`}
+                    class="ww-cell-club"
+                    title={`Bekijk ${rit.clubNaam}`}
+                  >
                     {rit.clubNaam}
                   </a>
+                  <div class="ww-cell-town">{rit.locatie}</div>
                 </td>
                 <td data-label="Groep">{rit.groep ?? "—"}</td>
                 <td data-label="Snelheid">
