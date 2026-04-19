@@ -20,7 +20,7 @@ rides:
         to: 10
         time: "08:30"
     type: Clubrit
-    averageSpeed: 28
+    averageSpeed: 27~30
     openForAll: true
 contactEmail: marc.vanremoortere@skynet.be
 shortDescription: "Vriendenclub voornamelijk gestart door oud-voetballers. Leuze: samen uit, samen thuis."
