@@ -12,9 +12,10 @@ rides:
     averageSpeed: 28~30
     openForAll: true
   - day: Sunday
-    time: "Afhankelijk van de afstand"
+    time: Variabel
     type: Clubrit
     averageSpeed: 28~30
+    notes: "Afhankelijk van de afstand"
     openForAll: true
 shortDescription: Gezellige vriendengroep. Gezapig tempo
 website: https://wtc2070.webnode.nl/
