@@ -23,10 +23,10 @@ const now = new Date();
 const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 const allEvents = await getCollection("events");
 
-const upcomingEvents = expandEventsToOccurrences(allEvents)
+const allUpcomingEvents = expandEventsToOccurrences(allEvents)
   .filter((occurrence) => occurrence.occurrenceDate >= today)
-  .sort((a, b) => a.occurrenceDate.getTime() - b.occurrenceDate.getTime())
-  .slice(0, 6);
+  .sort((a, b) => a.occurrenceDate.getTime() - b.occurrenceDate.getTime());
+const upcomingEvents = allUpcomingEvents.slice(0, 6);
 ---
 
 <Layout
@@ -82,7 +82,7 @@ const upcomingEvents = expandEventsToOccurrences(allEvents)
               <div class="l">Gemeenten</div>
             </div>
             <div class="s">
-              <div class="n">{upcomingEvents.length}</div>
+              <div class="n">{allUpcomingEvents.length}</div>
               <div class="l">Evenementen</div>
             </div>
           </div>
