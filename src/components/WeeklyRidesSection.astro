@@ -31,11 +31,11 @@ const dayOrder = [
 ];
 
 const alleRitten = clubs.flatMap((club) =>
-  club.data.rides.map((ride) => ({
+  (club.data.rides ?? []).map((ride) => ({
     clubNaam: club.data.name,
     clubSlug: club.id.replace(/\.md$/, ""),
     locatie: club.data.town,
-    gender: club.data.gender,
+    gender: ride.gender ?? club.data.gender,
     dag: ride.day,
     uur: ride.time,
     type: ride.type,
@@ -47,8 +47,8 @@ const alleRitten = clubs.flatMap((club) =>
 );
 
 const gesorteerdeRitten = alleRitten.sort((a, b) => {
-  const dagVerschil = dayOrder.indexOf(a.dag) - dayOrder.indexOf(b.dag);
-  if (dagVerschil !== 0) return dagVerschil;
+  const d = dayOrder.indexOf(a.dag) - dayOrder.indexOf(b.dag);
+  if (d !== 0) return d;
   return timeSortKey(a.uur).localeCompare(timeSortKey(b.uur));
 });
 
@@ -60,60 +60,39 @@ const beschikbareLocaties = Array.from(
   new Set(gesorteerdeRitten.map((rit) => rit.locatie)),
 ).sort((a, b) => a.localeCompare(b, "nl"));
 
-function formatSpeed(speed?: number | string): string | undefined {
-  return speed != null ? `${speed} km/u` : undefined;
+function formatSpeed(speed?: number | string): string {
+  return speed != null ? `${speed} km/u` : "—";
 }
 ---
 
-<section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-  <div class="flex items-center justify-between mb-8">
-    <div>
-      <h2 class="text-2xl font-bold text-gray-900">Wekelijkse ritten</h2>
-      <p class="text-gray-500 text-sm mt-1">Geplande ritten van alle clubs</p>
-    </div>
-    <a
-      href="/clubs"
-      class="text-primary-500 hover:text-primary-600 text-sm font-medium flex items-center gap-1"
-    >
-      Alle clubs
-      <svg
-        class="w-4 h-4"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        stroke-width="2"
-      >
-        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"
-        ></path>
-      </svg>
-    </a>
-  </div>
+<section class="ww-band">
+  <div class="ww-wrap">
+    <header class="ww-section-head">
+      <div>
+        <div class="num">02</div>
+        <h2>Wekelijkse <em>ritten</em></h2>
+        <div class="sub">
+          Geplande ritten van alle clubs — filter op dag, gemeente, type
+        </div>
+      </div>
+      <a href="/clubs" class="link" title="Bekijk alle clubs">Alle clubs →</a>
+    </header>
 
-  <div class="flex flex-col gap-4 mb-6">
-    <div class="flex flex-wrap gap-2" id="filter-dag-group">
-      <button
-        class="day-filter-btn px-4 py-2 text-sm font-medium transition-colors border rounded-lg bg-primary-600 border-primary-600 text-white hover:bg-primary-700"
-        data-day=""
-      >
+    <div class="ww-filters" id="filter-dag-group">
+      <button class="ww-chip red on day-filter-btn" data-day="">
         Alle dagen
       </button>
       {
         beschikbareDagen.map((day) => (
-          <button
-            class="day-filter-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors border bg-white text-gray-700 hover:bg-gray-50 border-gray-200"
-            data-day={day}
-          >
+          <button class="ww-chip day-filter-btn" data-day={day}>
             {dagNamen[day]}
           </button>
         ))
       }
     </div>
 
-    <div class="flex flex-wrap gap-3">
-      <select
-        id="filter-town"
-        class="text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-300"
-      >
+    <div class="ww-filters" style="border-top:0;">
+      <select id="filter-town" class="ww-select">
         <option value="">Gemeente</option>
         {
           beschikbareLocaties.map((locatie) => (
@@ -122,167 +101,78 @@ function formatSpeed(speed?: number | string): string | undefined {
         }
       </select>
 
-      <select
-        id="filter-gender"
-        class="text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-300"
-      >
+      <select id="filter-gender" class="ww-select">
         <option value="">Groep type</option>
         <option value="mixed">Gemengd</option>
         <option value="men">Mannen</option>
         <option value="women">Vrouwen</option>
       </select>
 
-      <label
-        class="inline-flex items-center gap-2 text-sm text-gray-700 border border-gray-200 rounded-lg px-3 py-2 bg-white cursor-pointer select-none"
-      >
-        <input
-          id="filter-open"
-          type="checkbox"
-          class="w-4 h-4 accent-primary-600"
-        />
+      <label class="ww-check">
+        <input id="filter-open" type="checkbox" />
         Alleen open voor iedereen
       </label>
 
-      <button
-        id="filter-reset"
-        class="hidden text-sm text-gray-500 hover:text-gray-800 border border-gray-200 rounded-lg px-3 py-2 bg-white transition-colors"
-      >
+      <button id="filter-reset" class="ww-chip" style="display:none;">
         Filters wissen
       </button>
     </div>
-  </div>
 
-  <!-- Mobile card layout -->
-  <div class="md:hidden flex flex-col gap-3" id="rides-cards">
-    {
-      gesorteerdeRitten.map((rit) => (
-        <div
-          class="bg-white rounded-xl border border-gray-100 shadow-sm p-4"
-          data-dag={rit.dag}
-          data-town={rit.locatie}
-          data-gender={rit.gender ?? ""}
-          data-open={rit.openVoorIedereen ? "true" : "false"}
-        >
-          <div class="flex items-start justify-between gap-3 mb-3">
-            <div>
-              <span class="font-semibold text-gray-900">
-                {dagNamen[rit.dag] ?? rit.dag}
-              </span>
-              <span class="mx-1.5 text-gray-400">·</span>
-              <span class="font-mono text-gray-700">
-                <SeasonalTime time={rit.uur} />
-              </span>
-            </div>
-            <span
-              class={`inline-block shrink-0 px-2.5 py-0.5 rounded-full text-xs font-medium ${rit.openVoorIedereen ? "bg-green-100 text-green-800" : "bg-accent-100 text-accent-800"}`}
-            >
-              {rit.openVoorIedereen ? "Open" : "Leden"}
-            </span>
-            <GenderBadge gender={rit.gender} />
-          </div>
-          <a
-            href={`/clubs/${rit.clubSlug}`}
-            class="text-primary-600 hover:text-primary-900 font-medium hover:underline text-sm"
-          >
-            {rit.clubNaam}
-          </a>
-          <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500">
-            {rit.groep && (
-              <span>
-                <span class="font-medium text-gray-700">Groep:</span>{" "}
-                {rit.groep}
-              </span>
-            )}
-            {rit.gemiddeldeSnelheid != null && (
-              <span>
-                <span class="font-medium text-gray-700">Snelheid:</span>{" "}
-                {formatSpeed(rit.gemiddeldeSnelheid)}
-              </span>
-            )}
-            {rit.vertrekpunt && (
-              <span>
-                <span class="font-medium text-gray-700">Vertrek:</span>{" "}
-                {rit.vertrekpunt}
-              </span>
-            )}
-          </div>
-        </div>
-      ))
-    }
-  </div>
-
-  <!-- Desktop table layout -->
-  <div
-    class="hidden md:block bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden"
-  >
-    <div class="overflow-x-auto">
-      <table class="w-full text-sm" id="rides-table">
+    <div class="ww-rides" style="margin-top: 24px;">
+      <table class="ww-rides-tbl" id="rides-table">
         <thead>
-          <tr class="bg-gray-50 border-b border-gray-200">
-            <th class="text-left py-3.5 px-5 font-semibold text-gray-600"
-              >Dag</th
-            >
-            <th class="text-left py-3.5 px-5 font-semibold text-gray-600"
-              >Uur</th
-            >
-            <th class="text-left py-3.5 px-5 font-semibold text-gray-600"
-              >Club</th
-            >
-            <th class="text-left py-3.5 px-5 font-semibold text-gray-600"
-              >Groep</th
-            >
-            <th class="text-left py-3.5 px-5 font-semibold text-gray-600"
-              >Gem. snelheid</th
-            >
-            <th class="text-left py-3.5 px-5 font-semibold text-gray-600"
-              >Vertrekpunt</th
-            >
-            <th class="text-left py-3.5 px-5 font-semibold text-gray-600"
-              >Type</th
-            >
-            <th class="text-left py-3.5 px-5 font-semibold text-gray-600"
-              >Toegang</th
-            >
+          <tr>
+            <th>Dag</th>
+            <th>Uur</th>
+            <th>Club</th>
+            <th>Groep</th>
+            <th>Snelheid</th>
+            <th>Vertrekpunt</th>
+            <th>Type</th>
+            <th>Toegang</th>
           </tr>
         </thead>
         <tbody>
           {
-            gesorteerdeRitten.map((rit, i) => (
+            gesorteerdeRitten.map((rit) => (
               <tr
-                class={`border-b border-gray-100 last:border-0 ${i % 2 === 0 ? "" : "bg-gray-50/40"}`}
                 data-dag={rit.dag}
                 data-town={rit.locatie}
                 data-gender={rit.gender ?? ""}
                 data-open={rit.openVoorIedereen ? "true" : "false"}
               >
-                <td class="py-3.5 px-5 font-semibold text-gray-900">
-                  {dagNamen[rit.dag] ?? rit.dag}
+                <td data-label="Dag" class="ww-cell-day">
+                  {(dagNamen[rit.dag] ?? rit.dag).slice(0, 2)}
                 </td>
-                <td class="py-3.5 px-5 font-mono text-gray-700">
+                <td data-label="Uur" class="ww-cell-time">
                   <SeasonalTime time={rit.uur} />
                 </td>
-                <td class="py-3.5 px-5">
+                <td data-label="Club">
                   <a
                     href={`/clubs/${rit.clubSlug}`}
-                    class="text-primary-600 hover:text-primary-900 font-medium hover:underline"
+                    class="ww-cell-club"
+                    title={`Bekijk ${rit.clubNaam}`}
                   >
                     {rit.clubNaam}
                   </a>
+                  <div class="ww-cell-town">{rit.locatie}</div>
                 </td>
-                <td class="py-3.5 px-5 text-gray-600">{rit.groep ?? "—"}</td>
-                <td class="py-3.5 px-5 text-gray-600">
-                  {formatSpeed(rit.gemiddeldeSnelheid) ?? "—"}
+                <td data-label="Groep">{rit.groep ?? "—"}</td>
+                <td data-label="Snelheid">
+                  {formatSpeed(rit.gemiddeldeSnelheid)}
                 </td>
-                <td class="py-3.5 px-5 text-gray-500">{rit.vertrekpunt}</td>
-                <td class="py-3.5 px-5 text-gray-600">
+                <td data-label="Vertrekpunt" class="ww-cell-meta">
+                  {rit.vertrekpunt}
+                </td>
+                <td data-label="Type">
                   <GenderBadge gender={rit.gender} fallback="—" />
                 </td>
-                <td class="py-3.5 px-5">
-                  <span
-                    class={`inline-block px-2.5 py-0.5 rounded-full text-xs font-medium ${rit.openVoorIedereen ? "bg-green-100 text-green-800" : "bg-accent-100 text-accent-800"}`}
-                  >
-                    {rit.openVoorIedereen ? "Open" : "Leden"}
-                  </span>
+                <td data-label="Toegang">
+                  {rit.openVoorIedereen !== false ? (
+                    <span class="ww-badge open">Open</span>
+                  ) : (
+                    <span class="ww-badge leden">Leden</span>
+                  )}
                 </td>
               </tr>
             ))
@@ -290,31 +180,21 @@ function formatSpeed(speed?: number | string): string | undefined {
         </tbody>
       </table>
     </div>
-  </div>
 
-  <!-- Pagination -->
-  <div
-    class="mt-6 flex flex-col sm:flex-row items-center justify-between border-t border-gray-200 pt-4 gap-4"
-    id="pagination-controls"
-  >
-    <div class="text-sm text-gray-500">
-      Tonen: <span id="page-info" class="font-medium text-gray-900"
-        >0-0 van 0</span
+    <div
+      class="ww-filters"
+      id="pagination-controls"
+      style="justify-content: space-between; border-bottom: 0;"
+    >
+      <div
+        style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.1em; color: var(--mute); text-transform: uppercase;"
       >
-    </div>
-    <div class="flex items-center gap-2">
-      <button
-        id="btn-prev"
-        class="px-3 py-1.5 border border-gray-200 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        Vorige
-      </button>
-      <button
-        id="btn-next"
-        class="px-3 py-1.5 border border-gray-200 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        Volgende
-      </button>
+        Tonen: <span id="page-info">0-0 van 0</span>
+      </div>
+      <div style="display:flex; gap: 8px;">
+        <button id="btn-prev" class="ww-chip">Vorige</button>
+        <button id="btn-next" class="ww-chip">Volgende</button>
+      </div>
     </div>
   </div>
 </section>
@@ -323,15 +203,28 @@ function formatSpeed(speed?: number | string): string | undefined {
   function initWeeklyRidesSection() {
     const dagBtns =
       document.querySelectorAll<HTMLButtonElement>(".day-filter-btn");
-    const townSelect = document.getElementById("filter-town");
-    const genderSelect = document.getElementById("filter-gender");
-    const openCheckbox = document.getElementById("filter-open");
-    const table = document.getElementById("rides-table");
-    const cardsContainer = document.getElementById("rides-cards");
+    const townSelect = document.getElementById(
+      "filter-town",
+    ) as HTMLSelectElement | null;
+    const genderSelect = document.getElementById(
+      "filter-gender",
+    ) as HTMLSelectElement | null;
+    const openCheckbox = document.getElementById(
+      "filter-open",
+    ) as HTMLInputElement | null;
+    const table = document.getElementById(
+      "rides-table",
+    ) as HTMLTableElement | null;
     const pageInfo = document.getElementById("page-info");
-    const btnPrev = document.getElementById("btn-prev") as HTMLButtonElement;
-    const btnNext = document.getElementById("btn-next") as HTMLButtonElement;
-    const resetButton = document.getElementById("filter-reset");
+    const btnPrev = document.getElementById(
+      "btn-prev",
+    ) as HTMLButtonElement | null;
+    const btnNext = document.getElementById(
+      "btn-next",
+    ) as HTMLButtonElement | null;
+    const resetButton = document.getElementById(
+      "filter-reset",
+    ) as HTMLButtonElement | null;
 
     if (
       !dagBtns.length ||
@@ -339,193 +232,102 @@ function formatSpeed(speed?: number | string): string | undefined {
       !genderSelect ||
       !openCheckbox ||
       !table ||
-      !cardsContainer ||
       !resetButton
     ) {
       return;
     }
 
-    const townSelectEl = townSelect as HTMLSelectElement;
-    const genderSelectEl = genderSelect as HTMLSelectElement;
-    const openCheckboxEl = openCheckbox as HTMLInputElement;
-    const tableEl = table as HTMLTableElement;
-    const cardsContainerEl = cardsContainer as HTMLDivElement;
-    const resetButtonEl = resetButton as HTMLButtonElement;
-
     const ITEMS_PER_PAGE = 15;
     let selectedDag = "";
     let currentPage = 1;
     let filteredRows: HTMLTableRowElement[] = [];
-    let filteredCards: HTMLDivElement[] = [];
 
     function updatePagination() {
-      const totalItems = filteredCards.length;
-      const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE) || 1;
-
+      const total = filteredRows.length;
+      const totalPages = Math.ceil(total / ITEMS_PER_PAGE) || 1;
       if (currentPage > totalPages) currentPage = totalPages;
       if (currentPage < 1) currentPage = 1;
-
-      const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
-      const endIdx = Math.min(startIdx + ITEMS_PER_PAGE, totalItems);
+      const start = (currentPage - 1) * ITEMS_PER_PAGE;
+      const end = Math.min(start + ITEMS_PER_PAGE, total);
 
       if (pageInfo) {
         pageInfo.textContent =
-          totalItems === 0
-            ? "0 resultaten"
-            : `${startIdx + 1}-${endIdx} van ${totalItems}`;
+          total === 0 ? "0 resultaten" : `${start + 1}-${end} van ${total}`;
       }
-
       if (btnPrev) btnPrev.disabled = currentPage === 1;
       if (btnNext) btnNext.disabled = currentPage === totalPages;
 
       filteredRows.forEach((row, idx) => {
-        row.style.display = idx >= startIdx && idx < endIdx ? "" : "none";
-      });
-      filteredCards.forEach((card, idx) => {
-        card.style.display = idx >= startIdx && idx < endIdx ? "" : "none";
+        row.style.display = idx >= start && idx < end ? "" : "none";
       });
     }
 
     function applyFilters() {
       currentPage = 1;
       filteredRows = [];
-      filteredCards = [];
+      const selectedTown = townSelect!.value;
+      const selectedGender = genderSelect!.value;
+      const onlyOpen = openCheckbox!.checked;
 
-      const selectedTown = townSelectEl.value;
-      const selectedGender = genderSelectEl.value;
-      const onlyOpen = openCheckboxEl.checked;
-
-      const rows = tableEl.querySelectorAll<HTMLTableRowElement>("tbody tr");
+      const rows = table!.querySelectorAll<HTMLTableRowElement>("tbody tr");
       rows.forEach((row) => {
         const dagMatch = !selectedDag || row.dataset.dag === selectedDag;
         const townMatch = !selectedTown || row.dataset.town === selectedTown;
         const genderMatch =
           !selectedGender || row.dataset.gender === selectedGender;
         const openMatch = !onlyOpen || row.dataset.open === "true";
-
         if (dagMatch && townMatch && genderMatch && openMatch) {
           filteredRows.push(row);
         } else {
           row.style.display = "none";
         }
       });
-
-      const cards =
-        cardsContainerEl.querySelectorAll<HTMLDivElement>("div[data-dag]");
-      cards.forEach((card) => {
-        const dagMatch = !selectedDag || card.dataset.dag === selectedDag;
-        const townMatch = !selectedTown || card.dataset.town === selectedTown;
-        const genderMatch =
-          !selectedGender || card.dataset.gender === selectedGender;
-        const openMatch = !onlyOpen || card.dataset.open === "true";
-
-        if (dagMatch && townMatch && genderMatch && openMatch) {
-          filteredCards.push(card);
-        } else {
-          card.style.display = "none";
-        }
-      });
-
       updatePagination();
     }
 
     function updateResetVisibility() {
-      resetButtonEl.classList.toggle(
-        "hidden",
-        selectedDag === "" &&
-          townSelectEl.value === "" &&
-          genderSelectEl.value === "" &&
-          !openCheckboxEl.checked,
-      );
+      if (!resetButton) return;
+      const show =
+        selectedDag !== "" ||
+        townSelect!.value !== "" ||
+        genderSelect!.value !== "" ||
+        openCheckbox!.checked;
+      resetButton.style.display = show ? "" : "none";
+    }
+
+    function setActiveDay(target: HTMLButtonElement) {
+      dagBtns.forEach((b) => b.classList.remove("on"));
+      target.classList.add("on");
+      selectedDag = target.dataset.day || "";
     }
 
     dagBtns.forEach((btn) => {
       btn.addEventListener("click", () => {
-        dagBtns.forEach((b) => {
-          b.classList.remove(
-            "bg-primary-600",
-            "border-primary-600",
-            "text-white",
-            "hover:bg-primary-700",
-          );
-          b.classList.add(
-            "bg-white",
-            "text-gray-700",
-            "border-gray-200",
-            "hover:bg-gray-50",
-          );
-        });
-        btn.classList.remove(
-          "bg-white",
-          "text-gray-700",
-          "border-gray-200",
-          "hover:bg-gray-50",
-        );
-        btn.classList.add(
-          "bg-primary-600",
-          "border-primary-600",
-          "text-white",
-          "hover:bg-primary-700",
-        );
-
-        selectedDag = btn.dataset.day || "";
+        setActiveDay(btn);
         applyFilters();
         updateResetVisibility();
       });
     });
 
-    townSelectEl.addEventListener("change", () => {
+    townSelect.addEventListener("change", () => {
+      applyFilters();
+      updateResetVisibility();
+    });
+    genderSelect.addEventListener("change", () => {
+      applyFilters();
+      updateResetVisibility();
+    });
+    openCheckbox.addEventListener("change", () => {
       applyFilters();
       updateResetVisibility();
     });
 
-    genderSelectEl.addEventListener("change", () => {
-      applyFilters();
-      updateResetVisibility();
-    });
-
-    openCheckboxEl.addEventListener("change", () => {
-      applyFilters();
-      updateResetVisibility();
-    });
-
-    resetButtonEl.addEventListener("click", () => {
-      const alleDagenBtn = Array.from(dagBtns).find(
-        (b) => b.dataset.day === "",
-      );
-      if (alleDagenBtn) {
-        dagBtns.forEach((b) => {
-          b.classList.remove(
-            "bg-primary-600",
-            "border-primary-600",
-            "text-white",
-            "hover:bg-primary-700",
-          );
-          b.classList.add(
-            "bg-white",
-            "text-gray-700",
-            "border-gray-200",
-            "hover:bg-gray-50",
-          );
-        });
-        alleDagenBtn.classList.remove(
-          "bg-white",
-          "text-gray-700",
-          "border-gray-200",
-          "hover:bg-gray-50",
-        );
-        alleDagenBtn.classList.add(
-          "bg-primary-600",
-          "border-primary-600",
-          "text-white",
-          "hover:bg-primary-700",
-        );
-      }
-
-      selectedDag = "";
-      townSelectEl.value = "";
-      genderSelectEl.value = "";
-      openCheckboxEl.checked = false;
+    resetButton.addEventListener("click", () => {
+      const allBtn = Array.from(dagBtns).find((b) => b.dataset.day === "");
+      if (allBtn) setActiveDay(allBtn);
+      townSelect!.value = "";
+      genderSelect!.value = "";
+      openCheckbox!.checked = false;
       applyFilters();
       updateResetVisibility();
     });
@@ -534,22 +336,21 @@ function formatSpeed(speed?: number | string): string | undefined {
       if (currentPage > 1) {
         currentPage--;
         updatePagination();
-        const parentTop =
-          document.getElementById("filter-dag-group")?.offsetTop || 0;
-        window.scrollTo({ top: parentTop - 100, behavior: "smooth" });
+        const top = document.getElementById("filter-dag-group")?.offsetTop || 0;
+        window.scrollTo({ top: top - 100, behavior: "smooth" });
+      }
+    });
+    btnNext?.addEventListener("click", () => {
+      const totalPages = Math.ceil(filteredRows.length / ITEMS_PER_PAGE) || 1;
+      if (currentPage < totalPages) {
+        currentPage++;
+        updatePagination();
+        const top = document.getElementById("filter-dag-group")?.offsetTop || 0;
+        window.scrollTo({ top: top - 100, behavior: "smooth" });
       }
     });
 
-    btnNext?.addEventListener("click", () => {
-      currentPage++;
-      updatePagination();
-      const parentTop =
-        document.getElementById("filter-dag-group")?.offsetTop || 0;
-      window.scrollTo({ top: parentTop - 100, behavior: "smooth" });
-    });
-
     applyFilters();
-    updateResetVisibility();
   }
 
   document.addEventListener("astro:page-load", initWeeklyRidesSection);

@@ -1,0 +1,141 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Over WielerWaas — WielerWaas"
+  description="Leer meer over WielerWaas, het community platform voor wielerclubs en evenementen in het Waasland."
+>
+  <section class="ww-page-hero">
+    <div class="ww-wrap">
+      <div class="kicker">Over ons</div>
+      <h1>Over<br /><em>WielerWaas.</em></h1>
+      <p>
+        Het community platform voor wielerclubs en evenementen in het Waasland.
+      </p>
+    </div>
+  </section>
+  <div class="ww-checker ww-checker-red"></div>
+
+  <section class="ww-band white">
+    <div class="ww-wrap" style="padding-top: 56px; padding-bottom: 56px;">
+      <article class="ww-card ww-prose" style="margin-bottom: 24px;">
+        <h2>Onze missie</h2>
+        <p>
+          WielerWaas is een communityplatform voor wielerclubs en evenementen in
+          het Waasland. De regio omvat onder andere
+          Beveren-Kruibeke-Zwijndrecht, Sint-Niklaas, Lokeren, Temse,
+          Sint-Gillis-Waas, Stekene en Waasmunster.
+        </p>
+        <p>
+          Ons doel is drieledig: lokale wielerclubs meer zichtbaarheid geven,
+          fietsers helpen om een club of vrije ritten te vinden die bij hen
+          passen, en evenementen bundelen op één plek. Zo wordt het makkelijker
+          dan ooit om te ontdekken wat er op wielergebied leeft in onze regio.
+        </p>
+      </article>
+
+      <article class="ww-card" style="margin-bottom: 24px;">
+        <h2
+          style="font-family: 'Anton', sans-serif; font-size: 28px; text-transform: uppercase; margin: 0 0 16px;"
+        >
+          Wat vind je op WielerWaas?
+        </h2>
+        <div
+          style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px;"
+        >
+          <div>
+            <h3
+              style="font-family: 'Anton', sans-serif; text-transform: uppercase; font-size: 20px; margin: 0 0 4px;"
+            >
+              Wielerclubs
+            </h3>
+            <p style="color: var(--mute); margin: 0;">
+              Overzicht van alle wielerclubs in de regio.
+            </p>
+          </div>
+          <div>
+            <h3
+              style="font-family: 'Anton', sans-serif; text-transform: uppercase; font-size: 20px; margin: 0 0 4px;"
+            >
+              Ritschema's
+            </h3>
+            <p style="color: var(--mute); margin: 0;">
+              Wekelijkse ritschema's en vertrekpunten.
+            </p>
+          </div>
+          <div>
+            <h3
+              style="font-family: 'Anton', sans-serif; text-transform: uppercase; font-size: 20px; margin: 0 0 4px;"
+            >
+              Evenementen
+            </h3>
+            <p style="color: var(--mute); margin: 0;">
+              Evenementen en wielerwedstrijden in de buurt.
+            </p>
+          </div>
+          <div>
+            <h3
+              style="font-family: 'Anton', sans-serif; text-transform: uppercase; font-size: 20px; margin: 0 0 4px;"
+            >
+              Zelf toevoegen
+            </h3>
+            <p style="color: var(--mute); margin: 0;">
+              Voeg je eigen club of evenement toe.
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <article class="ww-card ww-prose" style="margin-bottom: 32px;">
+        <h2>Achter WielerWaas</h2>
+        <p>
+          WielerWaas is een community initiatief, onderhouden door <a
+            href="https://eliostruyf.com">Elio Struyf</a
+          >, een gepassioneerde fietser uit de regio die een centraal platform
+          wilde creëren voor alle wielerinformatie in het Waasland.
+        </p>
+        <p>
+          Het idee ontstond toen ik telkens in mijn WhatsApp-berichten moest
+          zoeken naar wie wanneer vertrekt, om zeker te zijn dat ik op tijd aan
+          de startplaats stond. Daarom besloot ik een website te bouwen waar
+          alle informatie op één plek te vinden is, zodat iedereen gemakkelijk
+          kan zien waar en wanneer er wordt gefietst.
+        </p>
+      </article>
+
+      <section
+        class="ww-cta-band"
+        style="margin: 0 -100vw; padding: 64px 100vw;"
+      >
+        <div class="ww-wrap">
+          <div>
+            <h2 class="max-w-2/3">Wil je<br />meehelpen?</h2>
+            <p>
+              WielerWaas leeft dankzij de bijdragen van de lokale
+              wieler&shy;gemeenschap. Voeg je club of evenement toe, of stuur
+              ons feedback.
+            </p>
+          </div>
+          <div class="ww-cta-actions">
+            <a
+              href="/add-club"
+              class="ww-btn ww-btn-chalk"
+              title="Voeg je club toe">Voeg club toe →</a
+            >
+            <a
+              href="/add-event"
+              class="ww-btn ww-btn-outline-chalk"
+              title="Dien je evenement in">Dien evenement in →</a
+            >
+            <a
+              href="mailto:elio@struyfconsulting.be?subject=WielerWaas%20—%20Feedback"
+              class="ww-btn ww-btn-outline-chalk"
+              title="Stuur feedback">elio@struyfconsulting.be</a
+            >
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+</Layout>

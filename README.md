@@ -1,34 +1,27 @@
-# Astro Starter Kit: Basics
+# WielerWaas
 
-```sh
-npm create astro@latest -- --template basics
-```
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+Website for the WielerWaas cycling group, built with [Astro](https://astro.build) and [Tailwind CSS](https://tailwindcss.com).
 
 ## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
 
 ```text
 /
 ├── public/
+│   ├── clubs/
+│   ├── sponsors/
 │   └── favicon.svg
 ├── src/
+│   ├── components/
+│   ├── content/
 │   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
+│   ├── models/
+│   ├── pages/
+│   ├── styles/
+│   └── utils/
+├── templates/
+├── astro.config.mjs
 └── package.json
 ```
-
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
 
 ## 🧞 Commands
 
@@ -43,6 +36,12 @@ All commands are run from the root of the project, from a terminal:
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `npm run astro -- --help` | Get help using the Astro CLI                     |
 
-## 👀 Want to learn more?
+## ☁️ Daily Cloudflare Rebuild
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+This project includes a scheduled GitHub Action in `.github/workflows/daily-rebuild.yml` that triggers a Cloudflare Pages deployment every day.
+
+Setup steps:
+
+1. In Cloudflare Pages, open your project and create a **Deploy Hook**.
+2. In GitHub, open your repository settings and add a secret named `CLOUDFLARE_DEPLOY_HOOK` with the deploy hook URL as value.
+3. The workflow runs daily at `03:00 UTC` and can also be run manually from the **Actions** tab.

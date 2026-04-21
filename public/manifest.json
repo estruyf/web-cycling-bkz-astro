@@ -1,0 +1,16 @@
+{
+  "name": "WielerWaas",
+  "short_name": "WielerWaas",
+  "description": "Ontdek wielerclubs en evenementen in het Waasland. Bekijk wanneer en waar ze vertrekken en sluit je aan bij een groep die bij jou past.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8f5ee",
+  "theme_color": "#e6443d",
+  "icons": [
+    {
+      "src": "/wielerwaas-248x248.png",
+      "sizes": "248x248",
+      "type": "image/png"
+    }
+  ]
+}

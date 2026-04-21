@@ -1,0 +1,72 @@
+---
+interface Props {
+  id?: string;
+  options: Array<{ value: string; label: string }>;
+  placeholder?: string;
+  defaultValue?: string;
+  class?: string;
+}
+
+const {
+  id,
+  options,
+  placeholder,
+  defaultValue = "",
+  class: className,
+} = Astro.props;
+---
+
+<div class="ww-select-wrapper">
+  <select
+    id={id}
+    class={`ww-select ${className || ""}`}
+    data-default={defaultValue}
+  >
+    {placeholder && <option value="">{placeholder}</option>}
+    {
+      options.map((option) => (
+        <option value={option.value} selected={option.value === defaultValue}>
+          {option.label}
+        </option>
+      ))
+    }
+  </select>
+  <svg
+    class="ww-select-icon"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+  >
+    <polyline points="6 9 12 15 18 9"></polyline>
+  </svg>
+</div>
+
+<style>
+  .ww-select-wrapper {
+    position: relative;
+    display: inline-block;
+    width: auto;
+  }
+
+  .ww-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 32px;
+    cursor: pointer;
+    background-image: none;
+    background-color: transparent;
+  }
+
+  .ww-select-icon {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    pointer-events: none;
+    color: inherit;
+  }
+</style>

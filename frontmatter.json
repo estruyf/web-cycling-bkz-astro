@@ -1,0 +1,229 @@
+{
+  "$schema": "https://beta.frontmatter.codes/frontmatter.schema.json",
+  "frontMatter.copilot.enabled": false,
+  "frontMatter.taxonomy.contentTypes": [
+    {
+      "name": "clubs",
+      "previewPath": "'clubs'",
+      "filePrefix": null,
+      "pageBundle": false,
+      "clearEmpty": true,
+      "fields": [
+        {
+          "name": "name",
+          "type": "string",
+          "single": true,
+          "required": true
+        },
+        {
+          "name": "town",
+          "type": "choice",
+          "choices": [
+            "Beveren",
+            "Kruibeke",
+            "Zwijndrecht",
+            "Melsele",
+            "Vrasene"
+          ],
+          "required": true
+        },
+        {
+          "name": "gender",
+          "type": "choice",
+          "choices": [
+            "women",
+            "men",
+            "mixed"
+          ],
+          "required": true,
+          "single": true
+        },
+        {
+          "name": "shortDescription",
+          "type": "string",
+          "single": true
+        },
+        {
+          "name": "logo",
+          "type": "image",
+          "isPreviewImage": true
+        },
+        {
+          "name": "website",
+          "type": "string",
+          "single": true
+        },
+        {
+          "name": "meetingPoint",
+          "type": "string",
+          "single": true
+        },
+        {
+          "name": "meetingPointDetail",
+          "type": "string",
+          "single": true
+        },
+        {
+          "name": "contactEmail",
+          "type": "string",
+          "single": true
+        },
+        {
+          "name": "active",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "name": "claimable",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "name": "sponsors",
+      "previewPath": "'sponsors'",
+      "filePrefix": null,
+      "pageBundle": false,
+      "clearEmpty": true,
+      "fields": [
+        {
+          "name": "name",
+          "type": "string",
+          "single": true,
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "single": true
+        },
+        {
+          "name": "logo",
+          "type": "string",
+          "single": true
+        },
+        {
+          "name": "website",
+          "type": "string",
+          "single": true
+        },
+        {
+          "name": "tier",
+          "type": "choice",
+          "choices": [
+            "gold",
+            "silver",
+            "bronze"
+          ],
+          "required": true
+        },
+        {
+          "name": "order",
+          "type": "number",
+          "default": 99
+        },
+        {
+          "name": "active",
+          "type": "boolean",
+          "default": true
+        }
+      ]
+    },
+    {
+      "name": "events",
+      "previewPath": "'events'",
+      "filePrefix": null,
+      "pageBundle": false,
+      "clearEmpty": true,
+      "fields": [
+        {
+          "name": "name",
+          "type": "string",
+          "single": true,
+          "required": true
+        },
+        {
+          "name": "date",
+          "type": "datetime",
+          "dateFormat": "yyyy-MM-dd",
+          "required": true
+        },
+        {
+          "name": "time",
+          "type": "string",
+          "single": true
+        },
+        {
+          "name": "organizer",
+          "type": "string",
+          "single": true,
+          "required": true
+        },
+        {
+          "name": "town",
+          "type": "string",
+          "single": true,
+          "required": true
+        },
+        {
+          "name": "location",
+          "type": "string",
+          "single": true,
+          "required": true
+        },
+        {
+          "name": "website",
+          "type": "string",
+          "single": true
+        },
+        {
+          "name": "contactEmail",
+          "type": "string",
+          "single": true
+        },
+        {
+          "name": "active",
+          "type": "boolean",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "frontMatter.framework.id": "astro",
+  "frontMatter.preview.host": "http://localhost:4321",
+  "frontMatter.content.pageFolders": [
+    {
+      "title": "clubs",
+      "path": "[[workspace]]/src/content/clubs",
+      "contentTypes": [
+        "clubs"
+      ]
+    },
+    {
+      "title": "sponsors",
+      "path": "[[workspace]]/src/content/sponsors",
+      "contentTypes": [
+        "sponsors"
+      ]
+    },
+    {
+      "title": "events",
+      "path": "[[workspace]]/src/content/events",
+      "contentTypes": [
+        "events"
+      ]
+    }
+  ],
+  "frontMatter.content.publicFolder": "public",
+  "frontMatter.dashboard.content.filters": [
+    {
+      "title": "Content type",
+      "name": "fmContentType",
+      "type": "choice"
+    }
+  ],
+  "frontMatter.git.enabled": true,
+  "frontMatter.taxonomy.dateFormat": "yyyy-MM-dd'T'HH:mm:ssXXX",
+  "frontMatter.taxonomy.timezone": "Europe/Brussels"
+}

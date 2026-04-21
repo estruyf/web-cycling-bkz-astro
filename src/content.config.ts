@@ -22,6 +22,7 @@ const rideSchema = z.object({
   averageSpeed: z.union([z.number(), z.string()]).optional(),
   notes: z.string().optional(),
   openForAll: z.boolean().default(true),
+  gender: z.enum(["women", "men", "mixed"]).optional(),
 });
 
 const clubs = defineCollection({
@@ -29,15 +30,16 @@ const clubs = defineCollection({
   schema: z.object({
     name: z.string(),
     town: z.enum(["Beveren", "Kruibeke", "Zwijndrecht", "Melsele", "Vrasene"]),
-    shortDescription: z.string(),
+    shortDescription: z.string().optional(),
     logo: z.string().optional(),
     website: z.string().optional(),
-    meetingPoint: z.string(),
+    meetingPoint: z.string().optional(),
     meetingPointDetail: z.string().optional(),
     contactEmail: z.string().optional(),
     active: z.boolean().default(true),
+    claimable: z.boolean().default(false),
     gender: z.enum(["women", "men", "mixed"]).optional(),
-    rides: z.array(rideSchema),
+    rides: z.array(rideSchema).optional(),
   }),
 });
 
@@ -45,6 +47,7 @@ const sponsors = defineCollection({
   type: "content",
   schema: z.object({
     name: z.string(),
+    description: z.string().optional(),
     logo: z.string().optional(),
     website: z.string().optional(),
     tier: z.enum(["gold", "silver", "bronze"]),
@@ -67,6 +70,7 @@ const events = defineCollection({
       town: z.string(),
       location: z.string(),
       website: z.string().optional(),
+      contactEmail: z.string().optional(),
       active: z.boolean().default(true),
     })
     .superRefine((data, ctx) => {

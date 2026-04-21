@@ -1,0 +1,32 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Pagina niet gevonden - WielerWaas"
+  description="De pagina die je zoekt bestaat niet of is verplaatst."
+  hideSponsors={true}
+>
+  <section class="ww-page-hero">
+    <div class="ww-wrap">
+      <div class="kicker">Error · 404</div>
+      <h1>Oeps.<br /><em>Verkeerd afgeslagen.</em></h1>
+      <p>De pagina die je zoekt is verplaatst of bestaat niet meer.</p>
+    </div>
+  </section>
+  <section class="ww-band white">
+    <div class="ww-wrap" style="padding: 56px 0; text-align: center;">
+      <p
+        style="font-family: 'Anton', sans-serif; font-size: clamp(80px, 14vw, 180px); color: var(--red); line-height: 0.9; margin: 0 0 20px; letter-spacing: 0.02em;"
+      >
+        404
+      </p>
+      <div
+        style="display:flex; flex-wrap:wrap; gap: 12px; justify-content: center;"
+      >
+        <a href="/" class="ww-btn ww-btn-red" title="Terug naar home">Terug naar home →</a>
+        <a href="/clubs" class="ww-btn ww-btn-outline-ink" title="Bekijk alle clubs">Bekijk alle clubs</a>
+      </div>
+    </div>
+  </section>
+</Layout>

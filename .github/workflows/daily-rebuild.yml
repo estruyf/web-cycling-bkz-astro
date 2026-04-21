@@ -1,0 +1,22 @@
+name: Daily Cloudflare Rebuild
+
+on:
+  schedule:
+    # Runs every day at 03:00 UTC.
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+jobs:
+  trigger-deploy-hook:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Cloudflare Pages deploy hook
+        env:
+          CLOUDFLARE_DEPLOY_HOOK: ${{ secrets.CLOUDFLARE_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$CLOUDFLARE_DEPLOY_HOOK" ]; then
+            echo "Missing CLOUDFLARE_DEPLOY_HOOK secret."
+            exit 1
+          fi
+
+          curl -X POST "$CLOUDFLARE_DEPLOY_HOOK"

@@ -6,251 +6,194 @@ import Layout from "../layouts/Layout.astro";
   title="Voeg je club toe — WielerWaas"
   description="Zet jouw wielerclub op WielerWaas. Bereik fietsers in het Waasland."
 >
-  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="mb-10">
-      <h1 class="text-3xl font-extrabold text-gray-900 mb-3">
-        Voeg je club toe
-      </h1>
-      <p class="text-gray-500 leading-relaxed">
+  <section class="ww-page-hero">
+    <div class="ww-wrap">
+      <div class="kicker">Community</div>
+      <h1>Voeg je<br /><em>club toe.</em></h1>
+      <p>
         Wil jij jouw wielerclub op deze website zetten? Vul het onderstaande
         formulier in en we nemen contact met je op om je zo snel mogelijk
         vermeld te krijgen op WielerWaas.
       </p>
     </div>
+  </section>
+  <div class="ww-checker ww-checker-red"></div>
 
-    <div class="bg-blue-50 rounded-2xl border border-blue-200 p-6 mb-8">
-      <h2 class="text-sm font-semibold text-blue-900 mb-2">
-        Wat hebben we nodig?
-      </h2>
-      <p class="text-sm text-blue-800">
-        We vragen wat basisgegevens over je club: naam, locatie,
-        contactgegevens, een korte beschrijving en je ritschema. Dit helpt
-        wielrenners jouw club makkelijk te vinden en aan te sluiten.
-      </p>
-    </div>
+  <section class="ww-band white">
+    <div class="ww-wrap" style="padding: 56px 0;">
+      <div class="ww-card" style="margin-bottom: 24px;">
+        <div
+          class="kicker"
+          style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--red); margin-bottom: 6px;"
+        >
+          Wat hebben we nodig?
+        </div>
+        <p style="color: var(--ink-2); margin: 0;">
+          We vragen wat basisgegevens over je club: naam, locatie,
+          contactgegevens, een korte beschrijving en je ritschema. Dit helpt
+          wielrenners jouw club makkelijk te vinden en aan te sluiten.
+        </p>
+      </div>
 
-    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
-      <h2 class="text-lg font-bold text-gray-900 mb-6">Vul het formulier in</h2>
-      <form
-        action="https://formspree.io/f/mreowrbd"
-        method="POST"
-        class="space-y-6"
-      >
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Club Name */}
-          <div class="md:col-span-2">
-            <label
-              for="name"
-              class="block text-sm font-semibold text-gray-900 mb-2"
-            >
-              Clubnaam <span class="text-red-500">*</span>
-            </label>
+      <article class="ww-card">
+        <h2
+          style="font-family: 'Anton', sans-serif; font-size: 28px; text-transform: uppercase; margin: 0 0 20px;"
+        >
+          Vul het formulier in
+        </h2>
+        <form
+          action="https://formspree.io/f/mreowrbd"
+          method="POST"
+          class="ww-form"
+        >
+          <label class="field row full">
+            <span class="ww-label">Clubnaam <span class="req">*</span></span>
             <input
               type="text"
               id="name"
               name="name"
               required
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
+              class="ww-input"
               placeholder="De officiële naam van je wielerclub"
             />
-            <p class="text-xs text-gray-600 mt-1">
-              De officiële naam van je wielerclub.
-            </p>
+            <span class="hint">De officiële naam van je wielerclub.</span>
+          </label>
+
+          <div class="row">
+            <label class="field">
+              <span class="ww-label">Gemeente <span class="req">*</span></span>
+              <input
+                type="text"
+                id="town"
+                name="town"
+                required
+                class="ww-input"
+                placeholder="Bijv. Beveren, Kruibeke, Zwijndrecht..."
+              />
+              <span class="hint">In welke gemeente ben je gevestigd?</span>
+            </label>
+            <label class="field">
+              <span class="ww-label">Gender <span class="req">*</span></span>
+              <select id="gender" name="gender" required class="ww-select">
+                <option value="" disabled selected>Kies een optie</option>
+                <option value="mixed">gemengd</option>
+                <option value="men">mannen</option>
+                <option value="women">vrouwen</option>
+              </select>
+              <span class="hint"
+                >Voor wie is jullie club voornamelijk bedoeld?</span
+              >
+            </label>
           </div>
 
-          {/* Town */}
-          <div>
-            <label
-              for="town"
-              class="block text-sm font-semibold text-gray-900 mb-2"
+          <label class="field row full">
+            <span class="ww-label"
+              >Contactmailadres <span class="req">*</span></span
             >
-              Gemeente <span class="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              id="town"
-              name="town"
-              required
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
-              placeholder="Bijv. Beveren, Kruibeke, Zwijndrecht..."
-            />
-            <p class="text-xs text-gray-600 mt-1">
-              In welke gemeente ben je gevestigd?
-            </p>
-          </div>
-
-          {/* Gender */}
-          <div>
-            <label
-              for="gender"
-              class="block text-sm font-semibold text-gray-900 mb-2"
-            >
-              Gender <span class="text-red-500">*</span>
-            </label>
-            <select
-              id="gender"
-              name="gender"
-              required
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-primary-600"
-            >
-              <option value="" disabled selected>Kies een optie</option>
-              <option value="mixed">gemengd</option>
-              <option value="men">mannen</option>
-              <option value="women">vrouwen</option>
-            </select>
-            <p class="text-xs text-gray-600 mt-1">
-              Voor wie is jullie club voornamelijk bedoeld?
-            </p>
-          </div>
-
-          {/* Contact Email */}
-          <div>
-            <label
-              for="contactEmail"
-              class="block text-sm font-semibold text-gray-900 mb-2"
-            >
-              Contactmailadres <span class="text-red-500">*</span>
-            </label>
             <input
               type="email"
               id="contactEmail"
               name="contactEmail"
               required
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
+              class="ww-input"
               placeholder="contact@jouwclub.be"
             />
-            <p class="text-xs text-gray-600 mt-1">
-              Een e-mailadres waarop mensen jouw club kunnen bereiken.
-            </p>
-          </div>
-
-          {/* Short Description */}
-          <div class="md:col-span-2">
-            <label
-              for="shortDescription"
-              class="block text-sm font-semibold text-gray-900 mb-2"
+            <span class="hint"
+              >Een e-mailadres waarop mensen jouw club kunnen bereiken.</span
             >
-              Omschrijving <span class="text-red-500">*</span>
-            </label>
+          </label>
+
+          <label class="field row full">
+            <span class="ww-label">Omschrijving <span class="req">*</span></span
+            >
             <textarea
               id="shortDescription"
               name="shortDescription"
               required
               rows={3}
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
+              class="ww-input"
               placeholder="Beschrijf je club in een paar paragrafen..."
             ></textarea>
-            <p class="text-xs text-gray-600 mt-1">
-              Dit zal op je clubpagina verschijnen. Beschrijf je club, wat
-              jullie doen en voor wie deze bedoeld is. Kijk naar de andere
-              clubpagina's voor inspiratie!
-            </p>
-          </div>
-
-          {/* Meeting Point */}
-          <div class="md:col-span-2">
-            <label
-              for="meetingPoint"
-              class="block text-sm font-semibold text-gray-900 mb-2"
+            <span class="hint"
+              >Dit verschijnt op je clubpagina. Kijk naar de andere clubpagina's
+              voor inspiratie.</span
             >
-              Vertrekpunt <span class="text-red-500">*</span>
-            </label>
+          </label>
+
+          <label class="field row full">
+            <span class="ww-label">Vertrekpunt <span class="req">*</span></span>
             <input
               type="text"
               id="meetingPoint"
               name="meetingPoint"
               required
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
+              class="ww-input"
               placeholder="Adres of plaatsnaam"
             />
-            <p class="text-xs text-gray-600 mt-1">
-              Waar vertrekken jullie? Geef het adres of een duidelijke
-              plaatsnaam.
-            </p>
+            <span class="hint"
+              >Waar vertrekken jullie? Geef het adres of een duidelijke
+              plaatsnaam.</span
+            >
+          </label>
+
+          <div class="row">
+            <label class="field">
+              <span class="ww-label">Website of Facebook (optioneel)</span>
+              <input
+                type="url"
+                id="website"
+                name="website"
+                class="ww-input"
+                placeholder="https://..."
+              />
+              <span class="hint"
+                >Je clubwebsite of Facebookpagina, als je die hebt.</span
+              >
+            </label>
+            <label class="field">
+              <span class="ww-label">Logo URL (optioneel)</span>
+              <input
+                type="url"
+                id="logo"
+                name="logo"
+                class="ww-input"
+                placeholder="Link naar je clublogo"
+              />
+              <span class="hint"
+                >Voeg je clublogo toe als PNG of JPG, of stuur een link.</span
+              >
+            </label>
           </div>
 
-          {/* Website */}
-          <div>
-            <label
-              for="website"
-              class="block text-sm font-semibold text-gray-900 mb-2"
-            >
-              Website of Facebook (optioneel)
-            </label>
-            <input
-              type="url"
-              id="website"
-              name="website"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
-              placeholder="https://..."
-            />
-            <p class="text-xs text-gray-600 mt-1">
-              Je clubwebsite of Facebookpagina, als je die hebt.
-            </p>
-          </div>
-
-          {/* Logo */}
-          <div>
-            <label
-              for="logo"
-              class="block text-sm font-semibold text-gray-900 mb-2"
-            >
-              Logo URL (optioneel)
-            </label>
-            <input
-              type="url"
-              id="logo"
-              name="logo"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
-              placeholder="Link naar je clublogo"
-            />
-            <p class="text-xs text-gray-600 mt-1">
-              Voeg je clublogo toe als PNG of JPG, of stuur een link ernaar mee.
-            </p>
-          </div>
-
-          {/* Rides Schedule */}
-          <div class="md:col-span-2">
-            <label
-              for="rides"
-              class="block text-sm font-semibold text-gray-900 mb-2"
-            >
-              Ritschema <span class="text-red-500">*</span>
-            </label>
+          <label class="field row full">
+            <span class="ww-label">Ritschema <span class="req">*</span></span>
             <textarea
               id="rides"
               name="rides"
               required
               rows={4}
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
-              placeholder="Woensdag, 19:00 - Clubrit (open voor iedereen) - 30gem\nZondag, 09:00 - Trainingsrit (enkel voor leden) - 34gem"
+              class="ww-input"
+              placeholder={"Woensdag, 19:00 - Clubrit (open voor iedereen) - 30gem\nZondag, 09:00 - Trainingsrit (enkel voor leden) - 34gem"}
             ></textarea>
-            <p class="text-xs text-gray-600 mt-1">
-              Per rit: dag van de week, vertrektijdstip, type rit en of deze
-              open is voor iedereen of enkel voor leden.
-            </p>
+            <span class="hint"
+              >Per rit: dag van de week, vertrektijdstip, type rit en of deze
+              open is voor iedereen of enkel voor leden.</span
+            >
+          </label>
+
+          <div class="ww-form-actions">
+            <button type="submit" class="ww-btn ww-btn-red">Verstuur →</button>
+            <button type="reset" class="ww-btn ww-btn-outline-ink"
+              >Wissen</button
+            >
           </div>
-        </div>
-
-        <div class="flex gap-4 pt-6">
-          <button
-            type="submit"
-            class="flex-1 bg-primary-600 text-white hover:bg-primary-700 font-bold px-7 py-3 rounded-xl transition-colors"
+          <p
+            style="font-size: 12px; color: var(--mute); text-align: center; margin: 0;"
           >
-            Verstuur
-          </button>
-          <button
-            type="reset"
-            class="flex-1 bg-gray-200 text-gray-900 hover:bg-gray-300 font-bold px-7 py-3 rounded-xl transition-colors"
-          >
-            Wissen
-          </button>
-        </div>
-
-        <p class="text-xs text-gray-500 text-center pt-4">
-          <span class="text-red-500">*</span> Verplichte velden
-        </p>
-      </form>
+            <span class="req" style="color: var(--red);">*</span> Verplichte velden
+          </p>
+        </form>
+      </article>
     </div>
-  </div>
+  </section>
 </Layout>

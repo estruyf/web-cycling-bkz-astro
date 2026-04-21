@@ -9,17 +9,17 @@ export interface GenderBadge {
 const genderBadges: Record<Gender, GenderBadge> = {
   women: {
     label: "Vrouwen",
-    classes: "bg-pink-100 text-pink-700",
+    classes: "ww-badge women",
     ariaLabel: "Vrouwen enkel club",
   },
   men: {
     label: "Mannen",
-    classes: "bg-blue-100 text-blue-700",
+    classes: "ww-badge men",
     ariaLabel: "Mannen enkel club",
   },
   mixed: {
     label: "Gemengd",
-    classes: "bg-green-100 text-green-700",
+    classes: "ww-badge mixed",
     ariaLabel: "Gemengde club",
   },
 };

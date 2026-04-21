@@ -1,0 +1,1610 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <title>WielerWaas — Site redesign (voorstel)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --red: oklch(0.62 0.2 27);
+        --red-d: oklch(0.54 0.19 27);
+        --ink: oklch(0.16 0.01 60);
+        --ink-2: oklch(0.28 0.01 60);
+        --mute: oklch(0.52 0.01 60);
+        --line: oklch(0.86 0.01 85);
+        --chalk: oklch(0.97 0.01 90);
+        --paper: oklch(0.94 0.012 85);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "Archivo", system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        line-height: 1.5;
+      }
+      a {
+        color: inherit;
+      }
+      button {
+        font-family: inherit;
+      }
+      .mono {
+        font-family: "JetBrains Mono", monospace;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+      .display {
+        font-family: "Anton", sans-serif;
+        font-weight: 400;
+        text-transform: uppercase;
+        line-height: 0.9;
+        letter-spacing: 0.01em;
+      }
+      .wrap {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      /* top annotation bar */
+      .note {
+        background: var(--ink);
+        color: var(--chalk);
+        padding: 8px 24px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10.5px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        text-align: center;
+      }
+      .note b {
+        color: var(--red);
+      }
+
+      /* ========== HEADER ========== */
+      header.site {
+        background: var(--chalk);
+        border-bottom: 3px solid var(--ink);
+        position: sticky;
+        top: 0;
+        z-index: 40;
+      }
+      .hdr {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        height: 76px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        text-decoration: none;
+      }
+      .brand svg {
+        color: var(--ink);
+      }
+      .brand-txt {
+        font-family: "Anton";
+        font-size: 26px;
+        letter-spacing: 0.02em;
+        line-height: 1;
+        text-transform: uppercase;
+      }
+      .brand-txt em {
+        font-style: normal;
+        color: var(--red);
+      }
+      .brand-sub {
+        font-family: "JetBrains Mono";
+        font-size: 9.5px;
+        letter-spacing: 0.14em;
+        color: var(--mute);
+        margin-top: 3px;
+        text-transform: uppercase;
+      }
+      nav.site {
+        margin-left: auto;
+        display: flex;
+        gap: 4px;
+        align-items: center;
+      }
+      nav.site a {
+        font-family: "Archivo";
+        font-weight: 600;
+        font-size: 13.5px;
+        padding: 10px 14px;
+        text-decoration: none;
+        color: var(--ink-2);
+        letter-spacing: 0.01em;
+        border-bottom: 2px solid transparent;
+        transition: border-color 0.15s;
+      }
+      nav.site a:hover {
+        border-bottom-color: var(--ink);
+      }
+      nav.site a.active {
+        border-bottom-color: var(--red);
+        color: var(--ink);
+      }
+      nav.site a.cta {
+        background: var(--ink);
+        color: var(--chalk);
+        border: 2px solid var(--ink);
+        padding: 10px 16px;
+        margin-left: 8px;
+      }
+      nav.site a.cta:hover {
+        background: var(--red);
+        border-color: var(--red);
+      }
+
+      /* ========== HERO ========== */
+      .hero {
+        background: var(--ink);
+        color: var(--chalk);
+        position: relative;
+        overflow: hidden;
+      }
+      .hero .wrap {
+        padding-top: 80px;
+        padding-bottom: 80px;
+        position: relative;
+        z-index: 2;
+      }
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 64px;
+        align-items: start;
+      }
+      .hero .kicker {
+        font-family: "JetBrains Mono";
+        font-size: 11px;
+        letter-spacing: 0.2em;
+        color: var(--red);
+        text-transform: uppercase;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .hero .kicker::before {
+        content: "";
+        width: 36px;
+        height: 2px;
+        background: var(--red);
+      }
+      .hero h1 {
+        font-family: "Anton";
+        font-size: clamp(72px, 9vw, 136px);
+        line-height: 0.86;
+        letter-spacing: 0.005em;
+        text-transform: uppercase;
+        margin: 0 0 28px;
+        font-weight: 400;
+      }
+      .hero h1 em {
+        font-style: normal;
+        color: var(--red);
+      }
+      .hero p.lede {
+        font-size: 17px;
+        line-height: 1.55;
+        max-width: 520px;
+        color: oklch(0.82 0.01 60);
+        margin: 0 0 36px;
+      }
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .btn {
+        font-family: "Archivo";
+        font-weight: 700;
+        font-size: 14px;
+        padding: 14px 22px;
+        text-decoration: none;
+        border: 2px solid;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        letter-spacing: 0.02em;
+        transition:
+          transform 0.08s,
+          background 0.15s,
+          color 0.15s;
+      }
+      .btn:hover {
+        transform: translate(-1px, -1px);
+      }
+      .btn-red {
+        background: var(--red);
+        color: var(--chalk);
+        border-color: var(--red);
+      }
+      .btn-red:hover {
+        background: var(--red-d);
+        border-color: var(--red-d);
+      }
+      .btn-ghost {
+        background: transparent;
+        color: var(--chalk);
+        border-color: oklch(0.45 0.01 60);
+      }
+      .btn-ghost:hover {
+        border-color: var(--chalk);
+      }
+      .btn-ink {
+        background: var(--ink);
+        color: var(--chalk);
+        border-color: var(--ink);
+      }
+      .btn-outline-ink {
+        background: transparent;
+        color: var(--ink);
+        border-color: var(--ink);
+      }
+      .btn-outline-ink:hover {
+        background: var(--ink);
+        color: var(--chalk);
+      }
+
+      .hero-stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        border-left: 3px solid var(--red);
+        padding-left: 24px;
+      }
+      .hero-stats .s .n {
+        font-family: "Anton";
+        font-size: 84px;
+        line-height: 0.82;
+        color: var(--red);
+      }
+      .hero-stats .s .l {
+        font-family: "JetBrains Mono";
+        font-size: 10.5px;
+        letter-spacing: 0.14em;
+        color: var(--chalk);
+        text-transform: uppercase;
+        margin-top: 6px;
+      }
+      .hero-region {
+        margin-top: 32px;
+        padding-top: 20px;
+        border-top: 1px solid oklch(0.32 0.01 60);
+      }
+      .hero-region .mono {
+        font-size: 10px;
+        color: var(--mute);
+        display: block;
+        margin-bottom: 10px;
+      }
+      .hero-region .towns {
+        font-family: "Anton";
+        font-size: 18px;
+        line-height: 1.4;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+        color: oklch(0.88 0.01 60);
+      }
+      .hero-region .towns span {
+        color: var(--red);
+      }
+
+      /* wheel motif */
+      .hero .wheels {
+        position: absolute;
+        right: -140px;
+        bottom: -160px;
+        color: oklch(0.28 0.01 60);
+        opacity: 0.55;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      /* checker seam */
+      .checker {
+        height: 14px;
+        background: repeating-linear-gradient(
+          90deg,
+          var(--ink) 0 14px,
+          var(--chalk) 14px 28px
+        );
+      }
+      .checker-red {
+        background: repeating-linear-gradient(
+          90deg,
+          var(--red) 0 14px,
+          var(--chalk) 14px 28px
+        );
+      }
+
+      /* ========== SECTION CHROME ========== */
+      section.band {
+        background: var(--paper);
+        border-bottom: 2px solid var(--ink);
+      }
+      section.band.white {
+        background: var(--chalk);
+      }
+      .section-head {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 56px 0 28px;
+        flex-wrap: wrap;
+      }
+      .section-head .num {
+        font-family: "Anton";
+        font-size: 22px;
+        color: var(--red);
+        letter-spacing: 0.04em;
+      }
+      .section-head h2 {
+        font-family: "Anton";
+        font-size: clamp(44px, 5.5vw, 72px);
+        line-height: 0.9;
+        margin: 8px 0 0;
+        text-transform: uppercase;
+        font-weight: 400;
+      }
+      .section-head h2 em {
+        font-style: normal;
+        color: var(--red);
+      }
+      .section-head .sub {
+        font-family: "JetBrains Mono";
+        font-size: 10.5px;
+        letter-spacing: 0.14em;
+        color: var(--mute);
+        text-transform: uppercase;
+        margin-top: 8px;
+      }
+      .section-head .link {
+        font-family: "Archivo";
+        font-weight: 700;
+        font-size: 13px;
+        text-decoration: none;
+        border-bottom: 2px solid var(--ink);
+        padding-bottom: 2px;
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .section-head .link:hover {
+        color: var(--red);
+        border-color: var(--red);
+      }
+
+      /* ========== FILTERS ========== */
+      .filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 20px 0 28px;
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+      }
+      .chip {
+        font-family: "Archivo";
+        font-weight: 600;
+        font-size: 13px;
+        padding: 9px 16px;
+        border: 2px solid var(--ink);
+        background: var(--chalk);
+        color: var(--ink);
+        cursor: pointer;
+        letter-spacing: 0.01em;
+      }
+      .chip.on {
+        background: var(--ink);
+        color: var(--chalk);
+      }
+      .chip.red.on {
+        background: var(--red);
+        border-color: var(--red);
+      }
+      .select-x {
+        font-family: "Archivo";
+        font-size: 13px;
+        padding: 9px 12px;
+        border: 2px solid var(--ink);
+        background: var(--chalk);
+        font-weight: 600;
+      }
+      .check {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: "Archivo";
+        font-weight: 600;
+        font-size: 13px;
+        padding: 9px 12px;
+        border: 2px solid var(--ink);
+        background: var(--chalk);
+        cursor: pointer;
+      }
+      .check input {
+        accent-color: var(--red);
+      }
+
+      /* ========== RIDES TABLE ========== */
+      .rides {
+        border: 2px solid var(--ink);
+        background: var(--chalk);
+        margin-bottom: 56px;
+      }
+      table.rides-tbl {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+      table.rides-tbl thead th {
+        background: var(--ink);
+        color: var(--chalk);
+        font-family: "JetBrains Mono";
+        font-size: 10.5px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        padding: 14px 18px;
+        text-align: left;
+        font-weight: 500;
+      }
+      table.rides-tbl tbody td {
+        padding: 16px 18px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: middle;
+      }
+      table.rides-tbl tbody tr:last-child td {
+        border-bottom: 0;
+      }
+      table.rides-tbl tbody tr:hover {
+        background: oklch(0.99 0.008 85);
+      }
+      .cell-day {
+        font-family: "Anton";
+        font-size: 22px;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+      }
+      .cell-time {
+        font-family: "Anton";
+        font-size: 26px;
+        color: var(--red);
+        letter-spacing: 0.02em;
+      }
+      .cell-club {
+        font-family: "Archivo";
+        font-weight: 700;
+        text-decoration: none;
+        color: var(--ink);
+        border-bottom: 2px solid transparent;
+      }
+      .cell-club:hover {
+        border-bottom-color: var(--red);
+        color: var(--red);
+      }
+      .cell-meta {
+        font-size: 12px;
+        color: var(--mute);
+        margin-top: 2px;
+      }
+      .badge {
+        display: inline-block;
+        font-family: "JetBrains Mono";
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        padding: 4px 8px;
+        border: 1.5px solid currentColor;
+      }
+      .badge.open {
+        color: var(--red);
+        background: oklch(0.96 0.04 27);
+      }
+      .badge.leden {
+        color: var(--ink);
+        background: oklch(0.92 0.01 85);
+      }
+      .badge.women {
+        color: oklch(0.45 0.18 340);
+        background: oklch(0.96 0.04 340);
+      }
+      .badge.men {
+        color: oklch(0.4 0.15 250);
+        background: oklch(0.95 0.03 250);
+      }
+      .badge.mixed {
+        color: var(--ink-2);
+        background: oklch(0.92 0.01 85);
+      }
+
+      /* ========== EVENTS GRID ========== */
+      .events-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        padding-bottom: 56px;
+      }
+      .event {
+        background: var(--chalk);
+        border: 2px solid var(--ink);
+        padding: 22px;
+        display: flex;
+        gap: 18px;
+        position: relative;
+        transition: transform 0.08s;
+      }
+      .event:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 6px 6px 0 var(--ink);
+      }
+      .date-block {
+        flex: none;
+        width: 72px;
+        text-align: center;
+        border: 2px solid var(--ink);
+        padding: 8px 0;
+        background: var(--paper);
+      }
+      .date-block.accent {
+        background: var(--red);
+        color: var(--chalk);
+        border-color: var(--red);
+      }
+      .date-block .d {
+        font-family: "Anton";
+        font-size: 42px;
+        line-height: 0.9;
+      }
+      .date-block .m {
+        font-family: "JetBrains Mono";
+        font-size: 10px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        margin-top: 2px;
+      }
+      .event-body {
+        flex: 1;
+        min-width: 0;
+      }
+      .event-body h3 {
+        font-family: "Anton";
+        font-size: 22px;
+        line-height: 1.05;
+        margin: 0 0 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+      }
+      .event-body .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 14px;
+        font-size: 12px;
+        color: var(--mute);
+        margin-top: 6px;
+        font-family: "JetBrains Mono";
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      .event-body .meta span {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .event-body .links {
+        margin-top: 12px;
+        display: flex;
+        gap: 14px;
+        align-items: center;
+      }
+      .event-body .links a {
+        font-family: "Archivo";
+        font-weight: 700;
+        font-size: 12px;
+        text-decoration: none;
+        border-bottom: 2px solid var(--ink);
+        padding-bottom: 1px;
+      }
+      .event-body .links a.ext {
+        color: var(--mute);
+        border-color: var(--line);
+      }
+      .event-freq {
+        position: absolute;
+        top: -2px;
+        right: -2px;
+        background: var(--ink);
+        color: var(--chalk);
+        font-family: "JetBrains Mono";
+        font-size: 9.5px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        padding: 5px 8px;
+      }
+
+      /* ========== CLUBS GRID ========== */
+      .clubs-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        padding-bottom: 56px;
+      }
+      .club {
+        background: var(--chalk);
+        border: 2px solid var(--ink);
+        display: flex;
+        flex-direction: column;
+        text-decoration: none;
+        color: var(--ink);
+        position: relative;
+        transition: transform 0.08s;
+      }
+      .club:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 6px 6px 0 var(--red);
+      }
+      .club-top {
+        height: 10px;
+        background: var(--red);
+      }
+      .club .club-body {
+        padding: 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        flex: 1;
+      }
+      .club-head {
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+      }
+      .club-mono {
+        flex: none;
+        width: 52px;
+        height: 52px;
+        border: 2px solid var(--ink);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Anton";
+        font-size: 26px;
+        background: var(--paper);
+      }
+      .club h3 {
+        font-family: "Anton";
+        font-size: 22px;
+        line-height: 1.05;
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+      }
+      .club .town {
+        font-family: "JetBrains Mono";
+        font-size: 10px;
+        letter-spacing: 0.14em;
+        color: var(--mute);
+        text-transform: uppercase;
+        margin-top: 4px;
+      }
+      .club p.desc {
+        font-size: 13.5px;
+        line-height: 1.55;
+        color: var(--ink-2);
+        margin: 0;
+        flex: 1;
+      }
+      .club .meet {
+        font-family: "JetBrains Mono";
+        font-size: 11px;
+        letter-spacing: 0.06em;
+        color: var(--mute);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        text-transform: uppercase;
+      }
+      .club .rides {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: auto;
+      }
+      .ride-pill {
+        font-family: "JetBrains Mono";
+        font-size: 10px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 4px 8px;
+        border: 1.5px solid var(--ink);
+        background: var(--paper);
+      }
+      .ride-pill b {
+        font-family: "Anton";
+        font-weight: 400;
+        font-size: 13px;
+        margin-right: 4px;
+        letter-spacing: 0.02em;
+      }
+
+      /* ========== CTA BAND ========== */
+      .cta-band {
+        background: var(--red);
+        color: var(--chalk);
+        padding: 64px 0;
+        position: relative;
+        overflow: hidden;
+      }
+      .cta-band .wrap {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        grid-template-columns: 1.3fr 0.7fr;
+        gap: 40px;
+        align-items: center;
+      }
+      .cta-band h2 {
+        font-family: "Anton";
+        font-size: clamp(48px, 6vw, 88px);
+        line-height: 0.88;
+        margin: 0;
+        text-transform: uppercase;
+        font-weight: 400;
+      }
+      .cta-band p {
+        font-size: 16px;
+        line-height: 1.5;
+        margin: 16px 0 0;
+        max-width: 480px;
+        color: oklch(0.97 0.02 27);
+      }
+      .cta-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .cta-actions .btn {
+        justify-content: center;
+      }
+      .cta-actions .btn-chalk {
+        background: var(--chalk);
+        color: var(--red);
+        border-color: var(--chalk);
+      }
+      .cta-actions .btn-chalk:hover {
+        background: var(--ink);
+        color: var(--chalk);
+        border-color: var(--ink);
+      }
+      .cta-actions .btn-outline {
+        background: transparent;
+        color: var(--chalk);
+        border-color: var(--chalk);
+      }
+      .cta-actions .btn-outline:hover {
+        background: var(--chalk);
+        color: var(--red);
+      }
+      .cta-band .wheels-cta {
+        position: absolute;
+        right: -80px;
+        top: -60px;
+        opacity: 0.18;
+        pointer-events: none;
+      }
+
+      /* ========== SPONSORS ========== */
+      .sponsors {
+        background: var(--chalk);
+        border-top: 2px solid var(--ink);
+        border-bottom: 2px solid var(--ink);
+        padding: 32px 0;
+      }
+      .sponsors .wrap {
+        display: flex;
+        align-items: center;
+        gap: 36px;
+        flex-wrap: wrap;
+      }
+      .sponsors .label {
+        font-family: "JetBrains Mono";
+        font-size: 10.5px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--mute);
+        border-right: 2px solid var(--line);
+        padding-right: 32px;
+      }
+      .sponsor-logo {
+        width: 140px;
+        height: 48px;
+        border: 2px dashed var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "JetBrains Mono";
+        font-size: 10px;
+        letter-spacing: 0.14em;
+        color: var(--mute);
+        text-transform: uppercase;
+      }
+
+      /* ========== FOOTER ========== */
+      footer.site {
+        background: var(--ink);
+        color: var(--chalk);
+        padding: 56px 0 20px;
+        margin-top: 0;
+      }
+      .foot-grid {
+        display: grid;
+        grid-template-columns: 1.3fr 0.7fr 0.7fr 0.7fr;
+        gap: 40px;
+      }
+      .foot-grid h4 {
+        font-family: "JetBrains Mono";
+        font-size: 10.5px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--red);
+        margin: 0 0 16px;
+      }
+      .foot-grid ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        font-size: 14px;
+        line-height: 2;
+      }
+      .foot-grid ul a {
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+      }
+      .foot-grid ul a:hover {
+        border-bottom-color: var(--red);
+        color: var(--red);
+      }
+      .foot-grid .about p {
+        font-size: 14px;
+        line-height: 1.55;
+        color: oklch(0.78 0.01 60);
+        margin: 16px 0 0;
+        max-width: 320px;
+      }
+      .foot-bottom {
+        border-top: 1px solid oklch(0.3 0.01 60);
+        margin-top: 48px;
+        padding-top: 18px;
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+        font-family: "JetBrains Mono";
+        font-size: 10px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--mute);
+      }
+
+      /* ========== RESPONSIVE ========== */
+      @media (max-width: 1000px) {
+        .hero-grid {
+          grid-template-columns: 1fr;
+          gap: 40px;
+        }
+        .events-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .clubs-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .cta-band .wrap {
+          grid-template-columns: 1fr;
+        }
+        .foot-grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 28px;
+        }
+        nav.site {
+          display: none;
+        }
+      }
+      @media (max-width: 680px) {
+        .events-grid,
+        .clubs-grid {
+          grid-template-columns: 1fr;
+        }
+        table.rides-tbl thead {
+          display: none;
+        }
+        table.rides-tbl,
+        table.rides-tbl tbody,
+        table.rides-tbl tr,
+        table.rides-tbl td {
+          display: block;
+          width: 100%;
+        }
+        table.rides-tbl tr {
+          border-bottom: 2px solid var(--line);
+          padding: 14px 0;
+        }
+        table.rides-tbl td {
+          padding: 4px 18px;
+          border: 0;
+        }
+        .foot-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Bike icon symbol -->
+    <svg width="0" height="0" style="position: absolute">
+      <defs>
+        <symbol id="ww-bike" viewBox="0 0 152 63">
+          <g
+            fill="none"
+            stroke="currentColor"
+            stroke-width="5"
+            stroke-miterlimit="10"
+          >
+            <path
+              d="M2.5,31.34c0-.98.19-13.43,9.86-21.86.89-.77,4.53-3.83,10.24-5.63,1.54-.49,8.59-2.56,17.01-.25,5.18,1.42,7.51,3.58,11.36,5.83,9.37,5.48,19.31,6.56,24.95,6.69,13.55.31,24.51-6.12,25.5-6.69,4.32-2.51,6.1-4.51,11.06-5.9,7.09-1.98,13.24-.63,15.56,0,6.37,1.72,10.41,5.08,11.27,5.81,9.81,8.43,9.96,21.05,9.96,22.13-.04,10.13-5.38,18.59-11.76,23.37-.93.7-3.82,2.75-8.1,4.16-1.46.48-8.53,2.67-16.94.41-5.31-1.43-6.49-3.38-11.95-6.3-2.03-1.09-11.99-6.21-24.59-6.29-3.07-.02-14.27-.19-24.95,6.29-4.06,2.46-6.16,4.77-11.44,6.26-8.21,2.32-15.31.18-16.93-.35-4.27-1.38-7.16-3.41-8.13-4.13-6.28-4.65-11.97-13.1-11.98-23.55Z"
+            />
+            <circle cx="31.41" cy="31.09" r="12.69" />
+            <circle cx="120.28" cy="31.09" r="12.69" />
+          </g>
+        </symbol>
+        <symbol id="ww-wheels-big" viewBox="0 0 400 200">
+          <g fill="none" stroke="currentColor" stroke-width="5">
+            <circle cx="100" cy="100" r="90" />
+            <circle cx="100" cy="100" r="14" />
+            <circle cx="300" cy="100" r="90" />
+            <circle cx="300" cy="100" r="14" />
+          </g>
+        </symbol>
+      </defs>
+    </svg>
+
+    <div class="note">
+      Voorstel · Redesign homepage · Nieuw systeem toegepast op
+      <b>bestaande Astro structuur</b> (Hero · Wekelijkse Ritten · Evenementen ·
+      Clubs · CTA · Sponsors · Footer)
+    </div>
+
+    <!-- ========== HEADER ========== -->
+    <header class="site">
+      <div class="wrap hdr">
+        <a href="/" class="brand">
+          <svg width="44" height="18" viewBox="0 0 152 63">
+            <use href="#ww-bike" />
+          </svg>
+          <div>
+            <div class="brand-txt">Wieler<em>Waas</em></div>
+            <div class="brand-sub">Wielrennen · het Waasland</div>
+          </div>
+        </a>
+        <nav class="site">
+          <a href="/" class="active">Home</a>
+          <a href="/clubs">Clubs</a>
+          <a href="/evenementen">Evenementen</a>
+          <a href="/sponsors">Sponsors</a>
+          <a href="/over-ons">Over ons</a>
+          <a href="/add-club" class="cta">+ Voeg je club toe</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- ========== HERO ========== -->
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="kicker">01 · Community platform · Seizoen 2026</div>
+          <h1>Vind je<br />peloton.<br /><em>Trap mee.</em></h1>
+          <p class="lede">
+            Ontdek wielerclubs en evenementen in het Waasland. Bekijk wanneer en
+            waar ze vertrekken — en sluit je aan bij een groep die bij jou past.
+          </p>
+          <div class="hero-actions">
+            <a href="/clubs" class="btn btn-red">Bekijk alle clubs →</a>
+            <a href="/add-club" class="btn btn-ghost">+ Voeg je club toe</a>
+            <a href="/add-event" class="btn btn-ghost"
+              >+ Voeg je evenement toe</a
+            >
+          </div>
+        </div>
+        <aside>
+          <div class="hero-stats">
+            <div class="s">
+              <div class="n">21</div>
+              <div class="l">clubs</div>
+            </div>
+            <div class="s">
+              <div class="n">11</div>
+              <div class="l">evenementen</div>
+            </div>
+            <div class="s">
+              <div class="n">9</div>
+              <div class="l">gemeenten</div>
+            </div>
+            <div class="s">
+              <div class="n">7</div>
+              <div class="l">dagen / week</div>
+            </div>
+          </div>
+          <div class="hero-region">
+            <span class="mono">Regio Waasland</span>
+            <div class="towns">
+              Beveren · <span>Kruibeke</span> · Zwijndrecht<br />
+              Sint-Niklaas · Lokeren · Temse<br />
+              Sint-Gillis-Waas · Stekene · Waasmunster
+            </div>
+          </div>
+        </aside>
+      </div>
+      <svg class="wheels" width="520" height="260" viewBox="0 0 400 200">
+        <use href="#ww-wheels-big" />
+      </svg>
+    </section>
+    <div class="checker-red checker"></div>
+
+    <!-- ========== WEEKLY RIDES ========== -->
+    <section class="band white">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <div class="num">02</div>
+            <h2>Wekelijkse <em>ritten</em></h2>
+            <div class="sub">
+              Geplande ritten van alle clubs — filter op dag, gemeente, type
+            </div>
+          </div>
+          <a href="/clubs" class="link">Alle clubs →</a>
+        </div>
+
+        <div class="filters">
+          <button class="chip red on">Alle dagen</button>
+          <button class="chip">Maandag</button>
+          <button class="chip">Dinsdag</button>
+          <button class="chip">Woensdag</button>
+          <button class="chip">Donderdag</button>
+          <button class="chip">Vrijdag</button>
+          <button class="chip">Zaterdag</button>
+          <button class="chip">Zondag</button>
+          <div style="flex: 1"></div>
+          <select class="select-x">
+            <option>Gemeente</option>
+            <option>Beveren</option>
+            <option>Melsele</option>
+            <option>Kruibeke</option>
+            <option>Zwijndrecht</option>
+          </select>
+          <select class="select-x">
+            <option>Groep type</option>
+            <option>Gemengd</option>
+            <option>Mannen</option>
+            <option>Vrouwen</option>
+          </select>
+          <label class="check"
+            ><input type="checkbox" /> Open voor iedereen</label
+          >
+        </div>
+
+        <div class="rides">
+          <table class="rides-tbl">
+            <thead>
+              <tr>
+                <th>Dag</th>
+                <th>Uur</th>
+                <th>Club</th>
+                <th>Groep</th>
+                <th>Snelheid</th>
+                <th>Vertrekpunt</th>
+                <th>Type</th>
+                <th>Toegang</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="cell-day">Ma</td>
+                <td class="cell-time">18:30</td>
+                <td>
+                  <a class="cell-club" href="#">Peloton Meilsen</a>
+                  <div class="cell-meta">Melsele</div>
+                </td>
+                <td>A-groep</td>
+                <td>32 km/u</td>
+                <td>Kerk Melsele</td>
+                <td><span class="badge mixed">Gemengd</span></td>
+                <td><span class="badge open">Open</span></td>
+              </tr>
+              <tr>
+                <td class="cell-day">Di</td>
+                <td class="cell-time">19:00</td>
+                <td>
+                  <a class="cell-club" href="#">WTC De Cadans Ladies</a>
+                  <div class="cell-meta">Melsele</div>
+                </td>
+                <td>Recreatief</td>
+                <td>26 km/u</td>
+                <td>Café Den Toerist</td>
+                <td><span class="badge women">Vrouwen</span></td>
+                <td><span class="badge leden">Leden</span></td>
+              </tr>
+              <tr>
+                <td class="cell-day">Wo</td>
+                <td class="cell-time">18:45</td>
+                <td>
+                  <a class="cell-club" href="#">De Meester Fresa</a>
+                  <div class="cell-meta">Melsele</div>
+                </td>
+                <td>B-groep</td>
+                <td>29 km/u</td>
+                <td>De Watermolen</td>
+                <td><span class="badge mixed">Gemengd</span></td>
+                <td><span class="badge open">Open</span></td>
+              </tr>
+              <tr>
+                <td class="cell-day">Do</td>
+                <td class="cell-time">18:30</td>
+                <td>
+                  <a class="cell-club" href="#">Polderrenners Beveren</a>
+                  <div class="cell-meta">Beveren</div>
+                </td>
+                <td>A-groep</td>
+                <td>31 km/u</td>
+                <td>Grote Markt Beveren</td>
+                <td><span class="badge men">Mannen</span></td>
+                <td><span class="badge leden">Leden</span></td>
+              </tr>
+              <tr>
+                <td class="cell-day">Za</td>
+                <td class="cell-time">09:00</td>
+                <td>
+                  <a class="cell-club" href="#">Blue Boys Cycling Team</a>
+                  <div class="cell-meta">Kruibeke</div>
+                </td>
+                <td>Alle niveaus</td>
+                <td>27 km/u</td>
+                <td>Sporthal Kruibeke</td>
+                <td><span class="badge mixed">Gemengd</span></td>
+                <td><span class="badge open">Open</span></td>
+              </tr>
+              <tr>
+                <td class="cell-day">Zo</td>
+                <td class="cell-time">08:30</td>
+                <td>
+                  <a class="cell-club" href="#">Zondagrijders Melsele</a>
+                  <div class="cell-meta">Melsele</div>
+                </td>
+                <td>Recreatief</td>
+                <td>25 km/u</td>
+                <td>Sint-Antoniuskerk</td>
+                <td><span class="badge mixed">Gemengd</span></td>
+                <td><span class="badge open">Open</span></td>
+              </tr>
+              <tr>
+                <td class="cell-day">Zo</td>
+                <td class="cell-time">09:15</td>
+                <td>
+                  <a class="cell-club" href="#">Ikaros Beveren</a>
+                  <div class="cell-meta">Beveren</div>
+                </td>
+                <td>B-groep</td>
+                <td>28 km/u</td>
+                <td>Café 't Centrum</td>
+                <td><span class="badge mixed">Gemengd</span></td>
+                <td><span class="badge leden">Leden</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== UPCOMING EVENTS ========== -->
+    <section class="band">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <div class="num">03</div>
+            <h2>Aankomende <em>evenementen</em></h2>
+            <div class="sub">Ritten en evenementen van clubs in de regio</div>
+          </div>
+          <a href="/evenementen" class="link">Alle evenementen →</a>
+        </div>
+
+        <div class="events-grid">
+          <article class="event">
+            <span class="event-freq">Eenmalig</span>
+            <div class="date-block accent">
+              <div class="d">22</div>
+              <div class="m">Mrt</div>
+            </div>
+            <div class="event-body">
+              <h3>Aardbeirit 2026</h3>
+              <div class="meta">
+                <span>Zondag</span>
+                <span>09:00</span>
+                <span>Melsele</span>
+              </div>
+              <div class="links">
+                <a href="#">Bekijk details →</a>
+                <a href="#" class="ext">Eventwebsite ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="event">
+            <span class="event-freq">Eenmalig</span>
+            <div class="date-block accent">
+              <div class="d">12</div>
+              <div class="m">Apr</div>
+            </div>
+            <div class="event-body">
+              <h3>GP Adriaenssens 2026</h3>
+              <div class="meta">
+                <span>Zondag</span>
+                <span>13:30</span>
+                <span>Beveren</span>
+              </div>
+              <div class="links">
+                <a href="#">Bekijk details →</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="event">
+            <span class="event-freq">Maandelijks</span>
+            <div class="date-block">
+              <div class="d">18</div>
+              <div class="m">Apr</div>
+            </div>
+            <div class="event-body">
+              <h3>Saeftinghe Classic</h3>
+              <div class="meta">
+                <span>Zaterdag</span>
+                <span>08:30</span>
+                <span>Kieldrecht</span>
+              </div>
+              <div class="links">
+                <a href="#">Bekijk details →</a>
+                <a href="#" class="ext">Eventwebsite ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="event">
+            <span class="event-freq">Eenmalig</span>
+            <div class="date-block accent">
+              <div class="d">03</div>
+              <div class="m">Mei</div>
+            </div>
+            <div class="event-body">
+              <h3>Memorial Gerrit Van Der Aa</h3>
+              <div class="meta">
+                <span>Zondag</span>
+                <span>10:00</span>
+                <span>Kruibeke</span>
+              </div>
+              <div class="links">
+                <a href="#">Bekijk details →</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="event">
+            <span class="event-freq">Wekelijks</span>
+            <div class="date-block">
+              <div class="d">09</div>
+              <div class="m">Mei</div>
+            </div>
+            <div class="event-body">
+              <h3>Portaalrit</h3>
+              <div class="meta">
+                <span>Zaterdag</span>
+                <span>09:00</span>
+                <span>Melsele</span>
+              </div>
+              <div class="links">
+                <a href="#">Bekijk details →</a>
+                <a href="#" class="ext">Eventwebsite ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="event">
+            <span class="event-freq">Eenmalig</span>
+            <div class="date-block accent">
+              <div class="d">17</div>
+              <div class="m">Mei</div>
+            </div>
+            <div class="event-body">
+              <h3>100 km van Beveren</h3>
+              <div class="meta">
+                <span>Zondag</span>
+                <span>08:00</span>
+                <span>Beveren</span>
+              </div>
+              <div class="links">
+                <a href="#">Bekijk details →</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CLUBS ========== -->
+    <section class="band white">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <div class="num">04</div>
+            <h2><em>Clubs</em> in de regio</h2>
+            <div class="sub">
+              21 clubs — filter later op gemeente, niveau, dag
+            </div>
+          </div>
+          <a href="/clubs" class="link">Bekijk alle →</a>
+        </div>
+
+        <div class="clubs-grid">
+          <a class="club" href="#">
+            <div class="club-top"></div>
+            <div class="club-body">
+              <div class="club-head">
+                <div class="club-mono">P</div>
+                <div>
+                  <h3>Peloton Meilsen</h3>
+                  <div class="town">Melsele</div>
+                </div>
+              </div>
+              <p class="desc">
+                Stevige A/B groepen door de Wase polders. Kop-over-kop, nadien
+                een pint bij Den Toerist.
+              </p>
+              <div class="meet">↳ Vertrek · Kerk Melsele</div>
+              <div class="rides">
+                <span class="ride-pill"><b>Ma</b>18:30</span>
+                <span class="ride-pill"><b>Do</b>18:30</span>
+                <span class="ride-pill"><b>Za</b>09:00</span>
+              </div>
+            </div>
+          </a>
+
+          <a class="club" href="#">
+            <div class="club-top"></div>
+            <div class="club-body">
+              <div class="club-head">
+                <div class="club-mono">B</div>
+                <div>
+                  <h3>Blue Boys Cycling Team</h3>
+                  <div class="town">Kruibeke</div>
+                </div>
+              </div>
+              <p class="desc">
+                Toffe groep die alle niveaus welkom heet. Elk seizoen nieuwe
+                leden op de baan.
+              </p>
+              <div class="meet">↳ Vertrek · Sporthal Kruibeke</div>
+              <div class="rides">
+                <span class="ride-pill"><b>Wo</b>18:00</span>
+                <span class="ride-pill"><b>Za</b>09:00</span>
+              </div>
+            </div>
+          </a>
+
+          <a class="club" href="#">
+            <div class="club-top"></div>
+            <div class="club-body">
+              <div class="club-head">
+                <div class="club-mono">L</div>
+                <div>
+                  <h3>Laarridders Zwijndrecht</h3>
+                  <div class="town">Zwijndrecht</div>
+                </div>
+              </div>
+              <p class="desc">
+                Recreatieve club met oog voor gezelligheid. Koers is het middel,
+                niet het doel.
+              </p>
+              <div class="meet">↳ Vertrek · Parking Laarstation</div>
+              <div class="rides">
+                <span class="ride-pill"><b>Zo</b>08:30</span>
+              </div>
+            </div>
+          </a>
+
+          <a class="club" href="#">
+            <div class="club-top"></div>
+            <div class="club-body">
+              <div class="club-head">
+                <div class="club-mono">C</div>
+                <div>
+                  <h3>WTC De Cadans Ladies</h3>
+                  <div class="town">Melsele</div>
+                </div>
+              </div>
+              <p class="desc">
+                Damesgroep — alle niveaus welkom. Samen uit, samen thuis op
+                rustige baantjes.
+              </p>
+              <div class="meet">↳ Vertrek · Café Den Toerist</div>
+              <div class="rides">
+                <span class="ride-pill"><b>Di</b>19:00</span>
+                <span class="ride-pill"><b>Za</b>09:30</span>
+              </div>
+            </div>
+          </a>
+
+          <a class="club" href="#">
+            <div class="club-top"></div>
+            <div class="club-body">
+              <div class="club-head">
+                <div class="club-mono">F</div>
+                <div>
+                  <h3>De Meester Fresa</h3>
+                  <div class="town">Melsele</div>
+                </div>
+              </div>
+              <p class="desc">
+                B-groep met een voorliefde voor de polders. Kalm tempo, lange
+                ritten, altijd koffie nadien.
+              </p>
+              <div class="meet">↳ Vertrek · De Watermolen</div>
+              <div class="rides">
+                <span class="ride-pill"><b>Wo</b>18:45</span>
+                <span class="ride-pill"><b>Zo</b>09:00</span>
+              </div>
+            </div>
+          </a>
+
+          <a class="club" href="#">
+            <div class="club-top"></div>
+            <div class="club-body">
+              <div class="club-head">
+                <div class="club-mono">P</div>
+                <div>
+                  <h3>Polderrenners Beveren</h3>
+                  <div class="town">Beveren</div>
+                </div>
+              </div>
+              <p class="desc">
+                Snelle A-groep voor wie kilometers wil maken. Niet voor
+                beginners — maar iedereen begint ergens.
+              </p>
+              <div class="meet">↳ Vertrek · Grote Markt Beveren</div>
+              <div class="rides">
+                <span class="ride-pill"><b>Do</b>18:30</span>
+                <span class="ride-pill"><b>Zo</b>08:30</span>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CTA BAND ========== -->
+    <section class="cta-band">
+      <svg
+        class="wheels-cta"
+        width="560"
+        height="280"
+        viewBox="0 0 400 200"
+        style="color: var(--chalk)"
+      >
+        <use href="#ww-wheels-big" />
+      </svg>
+      <div class="wrap">
+        <div>
+          <h2>Staat jouw<br />club er nog<br />niet bij?</h2>
+          <p>
+            Zet jouw club in de kijker bij lokale fietsers. Het kost maar een
+            paar minuten om je gegevens door te sturen. We publiceren zo snel
+            mogelijk.
+          </p>
+        </div>
+        <div class="cta-actions">
+          <a href="/add-club" class="btn btn-chalk">Voeg je club toe →</a>
+          <a href="/add-event" class="btn btn-outline"
+            >+ Voeg je evenement toe</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SPONSORS ========== -->
+    <section class="sponsors">
+      <div class="wrap">
+        <div class="label">Met steun van</div>
+        <div class="sponsor-logo">Sponsor 01</div>
+        <div class="sponsor-logo">Struyf Consulting</div>
+        <div class="sponsor-logo">Sponsor 03</div>
+        <div class="sponsor-logo">Sponsor 04</div>
+        <a
+          href="/sponsors"
+          class="btn btn-outline-ink"
+          style="margin-left: auto"
+          >Alle partners →</a
+        >
+      </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="site">
+      <div class="wrap">
+        <div class="foot-grid">
+          <div class="about">
+            <div class="brand" style="color: var(--chalk)">
+              <svg width="44" height="18" viewBox="0 0 152 63">
+                <use href="#ww-bike" />
+              </svg>
+              <div>
+                <div class="brand-txt" style="color: var(--chalk)">
+                  Wieler<em>Waas</em>
+                </div>
+                <div class="brand-sub" style="color: oklch(0.65 0.01 60)">
+                  Wielrennen · het Waasland
+                </div>
+              </div>
+            </div>
+            <p>
+              Jouw gids voor wielerclubs en evenementen in het Waasland. Voor en
+              door fietsers — samen op de weg.
+            </p>
+          </div>
+          <div>
+            <h4>Snelle links</h4>
+            <ul>
+              <li><a href="/">Home</a></li>
+              <li><a href="/clubs">Clubs</a></li>
+              <li><a href="/evenementen">Evenementen</a></li>
+              <li><a href="/sponsors">Sponsors</a></li>
+              <li><a href="/over-ons">Over ons</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Meedoen</h4>
+            <ul>
+              <li><a href="/add-club">Voeg je club toe</a></li>
+              <li><a href="/add-event">Voeg je evenement toe</a></li>
+              <li><a href="#">Partner worden</a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Community</h4>
+            <ul>
+              <li>Wielrennen in het Waasland</li>
+              <li>Voor en door fietsers</li>
+              <li>Samen op de weg</li>
+            </ul>
+          </div>
+        </div>
+        <div class="foot-bottom">
+          <div>© 2026 WielerWaas · Gebouwd met Astro</div>
+          <div>v2 · Bold + Retro poster system</div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

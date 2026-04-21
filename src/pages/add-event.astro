@@ -6,244 +6,202 @@ import Layout from "../layouts/Layout.astro";
   title="Voeg je evenement toe — WielerWaas"
   description="Zet jouw wielerevenement op WielerWaas. Bereik fietsers in het Waasland."
 >
-  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="mb-10">
-      <h1 class="text-3xl font-extrabold text-gray-900 mb-3">
-        Voeg je evenement toe
-      </h1>
-      <p class="text-gray-500 leading-relaxed">
+  <section class="ww-page-hero">
+    <div class="ww-wrap">
+      <div class="kicker">Community</div>
+      <h1>Voeg je<br /><em>evenement toe.</em></h1>
+      <p>
         Organiseer jij een rit of wielerevenement in de regio? Vul het
         onderstaande formulier in en we nemen contact met je op om je evenement
         zo snel mogelijk op de kalender te zetten.
       </p>
     </div>
+  </section>
+  <div class="ww-checker ww-checker-red"></div>
 
-    <div class="bg-blue-50 rounded-2xl border border-blue-200 p-6 mb-8">
-      <h2 class="text-sm font-semibold text-blue-900 mb-2">
-        Wat hebben we nodig?
-      </h2>
-      <p class="text-sm text-blue-800">
-        We vragen basisgegevens over je evenement: naam, type rit, start- en
-        einddatum, startuur, gemeente, locatie en wie het organiseert. Dit helpt
-        wielrenners jouw evenement te vinden en in te schrijven.
-      </p>
-    </div>
+  <section class="ww-band white">
+    <div class="ww-wrap" style="padding: 56px 0;">
+      <div class="ww-card" style="margin-bottom: 24px;">
+        <div
+          class="kicker"
+          style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--red); margin-bottom: 6px;"
+        >
+          Wat hebben we nodig?
+        </div>
+        <p style="color: var(--ink-2); margin: 0;">
+          We vragen basisgegevens over je evenement: naam, type rit, start- en
+          einddatum, startuur, gemeente, locatie en wie het organiseert.
+        </p>
+      </div>
 
-    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
-      <h2 class="text-lg font-bold text-gray-900 mb-6">Vul het formulier in</h2>
-      <form
-        action="https://formspree.io/f/xaqlgaey"
-        method="POST"
-        class="space-y-6"
-      >
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Event Name */}
-          <div class="md:col-span-2">
-            <label
-              for="eventName"
-              class="block text-sm font-semibold text-gray-900 mb-2"
+      <article class="ww-card">
+        <h2
+          style="font-family: 'Anton', sans-serif; font-size: 28px; text-transform: uppercase; margin: 0 0 20px;"
+        >
+          Vul het formulier in
+        </h2>
+        <form
+          action="https://formspree.io/f/xaqlgaey"
+          method="POST"
+          class="ww-form"
+        >
+          <label class="field row full">
+            <span class="ww-label"
+              >Naam van het evenement <span class="req">*</span></span
             >
-              Naam van het evenement <span class="text-red-500">*</span>
-            </label>
             <input
               type="text"
               id="eventName"
               name="eventName"
               required
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
+              class="ww-input"
               placeholder="De officiële naam van je rit of evenement"
             />
-            <p class="text-xs text-gray-600 mt-1">
-              De officiële naam van je rit of evenement.
-            </p>
+            <span class="hint">De officiële naam van je rit of evenement.</span>
+          </label>
+
+          <div class="row">
+            <label class="field">
+              <span class="ww-label">Frequentie <span class="req">*</span></span
+              >
+              <select
+                id="frequency"
+                name="frequency"
+                required
+                class="ww-select"
+              >
+                <option value="once">Eenmalig</option>
+                <option value="weekly">Wekelijks</option>
+                <option value="monthly">Maandelijks</option>
+              </select>
+              <span class="hint"
+                >Kies of het om een eenmalige of terugkerende rit gaat.</span
+              >
+            </label>
+            <label class="field">
+              <span class="ww-label">Startuur <span class="req">*</span></span>
+              <input
+                type="time"
+                id="startTime"
+                name="startTime"
+                required
+                class="ww-input"
+              />
+              <span class="hint">Het uur waarop deelnemers starten.</span>
+            </label>
           </div>
 
-          {/* Frequency */}
-          <div>
-            <label
-              for="frequency"
-              class="block text-sm font-semibold text-gray-900 mb-2"
-            >
-              Frequentie <span class="text-red-500">*</span>
+          <div class="row">
+            <label class="field">
+              <span class="ww-label">Startdatum <span class="req">*</span></span
+              >
+              <input
+                type="date"
+                id="startDate"
+                name="startDate"
+                required
+                class="ww-input"
+              />
+              <span class="hint">Vanaf wanneer?</span>
             </label>
-            <select
-              id="frequency"
-              name="frequency"
-              required
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
-            >
-              <option value="once">Eenmalig</option>
-              <option value="weekly">Wekelijks</option>
-              <option value="monthly">Maandelijks</option>
-            </select>
-            <p class="text-xs text-gray-600 mt-1">
-              Kies of het om een eenmalige of terugkerende social ride gaat.
-            </p>
+            <label class="field">
+              <span class="ww-label">Einddatum <span class="req">*</span></span>
+              <input
+                type="date"
+                id="endDate"
+                name="endDate"
+                required
+                class="ww-input"
+              />
+              <span class="hint">Tot wanneer blijft de reeks lopen?</span>
+            </label>
           </div>
 
-          {/* Start Date */}
-          <div>
-            <label
-              for="startDate"
-              class="block text-sm font-semibold text-gray-900 mb-2"
-            >
-              Startdatum <span class="text-red-500">*</span>
+          <div class="row">
+            <label class="field">
+              <span class="ww-label">Gemeente <span class="req">*</span></span>
+              <input
+                type="text"
+                id="town"
+                name="town"
+                required
+                class="ww-input"
+                placeholder="Bijv. Beveren"
+              />
+              <span class="hint"
+                >In welke gemeente vindt het evenement plaats?</span
+              >
             </label>
-            <input
-              type="date"
-              id="startDate"
-              name="startDate"
-              required
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
-            />
-            <p class="text-xs text-gray-600 mt-1">
-              Vanaf wanneer gaat de rit of reeks door?
-            </p>
+            <label class="field">
+              <span class="ww-label">Locatie <span class="req">*</span></span>
+              <input
+                type="text"
+                id="location"
+                name="location"
+                required
+                class="ww-input"
+                placeholder="Vertrekplaats of adres"
+              />
+              <span class="hint">Vertrekplaats of adres van het evenement.</span
+              >
+            </label>
           </div>
 
-          {/* End Date */}
-          <div>
-            <label
-              for="endDate"
-              class="block text-sm font-semibold text-gray-900 mb-2"
-            >
-              Einddatum <span class="text-red-500">*</span>
-            </label>
-            <input
-              type="date"
-              id="endDate"
-              name="endDate"
-              required
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
-            />
-            <p class="text-xs text-gray-600 mt-1">
-              Tot wanneer blijft de rit of reeks lopen?
-            </p>
-          </div>
-
-          {/* Start Time */}
-          <div>
-            <label
-              for="startTime"
-              class="block text-sm font-semibold text-gray-900 mb-2"
-            >
-              Startuur <span class="text-red-500">*</span>
-            </label>
-            <input
-              type="time"
-              id="startTime"
-              name="startTime"
-              required
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
-            />
-            <p class="text-xs text-gray-600 mt-1">
-              Het uur waarop deelnemers kunnen starten of verzamelen.
-            </p>
-          </div>
-
-          {/* Town */}
-          <div>
-            <label
-              for="town"
-              class="block text-sm font-semibold text-gray-900 mb-2"
-            >
-              Gemeente <span class="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              id="town"
-              name="town"
-              required
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
-              placeholder="Bijv. Beveren"
-            />
-            <p class="text-xs text-gray-600 mt-1">
-              In welke gemeente vindt het evenement plaats?
-            </p>
-          </div>
-
-          {/* Location */}
-          <div class="md:col-span-2">
-            <label
-              for="location"
-              class="block text-sm font-semibold text-gray-900 mb-2"
-            >
-              Locatie <span class="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              id="location"
-              name="location"
-              required
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
-              placeholder="Vertrekplaats of adres van het evenement"
-            />
-            <p class="text-xs text-gray-600 mt-1">
-              Vertrekplaats of adres van het evenement.
-            </p>
-          </div>
-
-          {/* Organizer */}
-          <div class="md:col-span-2">
-            <label
-              for="organizer"
-              class="block text-sm font-semibold text-gray-900 mb-2"
-            >
-              Organisator <span class="text-red-500">*</span>
-            </label>
+          <label class="field row full">
+            <span class="ww-label">Organisator <span class="req">*</span></span>
             <input
               type="text"
               id="organizer"
               name="organizer"
               required
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
+              class="ww-input"
               placeholder="Naam van de club of organisatie"
             />
-            <p class="text-xs text-gray-600 mt-1">
-              Naam van de club of organisatie achter het evenement.
-            </p>
-          </div>
-
-          {/* Website */}
-          <div class="md:col-span-2">
-            <label
-              for="website"
-              class="block text-sm font-semibold text-gray-900 mb-2"
+            <span class="hint"
+              >Naam van de club of organisatie achter het evenement.</span
             >
-              Website (optioneel)
+          </label>
+
+          <div class="row">
+            <label class="field">
+              <span class="ww-label">Website (optioneel)</span>
+              <input
+                type="url"
+                id="website"
+                name="website"
+                class="ww-input"
+                placeholder="https://..."
+              />
+              <span class="hint"
+                >Link naar een website of socialpagina met extra info.</span
+              >
             </label>
-            <input
-              type="url"
-              id="website"
-              name="website"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
-              placeholder="https://..."
-            />
-            <p class="text-xs text-gray-600 mt-1">
-              Link naar een website of socialpagina met extra informatie.
-            </p>
+            <label class="field">
+              <span class="ww-label">E-mailadres (optioneel)</span>
+              <input
+                type="email"
+                id="contactEmail"
+                name="contactEmail"
+                class="ww-input"
+                placeholder="info@voorbeeld.be"
+              />
+              <span class="hint">Contactadres voor vragen.</span>
+            </label>
           </div>
-        </div>
 
-        <div class="flex gap-4 pt-6">
-          <button
-            type="submit"
-            class="flex-1 bg-primary-600 text-white hover:bg-primary-700 font-bold px-7 py-3 rounded-xl transition-colors"
+          <div class="ww-form-actions">
+            <button type="submit" class="ww-btn ww-btn-red">Verstuur →</button>
+            <button type="reset" class="ww-btn ww-btn-outline-ink"
+              >Wissen</button
+            >
+          </div>
+          <p
+            style="font-size: 12px; color: var(--mute); text-align: center; margin: 0;"
           >
-            Verstuur
-          </button>
-          <button
-            type="reset"
-            class="flex-1 bg-gray-200 text-gray-900 hover:bg-gray-300 font-bold px-7 py-3 rounded-xl transition-colors"
-          >
-            Wissen
-          </button>
-        </div>
-
-        <p class="text-xs text-gray-500 text-center pt-4">
-          <span class="text-red-500">*</span> Verplichte velden
-        </p>
-      </form>
+            <span class="req" style="color: var(--red);">*</span> Verplichte velden
+          </p>
+        </form>
+      </article>
     </div>
-  </div>
+  </section>
 </Layout>
