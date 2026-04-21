@@ -4,8 +4,8 @@
   "description": "Ontdek wielerclubs en evenementen in het Waasland. Bekijk wanneer en waar ze vertrekken en sluit je aan bij een groep die bij jou past.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f8f5ee",
-  "theme_color": "#e6443d",
+  "background_color": "#e6443d",
+  "theme_color": "#f8f5ee",
   "icons": [
     {
       "src": "/wielerwaas-248x248.png",
