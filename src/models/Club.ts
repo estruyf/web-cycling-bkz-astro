@@ -1,3 +1,5 @@
+import type { Town } from "../utils/towns";
+
 export interface SeasonalTime {
   from: number;
   to: number;
@@ -24,7 +26,7 @@ export interface Ride {
 
 export interface ClubData {
   name: string;
-  town: "Beveren" | "Kruibeke" | "Zwijndrecht" | "Melsele" | "Vrasene";
+  town: Town;
   shortDescription?: string;
   logo?: string;
   website?: string;

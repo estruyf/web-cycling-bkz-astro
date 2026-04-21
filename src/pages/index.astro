@@ -6,6 +6,7 @@ import UpcomingEventsSection from "../components/UpcomingEventsSection.astro";
 import ClubsSection from "../components/ClubsSection.astro";
 import { getCollection } from "astro:content";
 import { expandEventsToOccurrences } from "../utils/events";
+import { getTownPagePath } from "../utils/towns";
 
 const allClubs = (await getCollection("clubs")).filter((c) => c.data.active);
 const shuffledClubs = [...allClubs].sort(() => Math.random() - 0.5).slice(0, 9);
@@ -93,7 +94,12 @@ const upcomingEvents = allUpcomingEvents.slice(0, 6);
                 towns.slice(0, 8).map((town, i) => (
                   <>
                     {i > 0 && " · "}
-                    {town}
+                    <a
+                      href={getTownPagePath(town)}
+                      title={`Bekijk clubs in ${town}`}
+                    >
+                      {town}
+                    </a>
                   </>
                 ))
               }

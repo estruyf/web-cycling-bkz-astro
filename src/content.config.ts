@@ -1,4 +1,5 @@
 import { defineCollection, z } from "astro:content";
+import { TOWNS } from "./utils/towns";
 
 const seasonalTimeSchema = z.object({
   from: z.number().int().min(1).max(12),
@@ -29,7 +30,7 @@ const clubs = defineCollection({
   type: "content",
   schema: z.object({
     name: z.string(),
-    town: z.enum(["Beveren", "Kruibeke", "Zwijndrecht", "Melsele", "Vrasene"]),
+    town: z.enum(TOWNS),
     shortDescription: z.string().optional(),
     logo: z.string().optional(),
     website: z.string().optional(),

@@ -8,9 +8,9 @@ interface Ride {
   day: string;
   time: string | SeasonalTimeType[];
   type: string;
-  group?: string;
+  group?: string | number;
   averageSpeed?: number | string;
-  notes?: string;
+  notes?: string | number;
   openForAll?: boolean;
   gender?: Gender;
 }
@@ -22,8 +22,13 @@ interface Props {
 const { rides } = Astro.props;
 
 const dayOrder = [
-  "Monday", "Tuesday", "Wednesday", "Thursday",
-  "Friday", "Saturday", "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
 ];
 const sorted = [...rides].sort(
   (a, b) => dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day),

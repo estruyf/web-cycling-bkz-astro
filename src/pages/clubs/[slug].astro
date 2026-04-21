@@ -3,6 +3,7 @@ import Layout from "../../layouts/Layout.astro";
 import RideSchedule from "../../components/RideSchedule.astro";
 import GenderBadge from "../../components/GenderBadge.astro";
 import { getCollection } from "astro:content";
+import { getTownPagePath } from "../../utils/towns";
 
 export async function getStaticPaths() {
   const clubs = await getCollection("clubs");
@@ -27,9 +28,17 @@ const {
   gender,
   claimable,
 } = club.data;
+
+const townPagePath = getTownPagePath(town);
+const clubDescription =
+  shortDescription ??
+  `Ontdek ${name}, een wielerclub in ${town}. Bekijk vertrekpunt, ritten, contactgegevens en meer op WielerWaas.`;
 ---
 
-<Layout title={`${name} — WielerWaas`} description={shortDescription ?? name}>
+<Layout
+  title={`${name} | Wielerclub in ${town} — WielerWaas`}
+  description={clubDescription}
+>
   <section class="ww-page-hero">
     <div class="ww-wrap">
       <a
@@ -192,6 +201,20 @@ const {
         <h2>Over {name}</h2>
         <Content />
       </article>
+
+      <div class="ww-card" style="margin-top: 24px;">
+        <h2>Meer clubs in {town}</h2>
+        <p style="color: var(--mute); margin: 0 0 18px;">
+          Bekijk alle wielerclubs en komende evenementen in {town} op één plek.
+        </p>
+        <a
+          href={townPagePath}
+          class="ww-btn ww-btn-outline-ink"
+          title={`Bekijk clubs in ${town}`}
+        >
+          Bekijk {town} →
+        </a>
+      </div>
 
       <p style="margin-top: 32px; font-size: 13px; color: var(--mute);">
         Zie je een fout op deze pagina? Laat het ons weten via

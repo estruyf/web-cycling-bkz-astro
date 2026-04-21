@@ -1,0 +1,178 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import ClubCard from "../../components/ClubCard.astro";
+import EventCard from "../../components/EventCard.astro";
+import AddClubCta from "../../components/AddClubCta.astro";
+import { getCollection } from "astro:content";
+import { expandEventsToOccurrences } from "../../utils/events";
+import { getTownSeoMeta, type Town, townToSlug } from "../../utils/towns";
+
+export async function getStaticPaths() {
+  const activeClubs = (await getCollection("clubs")).filter(
+    (club) => club.data.active,
+  );
+  const towns = Array.from(
+    new Set(activeClubs.map((club) => club.data.town)),
+  ) as Town[];
+
+  return towns.map((town) => ({
+    params: { slug: townToSlug(town) },
+    props: { town },
+  }));
+}
+
+const { town } = Astro.props as { town: Town };
+
+const townClubs = (await getCollection("clubs"))
+  .filter((club) => club.data.active && club.data.town === town)
+  .sort((a, b) => a.data.name.localeCompare(b.data.name, "nl"));
+
+const totalRides = townClubs.reduce(
+  (sum, club) => sum + (club.data.rides?.length ?? 0),
+  0,
+);
+
+const now = new Date();
+const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+const townEvents = expandEventsToOccurrences(await getCollection("events"))
+  .filter(
+    (occurrence) =>
+      occurrence.event.data.town === town && occurrence.occurrenceDate >= today,
+  )
+  .sort((a, b) => a.occurrenceDate.getTime() - b.occurrenceDate.getTime());
+
+const featuredEvents = townEvents.slice(0, 6);
+const meta = getTownSeoMeta(town, townClubs.length, townEvents.length);
+---
+
+<Layout title={meta.title} description={meta.description}>
+  <section class="ww-page-hero">
+    <div class="ww-wrap">
+      <a
+        href="/clubs"
+        title="Terug naar clubs"
+        style="display: inline-flex; align-items: center; gap: 6px; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--chalk); opacity: .75; text-decoration: none; margin-bottom: 20px;"
+      >
+        ← Terug naar clubs
+      </a>
+      <div class="kicker">Gemeente · {town}</div>
+      <h1>Wielrennen in<br /><em>{town}</em></h1>
+      <p>{meta.intro}</p>
+
+      <div class="ww-town-overview">
+        <div class="ww-town-stat">
+          <div class="eyebrow">Clubs</div>
+          <div class="value">{townClubs.length}</div>
+          <div class="label">actieve wielerclubs</div>
+        </div>
+        <div class="ww-town-stat">
+          <div class="eyebrow">Ritten</div>
+          <div class="value">{totalRides}</div>
+          <div class="label">wekelijkse ritten</div>
+        </div>
+        <div class="ww-town-stat">
+          <div class="eyebrow">Events</div>
+          <div class="value">{townEvents.length}</div>
+          <div class="label">aankomende evenementen</div>
+        </div>
+      </div>
+
+      <div class="ww-town-links">
+        <a href="/clubs" class="ww-btn ww-btn-red" title="Bekijk alle clubs">
+          Bekijk alle clubs →
+        </a>
+        <a
+          href="/evenementen"
+          class="ww-btn ww-btn-outline-chalk"
+          title="Bekijk alle evenementen"
+        >
+          Bekijk alle evenementen
+        </a>
+      </div>
+    </div>
+  </section>
+  <div class="ww-checker ww-checker-red"></div>
+
+  <section class="ww-band white">
+    <div class="ww-wrap ww-clubs-page-wrap">
+      <header class="ww-section-head">
+        <div>
+          <div class="num">01</div>
+          <h2>Wielerclubs in <em>{town}</em></h2>
+          <div class="sub">
+            {townClubs.length} club{townClubs.length !== 1 ? "s" : ""} met vertrekpunten
+            en ritinfo
+          </div>
+        </div>
+        <a href="/clubs" class="link" title="Bekijk alle clubs">
+          Alle clubs →
+        </a>
+      </header>
+
+      <div class="ww-clubs-grid">
+        {
+          townClubs.map((club) => (
+            <ClubCard
+              name={club.data.name}
+              slug={club.id.replace(/\.md$/, "")}
+              town={club.data.town}
+              shortDescription={club.data.shortDescription}
+              meetingPoint={club.data.meetingPoint}
+              rides={club.data.rides}
+              logo={club.data.logo}
+              gender={club.data.gender}
+            />
+          ))
+        }
+      </div>
+
+      {
+        featuredEvents.length > 0 && (
+          <>
+            <header class="ww-section-head" style="margin-top: 8px;">
+              <div>
+                <div class="num">02</div>
+                <h2>
+                  Komende events in <em>{town}</em>
+                </h2>
+                <div class="sub">
+                  {townEvents.length} aankomend evenement
+                  {townEvents.length !== 1 ? "en" : ""} in {town}
+                </div>
+              </div>
+              <a
+                href="/evenementen"
+                class="link"
+                title="Bekijk alle evenementen"
+              >
+                Alle evenementen →
+              </a>
+            </header>
+
+            <div class="ww-events-grid">
+              {featuredEvents.map((occurrence) => (
+                <EventCard
+                  name={occurrence.event.data.name}
+                  date={occurrence.occurrenceDate}
+                  frequency={occurrence.event.data.frequency}
+                  time={occurrence.event.data.time}
+                  organizer={occurrence.event.data.organizer}
+                  location={occurrence.event.data.location}
+                  website={occurrence.event.data.website}
+                  slug={occurrence.event.id}
+                />
+              ))}
+            </div>
+          </>
+        )
+      }
+
+      <AddClubCta
+        variant="light"
+        title={`Staat jouw club of evenement in ${town} er nog niet bij?`}
+        description={`Voeg je club of evenement uit ${town} toe en maak ze beter vindbaar voor lokale fietsers.`}
+        cta="both"
+      />
+    </div>
+  </section>
+</Layout>

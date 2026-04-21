@@ -3,15 +3,12 @@ import Layout from "../../layouts/Layout.astro";
 import ClubCard from "../../components/ClubCard.astro";
 import AddClubCta from "../../components/AddClubCta.astro";
 import { getCollection } from "astro:content";
+import { getTownPagePath, TOWNS } from "../../utils/towns";
 
 const allClubs = (await getCollection("clubs")).filter((c) => c.data.active);
-const towns = [
-  "Beveren",
-  "Kruibeke",
-  "Melsele",
-  "Zwijndrecht",
-  "Vrasene",
-] as const;
+const towns = TOWNS.filter((town) =>
+  allClubs.some((club) => club.data.town === town),
+);
 const dayOrder = [
   "Monday",
   "Tuesday",
@@ -106,6 +103,13 @@ const uniqueDays = Array.from(
                     </em>
                   </h2>
                 </div>
+                <a
+                  href={getTownPagePath(town)}
+                  class="link"
+                  title={`Bekijk clubs in ${town}`}
+                >
+                  Clubs in {town} →
+                </a>
               </header>
               <div class="ww-clubs-grid">
                 {townClubs.map((club) => (
