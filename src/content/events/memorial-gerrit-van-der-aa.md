@@ -11,4 +11,13 @@ contactEmail: tim.engels@sgs.com
 website: https://www.vwb.be/go/kalender/event/20122/0
 ---
 
-Drie afstanden 60-85-120km. Gravelrit van ~70km.
+21 juni vindt onze Memorial Gerry Van Der Aa plaats.
+De wegrit wordt dit jaar in een nieuw jasje gestoken.
+Ook nieuw dit jaar is onze gravelrit van 75 en 115 km.
+
+Inschrijving ter plaatse:
+- EUR 6,00 voor VWB-leden.
+- EUR 8,00 voor niet-VWB-leden.
+
+Graag zien we jullie massaal aanwezig,
+zodat 2026 een vernieuwde topeditie mag worden.
