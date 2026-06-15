@@ -21,9 +21,10 @@
           "choices": [
             "Beveren",
             "Kruibeke",
-            "Zwijndrecht",
             "Melsele",
-            "Vrasene"
+            "Vrasene",
+            "Temse",
+            "Zwijndrecht"
           ],
           "required": true
         },

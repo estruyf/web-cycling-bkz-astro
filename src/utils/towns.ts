@@ -2,6 +2,7 @@ export const TOWNS = [
   "Beveren",
   "Kruibeke",
   "Melsele",
+  "Temse",
   "Vrasene",
   "Zwijndrecht",
 ] as const;
@@ -12,6 +13,7 @@ const TOWN_SLUGS: Record<Town, string> = {
   Beveren: "beveren",
   Kruibeke: "kruibeke",
   Melsele: "melsele",
+  Temse: "temse",
   Vrasene: "vrasene",
   Zwijndrecht: "zwijndrecht",
 };
