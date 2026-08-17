@@ -1,6 +1,5 @@
 ---
 active: true
-claimable: true
 fmContentType: clubs
 name: De Schapekoppen
 town: Nieuwkerken-Waas
