@@ -1,31 +1,61 @@
 ---
 import { getCollection } from "astro:content";
 
+interface Props {
+  top?: boolean;
+}
+
+const { top = false } = Astro.props;
+
 const sponsors = (await getCollection("sponsors"))
-  .filter((s) => s.data.active)
+  .filter((s) => s.data.active && !(top && s.data.hideAtTop))
   .sort((a, b) => a.data.order - b.data.order);
+
+const visibleSponsors =
+  sponsors.length > 0 || !top
+    ? sponsors
+    : [
+        {
+          data: {
+            name: "Jouw logo hier?",
+            website: "/sponsors",
+            placeholder: true,
+          },
+        },
+      ];
 ---
 
 {
-  sponsors.length > 0 && (
+  visibleSponsors.length > 0 && (
     <section class="ww-sponsors">
       <div class="ww-wrap">
         <span class="label">Met steun van</span>
-        {sponsors.map((s) => (
-          <a
-            href={s.data.website || "#"}
-            title={s.data.name || ""}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="ww-sponsor-logo"
-          >
-            {s.data.logo ? (
-              <img src={s.data.logo} alt={s.data.name} />
-            ) : (
-              <span>{s.data.name}</span>
-            )}
-          </a>
-        ))}
+        {visibleSponsors.map((s) =>
+          s.data.placeholder ? (
+            <a
+              href="/sponsors"
+              class="ww-sponsor-open ww-sponsor-open-sm"
+              title="Word sponsor van WielerWaas"
+            >
+              <span class="tag">Spot beschikbaar</span>
+              <span class="big">{s.data.name}</span>
+            </a>
+          ) : (
+            <a
+              href={s.data.website || "#"}
+              title={s.data.name || ""}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="ww-sponsor-logo"
+            >
+              {s.data.logo ? (
+                <img src={s.data.logo} alt={s.data.name} />
+              ) : (
+                <span>{s.data.name}</span>
+              )}
+            </a>
+          ),
+        )}
       </div>
     </section>
   )

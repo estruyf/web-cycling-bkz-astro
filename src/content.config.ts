@@ -55,6 +55,7 @@ const sponsors = defineCollection({
     order: z.number().default(99),
     active: z.boolean().default(true),
     placeholder: z.boolean().default(false),
+    hideAtTop: z.boolean().default(false),
   }),
 });
 

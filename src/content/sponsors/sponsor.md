@@ -1,10 +1,10 @@
 ---
-name: Wil jij sponsor worden?
+name: Jouw logo hier?
 website: http://wielerwaas.be/sponsors
 tier: gold
 order: 99
 description: Word sponsor van WielerWaas en help het wielrennen in Waasland naar een hoger niveau te tillen!
-active: true
+active: false
 placeholder: true
 ---
 

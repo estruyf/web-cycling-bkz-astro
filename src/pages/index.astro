@@ -5,6 +5,7 @@ import WeeklyRidesSection from "../components/WeeklyRidesSection.astro";
 import UpcomingEventsSection from "../components/UpcomingEventsSection.astro";
 import ClubsSection from "../components/ClubsSection.astro";
 import SponsorsShowcase from "../components/SponsorsShowcase.astro";
+import SponsorsSection from "../components/SponsorsSection.astro";
 import { getCollection } from "astro:content";
 import { expandEventsToOccurrences } from "../utils/events";
 import { getTownPagePath } from "../utils/towns";
@@ -113,6 +114,8 @@ const upcomingEvents = allUpcomingEvents.slice(0, 6);
     </div>
   </section>
   <div class="ww-checker ww-checker-red"></div>
+
+  <SponsorsSection top />
 
   <WeeklyRidesSection clubs={allClubs} />
 
