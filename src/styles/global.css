@@ -1408,6 +1408,70 @@ button:hover {
   margin-bottom: 56px;
 }
 
+.ww-sponsor-showcase .kicker-label {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+
+.ww-sponsor-showcase .ww-section-head h2 {
+  margin-top: 10px;
+}
+
+.ww-sponsor-showcase .ww-sponsors-grid {
+  margin-bottom: 0;
+  padding-bottom: 56px;
+}
+
+.ww-sponsor-open {
+  height: 180px;
+  border: 2px dashed var(--red);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  transition:
+    background 0.15s,
+    border-style 0.15s;
+}
+.ww-sponsor-open .tag {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+.ww-sponsor-open .big {
+  font-family: "Anton", sans-serif;
+  font-size: 26px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  line-height: 1;
+}
+.ww-sponsor-open .cta {
+  font-family: "Archivo", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--ink);
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 2px;
+}
+.ww-sponsor-open:hover {
+  background: #fff;
+  border-style: solid;
+}
+.ww-sponsor-open:hover .cta {
+  color: var(--red);
+  border-color: var(--red);
+}
+
 @media (max-width: 680px) {
   .ww-sponsors .ww-wrap {
     display: grid;
@@ -1444,6 +1508,15 @@ button:hover {
 
   .ww-sponsors-empty-state {
     margin-bottom: 40px;
+  }
+
+  .ww-sponsor-showcase .ww-sponsors-grid {
+    grid-template-columns: 1fr;
+    padding-bottom: 40px;
+  }
+
+  .ww-sponsor-open {
+    height: 140px;
   }
 }
 

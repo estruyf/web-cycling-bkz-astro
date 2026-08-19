@@ -1,0 +1,63 @@
+---
+import { getCollection } from "astro:content";
+
+// Number of sponsor slots shown on the homepage; empty slots become
+// "spot beschikbaar" cards.
+const TOTAL_SLOTS = 3;
+
+const sponsors = (await getCollection("sponsors"))
+  .filter((s) => s.data.active && !s.data.placeholder)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const openSpots = Math.max(1, TOTAL_SLOTS - sponsors.length);
+---
+
+<section class="ww-band white ww-sponsor-showcase">
+  <div class="ww-wrap">
+    <header class="ww-section-head">
+      <div>
+        <div class="kicker-label">· Partners</div>
+        <h2>Met steun<br />van <em>onze sponsors</em></h2>
+        <div class="sub">
+          Zij maken het wielrennen in het Waasland mee mogelijk
+        </div>
+      </div>
+      <a href="/sponsors" class="link" title="Bekijk alle sponsors">
+        Alle sponsors →
+      </a>
+    </header>
+
+    <div class="ww-sponsors-grid">
+      {
+        sponsors.slice(0, TOTAL_SLOTS).map((sponsor) => (
+          <a
+            href={sponsor.data.website || "/sponsors"}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="ww-sponsor-logo ww-sponsor-logo-large"
+            title={`Bezoek de website van ${sponsor.data.name}`}
+          >
+            {sponsor.data.logo ? (
+              <img src={sponsor.data.logo} alt={sponsor.data.name} />
+            ) : (
+              <span>{sponsor.data.name}</span>
+            )}
+          </a>
+        ))
+      }
+      {
+        Array.from({ length: openSpots }).map(() => (
+          <a
+            href="/sponsors"
+            class="ww-sponsor-open"
+            title="Word sponsor van WielerWaas"
+          >
+            <span class="tag">Spot beschikbaar</span>
+            <span class="big">Jouw logo hier?</span>
+            <span class="cta">Word sponsor →</span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>

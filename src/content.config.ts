@@ -54,6 +54,7 @@ const sponsors = defineCollection({
     tier: z.enum(["gold", "silver", "bronze"]),
     order: z.number().default(99),
     active: z.boolean().default(true),
+    placeholder: z.boolean().default(false),
   }),
 });
 

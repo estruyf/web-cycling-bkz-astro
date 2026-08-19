@@ -4,6 +4,7 @@ import AddClubCta from "../components/AddClubCta.astro";
 import WeeklyRidesSection from "../components/WeeklyRidesSection.astro";
 import UpcomingEventsSection from "../components/UpcomingEventsSection.astro";
 import ClubsSection from "../components/ClubsSection.astro";
+import SponsorsShowcase from "../components/SponsorsShowcase.astro";
 import { getCollection } from "astro:content";
 import { expandEventsToOccurrences } from "../utils/events";
 import { getTownPagePath } from "../utils/towns";
@@ -33,6 +34,7 @@ const upcomingEvents = allUpcomingEvents.slice(0, 6);
 <Layout
   title="WielerWaas"
   description="Ontdek wielerclubs en evenementen in het Waasland. Bekijk wanneer en waar ze vertrekken."
+  hideSponsors={true}
 >
   <section class="ww-hero">
     <svg class="wheels" width="520" height="260" aria-hidden="true">
@@ -117,6 +119,8 @@ const upcomingEvents = allUpcomingEvents.slice(0, 6);
   <UpcomingEventsSection upcomingEvents={upcomingEvents} />
 
   <ClubsSection clubs={shuffledClubs} totalCount={allClubs.length} />
+
+  <SponsorsShowcase />
 
   <AddClubCta />
 </Layout>
