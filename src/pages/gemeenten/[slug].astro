@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import ClubCard from "../../components/ClubCard.astro";
+import { getClubDisciplines } from "../../utils/discipline";
 import EventCard from "../../components/EventCard.astro";
 import AddClubCta from "../../components/AddClubCta.astro";
 import { getCollection } from "astro:content";
@@ -121,6 +122,7 @@ const meta = getTownSeoMeta(town, townClubs.length, townEvents.length);
               rides={club.data.rides}
               logo={club.data.logo}
               gender={club.data.gender}
+              disciplines={getClubDisciplines(club.data)}
             />
           ))
         }

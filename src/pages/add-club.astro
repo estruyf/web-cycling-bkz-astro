@@ -86,6 +86,28 @@ import Layout from "../layouts/Layout.astro";
             </label>
           </div>
 
+          <fieldset class="field">
+            <legend class="ww-label">Discipline</legend>
+            <div class="checks">
+              <label class="ww-check">
+                <input type="checkbox" name="disciplines[]" value="road" />
+                Weg
+              </label>
+              <label class="ww-check">
+                <input type="checkbox" name="disciplines[]" value="gravel" />
+                Gravel
+              </label>
+              <label class="ww-check">
+                <input type="checkbox" name="disciplines[]" value="mtb" />
+                MTB
+              </label>
+            </div>
+            <span class="hint"
+              >Welke ritten rijden jullie? Duid alles aan wat van toepassing
+              is.</span
+            >
+          </fieldset>
+
           <label class="field row full">
             <span class="ww-label"
               >Contactmailadres <span class="req">*</span></span
@@ -176,8 +198,9 @@ import Layout from "../layouts/Layout.astro";
               placeholder={"Woensdag, 19:00 - Clubrit (open voor iedereen) - 30gem\nZondag, 09:00 - Trainingsrit (enkel voor leden) - 34gem"}
             ></textarea>
             <span class="hint"
-              >Per rit: dag van de week, vertrektijdstip, type rit en of deze
-              open is voor iedereen of enkel voor leden.</span
+              >Per rit: dag van de week, vertrektijdstip, type rit (weg, gravel
+              of MTB) en of deze open is voor iedereen of enkel voor
+              leden.</span
             >
           </label>
 

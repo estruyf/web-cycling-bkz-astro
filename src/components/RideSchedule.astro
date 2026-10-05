@@ -1,13 +1,16 @@
 ---
 import type { SeasonalTime as SeasonalTimeType } from "../models/Club";
 import type { Gender } from "../utils/gender";
+import type { Discipline } from "../utils/discipline";
 import SeasonalTime from "./SeasonalTime.astro";
 import GenderBadge from "./GenderBadge.astro";
+import DisciplineBadge from "./DisciplineBadge.astro";
 
 interface Ride {
   day: string;
   time: string | SeasonalTimeType[];
   type: string;
+  discipline?: Discipline;
   group?: string | number;
   averageSpeed?: number | string;
   notes?: string | number;
@@ -56,6 +59,7 @@ function formatSpeed(speed?: number | string): string {
         <th>Dag</th>
         <th>Uur</th>
         <th>Type rit</th>
+        <th>Discipline</th>
         <th>Groep</th>
         <th>Gem. snelheid</th>
         <th>Opmerkingen</th>
@@ -74,6 +78,9 @@ function formatSpeed(speed?: number | string): string {
               <SeasonalTime time={ride.time} />
             </td>
             <td data-label="Type rit">{ride.type}</td>
+            <td data-label="Discipline">
+              <DisciplineBadge discipline={ride.discipline} fallback="—" />
+            </td>
             <td data-label="Groep">{ride.group ?? "—"}</td>
             <td data-label="Gem. snelheid">{formatSpeed(ride.averageSpeed)}</td>
             <td data-label="Opmerkingen">{ride.notes ?? "—"}</td>

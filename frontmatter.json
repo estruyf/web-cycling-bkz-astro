@@ -41,6 +41,19 @@
           "single": true
         },
         {
+          "name": "disciplines",
+          "type": "choice",
+          "choices": [
+            "road",
+            "gravel",
+            "mtb"
+          ],
+          "multiple": true,
+          "default": [
+            "road"
+          ]
+        },
+        {
           "name": "shortDescription",
           "type": "string",
           "single": true

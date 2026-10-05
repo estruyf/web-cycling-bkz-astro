@@ -400,6 +400,27 @@ button:hover {
   color: var(--ink-2);
   background: oklch(0.92 0.01 85);
 }
+/* Discipline badges are filled, so they read apart from gender/access */
+.ww-badge.disc-road {
+  color: var(--chalk);
+  background: var(--ink);
+  border-color: var(--ink);
+}
+.ww-badge.disc-gravel {
+  color: var(--chalk);
+  background: oklch(0.5 0.1 60);
+  border-color: oklch(0.5 0.1 60);
+}
+.ww-badge.disc-mtb {
+  color: var(--chalk);
+  background: oklch(0.45 0.11 150);
+  border-color: oklch(0.45 0.11 150);
+}
+.ww-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
 
 /* Rides table */
 .ww-rides {
@@ -1609,6 +1630,17 @@ button:hover {
 }
 .ww-form label.field {
   display: block;
+}
+.ww-form fieldset.field {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.ww-form .checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 .ww-form .hint {
   font-size: 12px;

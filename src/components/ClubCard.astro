@@ -1,6 +1,8 @@
 ---
 import type { SeasonalTime as SeasonalTimeType } from "../models/Club";
 import SeasonalTime from "./SeasonalTime.astro";
+import DisciplineBadge from "./DisciplineBadge.astro";
+import type { Discipline } from "../utils/discipline";
 
 interface Ride {
   day: string;
@@ -18,10 +20,19 @@ interface Props {
   rides?: Ride[];
   logo?: string;
   gender?: "women" | "men" | "mixed";
+  disciplines?: Discipline[];
 }
 
-const { name, slug, town, shortDescription, meetingPoint, rides, logo } =
-  Astro.props;
+const {
+  name,
+  slug,
+  town,
+  shortDescription,
+  meetingPoint,
+  rides,
+  logo,
+  disciplines = [],
+} = Astro.props;
 
 const dayOrder = [
   "Monday",
@@ -65,6 +76,16 @@ const dagAfkorting: Record<string, string> = {
         <div class="town">{town}</div>
       </div>
     </div>
+
+    {
+      disciplines.length > 0 && (
+        <div class="ww-badges">
+          {disciplines.map((discipline) => (
+            <DisciplineBadge discipline={discipline} />
+          ))}
+        </div>
+      )
+    }
 
     {shortDescription && <p class="desc">{shortDescription}</p>}
 

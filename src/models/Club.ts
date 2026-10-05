@@ -1,3 +1,4 @@
+import type { Discipline } from "../utils/discipline";
 import type { Town } from "../utils/towns";
 
 export interface SeasonalTime {
@@ -17,6 +18,7 @@ export interface Ride {
     | "Sunday";
   time: string | SeasonalTime[];
   type: string;
+  discipline?: Discipline;
   group?: string | number;
   averageSpeed?: number | string;
   notes?: string | number;
@@ -36,6 +38,7 @@ export interface ClubData {
   active: boolean;
   claimable: boolean;
   gender?: "women" | "men" | "mixed";
+  disciplines: Discipline[];
   rides?: Ride[];
 }
 

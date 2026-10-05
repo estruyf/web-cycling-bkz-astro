@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import ClubCard from "./ClubCard.astro";
+import { getClubDisciplines } from "../utils/discipline";
 
 interface Props {
   clubs: CollectionEntry<"clubs">[];
@@ -37,6 +38,7 @@ const displayCount = totalCount ?? clubs.length;
             meetingPoint={club.data.meetingPoint}
             rides={club.data.rides}
             logo={club.data.logo}
+            disciplines={getClubDisciplines(club.data)}
           />
         ))
       }

@@ -1,0 +1,25 @@
+---
+import { getDisciplineBadge, type Discipline } from "../utils/discipline";
+
+interface Props {
+  discipline?: Discipline;
+  className?: string;
+  fallback?: string;
+}
+
+const { discipline, className = "", fallback } = Astro.props;
+const badge = getDisciplineBadge(discipline);
+---
+
+{
+  badge ? (
+    <span
+      class:list={[badge.classes, className]}
+      aria-label={badge.ariaLabel}
+    >
+      {badge.label}
+    </span>
+  ) : (
+    (fallback ?? null)
+  )
+}

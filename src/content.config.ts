@@ -1,5 +1,6 @@
 import { defineCollection, z } from "astro:content";
 import { TOWNS } from "./utils/towns";
+import { DISCIPLINES } from "./utils/discipline";
 
 const seasonalTimeSchema = z.object({
   from: z.number().int().min(1).max(12),
@@ -19,6 +20,7 @@ const rideSchema = z.object({
   ]),
   time: z.union([z.string(), z.array(seasonalTimeSchema).nonempty()]),
   type: z.string(),
+  discipline: z.enum(DISCIPLINES).optional(),
   group: z.union([z.number(), z.string()]).optional(),
   averageSpeed: z.union([z.number(), z.string()]).optional(),
   notes: z.string().optional(),
@@ -40,6 +42,7 @@ const clubs = defineCollection({
     active: z.boolean().default(true),
     claimable: z.boolean().default(false),
     gender: z.enum(["women", "men", "mixed"]).optional(),
+    disciplines: z.array(z.enum(DISCIPLINES)).nonempty().default(["road"]),
     rides: z.array(rideSchema).optional(),
   }),
 });

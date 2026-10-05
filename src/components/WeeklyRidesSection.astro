@@ -3,6 +3,12 @@ import type { Club } from "../models";
 import { timeSortKey } from "../utils/time";
 import SeasonalTime from "./SeasonalTime.astro";
 import GenderBadge from "./GenderBadge.astro";
+import DisciplineBadge from "./DisciplineBadge.astro";
+import {
+  DISCIPLINES,
+  getDisciplineLabel,
+  resolveRideDiscipline,
+} from "../utils/discipline";
 
 interface Props {
   clubs: Club[];
@@ -36,6 +42,7 @@ const alleRitten = clubs.flatMap((club) =>
     clubSlug: club.id.replace(/\.md$/, ""),
     locatie: club.data.town,
     gender: ride.gender ?? club.data.gender,
+    discipline: resolveRideDiscipline(ride, club.data),
     dag: ride.day,
     uur: ride.time,
     type: ride.type,
@@ -60,6 +67,10 @@ const beschikbareLocaties = Array.from(
   new Set(gesorteerdeRitten.map((rit) => rit.locatie)),
 ).sort((a, b) => a.localeCompare(b, "nl"));
 
+const beschikbareDisciplines = DISCIPLINES.filter((discipline) =>
+  gesorteerdeRitten.some((rit) => rit.discipline === discipline),
+);
+
 function formatSpeed(speed?: number | string): string {
   return speed != null ? `${speed} km/u` : "—";
 }
@@ -72,7 +83,7 @@ function formatSpeed(speed?: number | string): string {
         <div class="num">01</div>
         <h2>Wekelijkse <em>ritten</em></h2>
         <div class="sub">
-          Geplande ritten van alle clubs — filter op dag, gemeente, type
+          Geplande ritten van alle clubs — filter op dag, gemeente, discipline, type
         </div>
       </div>
       <a href="/clubs" class="link" title="Bekijk alle clubs">Alle clubs →</a>
@@ -101,6 +112,15 @@ function formatSpeed(speed?: number | string): string {
         }
       </select>
 
+      <select id="filter-discipline" class="ww-select">
+        <option value="">Discipline</option>
+        {
+          beschikbareDisciplines.map((discipline) => (
+            <option value={discipline}>{getDisciplineLabel(discipline)}</option>
+          ))
+        }
+      </select>
+
       <select id="filter-gender" class="ww-select">
         <option value="">Groep type</option>
         <option value="mixed">Gemengd</option>
@@ -125,6 +145,7 @@ function formatSpeed(speed?: number | string): string {
             <th>Dag</th>
             <th>Uur</th>
             <th>Club</th>
+            <th>Discipline</th>
             <th>Groep</th>
             <th>Snelheid</th>
             <th>Vertrekpunt</th>
@@ -139,6 +160,7 @@ function formatSpeed(speed?: number | string): string {
                 data-dag={rit.dag}
                 data-town={rit.locatie}
                 data-gender={rit.gender ?? ""}
+                data-discipline={rit.discipline}
                 data-open={rit.openVoorIedereen ? "true" : "false"}
                 data-seasons={
                   Array.isArray(rit.uur)
@@ -161,6 +183,9 @@ function formatSpeed(speed?: number | string): string {
                     {rit.clubNaam}
                   </a>
                   <div class="ww-cell-town">{rit.locatie}</div>
+                </td>
+                <td data-label="Discipline">
+                  <DisciplineBadge discipline={rit.discipline} />
                 </td>
                 <td data-label="Groep">{rit.groep ?? "—"}</td>
                 <td data-label="Snelheid">
@@ -238,6 +263,17 @@ function formatSpeed(speed?: number | string): string {
           option.remove();
         }
       });
+    document
+      .querySelectorAll<HTMLOptionElement>("#filter-discipline option")
+      .forEach((option) => {
+        const discipline = option.value;
+        if (
+          discipline &&
+          !rows.some((row) => row.dataset.discipline === discipline)
+        ) {
+          option.remove();
+        }
+      });
   }
 
   function initWeeklyRidesSection() {
@@ -250,6 +286,9 @@ function formatSpeed(speed?: number | string): string {
       document.querySelectorAll<HTMLButtonElement>(".day-filter-btn");
     const townSelect = document.getElementById(
       "filter-town",
+    ) as HTMLSelectElement | null;
+    const disciplineSelect = document.getElementById(
+      "filter-discipline",
     ) as HTMLSelectElement | null;
     const genderSelect = document.getElementById(
       "filter-gender",
@@ -274,6 +313,7 @@ function formatSpeed(speed?: number | string): string {
     if (
       !dagBtns.length ||
       !townSelect ||
+      !disciplineSelect ||
       !genderSelect ||
       !openCheckbox ||
       !table ||
@@ -311,6 +351,7 @@ function formatSpeed(speed?: number | string): string {
       currentPage = 1;
       filteredRows = [];
       const selectedTown = townSelect!.value;
+      const selectedDiscipline = disciplineSelect!.value;
       const selectedGender = genderSelect!.value;
       const onlyOpen = openCheckbox!.checked;
 
@@ -318,10 +359,18 @@ function formatSpeed(speed?: number | string): string {
       rows.forEach((row) => {
         const dagMatch = !selectedDag || row.dataset.dag === selectedDag;
         const townMatch = !selectedTown || row.dataset.town === selectedTown;
+        const disciplineMatch =
+          !selectedDiscipline || row.dataset.discipline === selectedDiscipline;
         const genderMatch =
           !selectedGender || row.dataset.gender === selectedGender;
         const openMatch = !onlyOpen || row.dataset.open === "true";
-        if (dagMatch && townMatch && genderMatch && openMatch) {
+        if (
+          dagMatch &&
+          townMatch &&
+          disciplineMatch &&
+          genderMatch &&
+          openMatch
+        ) {
           filteredRows.push(row);
         } else {
           row.style.display = "none";
@@ -335,6 +384,7 @@ function formatSpeed(speed?: number | string): string {
       const show =
         selectedDag !== "" ||
         townSelect!.value !== "" ||
+        disciplineSelect!.value !== "" ||
         genderSelect!.value !== "" ||
         openCheckbox!.checked;
       resetButton.style.display = show ? "" : "none";
@@ -358,6 +408,10 @@ function formatSpeed(speed?: number | string): string {
       applyFilters();
       updateResetVisibility();
     });
+    disciplineSelect.addEventListener("change", () => {
+      applyFilters();
+      updateResetVisibility();
+    });
     genderSelect.addEventListener("change", () => {
       applyFilters();
       updateResetVisibility();
@@ -371,6 +425,7 @@ function formatSpeed(speed?: number | string): string {
       const allBtn = Array.from(dagBtns).find((b) => b.dataset.day === "");
       if (allBtn) setActiveDay(allBtn);
       townSelect!.value = "";
+      disciplineSelect!.value = "";
       genderSelect!.value = "";
       openCheckbox!.checked = false;
       applyFilters();

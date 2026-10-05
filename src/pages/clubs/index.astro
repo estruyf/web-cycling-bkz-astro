@@ -4,6 +4,11 @@ import ClubCard from "../../components/ClubCard.astro";
 import AddClubCta from "../../components/AddClubCta.astro";
 import { getCollection } from "astro:content";
 import { getTownPagePath, TOWNS } from "../../utils/towns";
+import {
+  DISCIPLINES,
+  getClubDisciplines,
+  getDisciplineLabel,
+} from "../../utils/discipline";
 
 const allClubs = (await getCollection("clubs")).filter((c) => c.data.active);
 const towns = TOWNS.filter((town) =>
@@ -33,6 +38,13 @@ const uniqueDays = Array.from(
     allClubs.flatMap((club) => (club.data.rides ?? []).map((ride) => ride.day)),
   ),
 ).sort((a, b) => dayOrder.indexOf(a) - dayOrder.indexOf(b));
+
+const disciplinesByClub = new Map(
+  allClubs.map((club) => [club.id, getClubDisciplines(club.data)]),
+);
+const availableDisciplines = DISCIPLINES.filter((discipline) =>
+  allClubs.some((club) => disciplinesByClub.get(club.id)!.includes(discipline)),
+);
 ---
 
 <Layout
@@ -67,6 +79,14 @@ const uniqueDays = Array.from(
           {
             uniqueDays.map((day) => (
               <option value={day}>{dayLabels[day] ?? day}</option>
+            ))
+          }
+        </select>
+        <select id="club-filter-discipline" class="ww-select">
+          <option value="">Alle disciplines</option>
+          {
+            availableDisciplines.map((discipline) => (
+              <option value={discipline}>{getDisciplineLabel(discipline)}</option>
             ))
           }
         </select>
@@ -120,8 +140,8 @@ const uniqueDays = Array.from(
                     data-days={(club.data.rides ?? [])
                       .map((ride) => ride.day)
                       .join("|")}
-                    data-types={(club.data.rides ?? [])
-                      .map((ride) => ride.type)
+                    data-disciplines={disciplinesByClub
+                      .get(club.id)!
                       .join("|")}
                     data-gender={club.data.gender ?? ""}
                   >
@@ -134,6 +154,7 @@ const uniqueDays = Array.from(
                       rides={club.data.rides}
                       logo={club.data.logo}
                       gender={club.data.gender}
+                      disciplines={disciplinesByClub.get(club.id)}
                     />
                   </div>
                 ))}
@@ -172,7 +193,7 @@ const uniqueDays = Array.from(
   function initClubFilters() {
     const townFilter = document.getElementById("club-filter-town");
     const dayFilter = document.getElementById("club-filter-day");
-    const typeFilter = document.getElementById("club-filter-type");
+    const disciplineFilter = document.getElementById("club-filter-discipline");
     const genderFilter = document.getElementById("club-filter-gender");
     const searchFilter = document.getElementById(
       "club-filter-search",
@@ -192,7 +213,8 @@ const uniqueDays = Array.from(
     const applyFilters = () => {
       const town = (townFilter as HTMLSelectElement | null)?.value ?? "";
       const day = (dayFilter as HTMLSelectElement | null)?.value ?? "";
-      const type = (typeFilter as HTMLSelectElement | null)?.value ?? "";
+      const discipline =
+        (disciplineFilter as HTMLSelectElement | null)?.value ?? "";
       const gender = (genderFilter as HTMLSelectElement | null)?.value ?? "";
       const search = (searchFilter?.value ?? "").toLowerCase().trim();
 
@@ -201,19 +223,20 @@ const uniqueDays = Array.from(
       filterItems.forEach((item) => {
         const itemTown = item.dataset.town ?? "";
         const itemDays = (item.dataset.days ?? "").split("|");
-        const itemTypes = (item.dataset.types ?? "").split("|");
+        const itemDisciplines = (item.dataset.disciplines ?? "").split("|");
         const itemGender = item.dataset.gender ?? "";
         const itemName = item.dataset.name ?? "";
 
         const matchesTown = !town || itemTown === town;
         const matchesDay = !day || itemDays.includes(day);
-        const matchesType = !type || itemTypes.includes(type);
+        const matchesDiscipline =
+          !discipline || itemDisciplines.includes(discipline);
         const matchesGender = !gender || itemGender === gender;
         const matchesSearch = !search || itemName.includes(search);
         const matches =
           matchesTown &&
           matchesDay &&
-          matchesType &&
+          matchesDiscipline &&
           matchesGender &&
           matchesSearch;
 
@@ -238,13 +261,14 @@ const uniqueDays = Array.from(
 
     townFilter?.addEventListener("change", applyFilters);
     dayFilter?.addEventListener("change", applyFilters);
-    typeFilter?.addEventListener("change", applyFilters);
+    disciplineFilter?.addEventListener("change", applyFilters);
     genderFilter?.addEventListener("change", applyFilters);
     searchFilter?.addEventListener("input", applyFilters);
     resetBtn?.addEventListener("click", () => {
       if (townFilter) (townFilter as HTMLSelectElement).value = "";
       if (dayFilter) (dayFilter as HTMLSelectElement).value = "";
-      if (typeFilter) (typeFilter as HTMLSelectElement).value = "";
+      if (disciplineFilter)
+        (disciplineFilter as HTMLSelectElement).value = "";
       if (genderFilter) (genderFilter as HTMLSelectElement).value = "";
       if (searchFilter) searchFilter.value = "";
       applyFilters();

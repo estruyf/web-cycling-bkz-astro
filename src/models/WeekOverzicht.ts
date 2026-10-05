@@ -1,3 +1,4 @@
+import type { Discipline } from "../utils/discipline";
 import type { SeasonalTime } from "./Club";
 
 export interface WeekritOverzicht {
@@ -7,6 +8,7 @@ export interface WeekritOverzicht {
   dag: string;
   uur: string | SeasonalTime[];
   type: string;
+  discipline: Discipline;
   groep?: string;
   gemiddeldeSnelheid?: number | string;
   vertrekpunt: string;
