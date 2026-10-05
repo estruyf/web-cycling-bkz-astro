@@ -30,6 +30,28 @@ export function isMonthInRange(
   return month >= from || month <= to;
 }
 
+/** Current month (1–12) in the Europe/Brussels timezone. */
+export function currentMonth(): number {
+  const now = new Date(
+    new Date().toLocaleString("en-US", { timeZone: "Europe/Brussels" }),
+  );
+  return now.getMonth() + 1;
+}
+
+/** Month range label, e.g. "apr–aug". */
+export function formatMonthRange(from: number, to: number): string {
+  return `${maandNamen[from]}–${maandNamen[to]}`;
+}
+
+/** Whether a ride time applies in the given month (plain times always do). */
+export function isInSeason(
+  time: string | SeasonalTime[],
+  month: number,
+): boolean {
+  if (typeof time === "string") return true;
+  return time.some((t) => isMonthInRange(month, t.from, t.to));
+}
+
 /** Resolve the current time string for a given month. */
 export function resolveTime(
   time: string | SeasonalTime[],
@@ -43,16 +65,12 @@ export function resolveTime(
 /** Build an explicit fallback label showing all seasonal times, e.g. "08:30 (mei–aug) / 09:00 (sep–apr)" */
 export function formatSeasonalFallback(times: SeasonalTime[]): string {
   return times
-    .map((t) => `${t.time} (${maandNamen[t.from]}–${maandNamen[t.to]})`)
+    .map((t) => `${t.time} (${formatMonthRange(t.from, t.to)})`)
     .join(" / ");
 }
 
 /** Return a sort key for a time value (resolves seasonal to earliest time). */
 export function timeSortKey(time: string | SeasonalTime[]): string {
   if (typeof time === "string") return time;
-  const now = new Date(
-    new Date().toLocaleString("en-US", { timeZone: "Europe/Brussels" }),
-  );
-  const month = now.getMonth() + 1;
-  return resolveTime(time, month);
+  return resolveTime(time, currentMonth());
 }

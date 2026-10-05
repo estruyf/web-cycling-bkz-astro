@@ -1,6 +1,6 @@
 ---
 import type { SeasonalTime } from "../models/Club";
-import { formatSeasonalFallback } from "../utils/time";
+import { formatMonthRange } from "../utils/time";
 
 interface Props {
   time: string | SeasonalTime[];
@@ -16,19 +16,40 @@ const isSeasonal = Array.isArray(time);
       class="seasonal-time"
       data-seasonal-times={JSON.stringify(time)}
     >
-      {formatSeasonalFallback(time as SeasonalTime[])}
+      {(time as SeasonalTime[]).map((t, i) => (
+        <>
+          {i > 0 && " / "}
+          {t.time}
+          <span class="seasonal-range">{formatMonthRange(t.from, t.to)}</span>
+        </>
+      ))}
     </span>
   ) : (
     <span>{time}</span>
   )
 }
 
+<style>
+  .seasonal-time {
+    white-space: nowrap;
+  }
+  .seasonal-range {
+    display: inline-block;
+    margin-left: 0.4em;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--mute);
+    vertical-align: middle;
+  }
+</style>
+
 <script>
+  import { currentMonth, isMonthInRange } from "../utils/time";
+
   function resolveSeasonal() {
-    const now = new Date(
-      new Date().toLocaleString("en-US", { timeZone: "Europe/Brussels" }),
-    );
-    const month = now.getMonth() + 1;
+    const month = currentMonth();
 
     document.querySelectorAll<HTMLSpanElement>(".seasonal-time").forEach((el) => {
       const raw = el.dataset.seasonalTimes;
@@ -37,10 +58,7 @@ const isSeasonal = Array.isArray(time);
       try {
         const times: { from: number; to: number; time: string }[] =
           JSON.parse(raw);
-        const match = times.find((t) => {
-          if (t.from <= t.to) return month >= t.from && month <= t.to;
-          return month >= t.from || month <= t.to;
-        });
+        const match = times.find((t) => isMonthInRange(month, t.from, t.to));
         if (match) {
           el.textContent = match.time;
         }

@@ -140,6 +140,11 @@ function formatSpeed(speed?: number | string): string {
                 data-town={rit.locatie}
                 data-gender={rit.gender ?? ""}
                 data-open={rit.openVoorIedereen ? "true" : "false"}
+                data-seasons={
+                  Array.isArray(rit.uur)
+                    ? JSON.stringify(rit.uur.map(({ from, to }) => ({ from, to })))
+                    : undefined
+                }
               >
                 <td data-label="Dag" class="ww-cell-day">
                   {(dagNamen[rit.dag] ?? rit.dag).slice(0, 2)}
@@ -200,7 +205,47 @@ function formatSpeed(speed?: number | string): string {
 </section>
 
 <script>
+  import { currentMonth, isInSeason } from "../utils/time";
+
+  /** Drop rides that are out of season, plus filters left without rides. */
+  function removeOutOfSeasonRides(table: HTMLTableElement) {
+    const month = currentMonth();
+    table
+      .querySelectorAll<HTMLTableRowElement>("tbody tr[data-seasons]")
+      .forEach((row) => {
+        try {
+          const seasons = JSON.parse(row.dataset.seasons!);
+          if (!isInSeason(seasons, month)) row.remove();
+        } catch {
+          // keep the row when the data can't be read
+        }
+      });
+
+    const rows = Array.from(
+      table.querySelectorAll<HTMLTableRowElement>("tbody tr"),
+    );
+    document
+      .querySelectorAll<HTMLButtonElement>(".day-filter-btn[data-day]")
+      .forEach((btn) => {
+        const day = btn.dataset.day;
+        if (day && !rows.some((row) => row.dataset.dag === day)) btn.remove();
+      });
+    document
+      .querySelectorAll<HTMLOptionElement>("#filter-town option")
+      .forEach((option) => {
+        const town = option.value;
+        if (town && !rows.some((row) => row.dataset.town === town)) {
+          option.remove();
+        }
+      });
+  }
+
   function initWeeklyRidesSection() {
+    const ridesTable = document.getElementById(
+      "rides-table",
+    ) as HTMLTableElement | null;
+    if (ridesTable) removeOutOfSeasonRides(ridesTable);
+
     const dagBtns =
       document.querySelectorAll<HTMLButtonElement>(".day-filter-btn");
     const townSelect = document.getElementById(
